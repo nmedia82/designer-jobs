@@ -1,0 +1,101 @@
+{
+  "siteurl": "https://wooconvo.najeebmedia.com",
+  "openJobs": [
+    {
+      "id": 1,
+      "orderDate": "2022-01-01",
+      "productName": "Product 1",
+      "jobPrice": 15,
+      "comments": "Comment 1",
+      "fileUrl": "http://example.com/file1.pdf",
+      "pickekRequests": [
+        { "id": 1, "user_name": "John", "email": "job@mail.com" },
+        { "id": 1, "user_name": "John", "email": "job@mail.com" },
+        { "id": 1, "user_name": "John", "email": "job@mail.com" }
+      ]
+    },
+    {
+      "id": 2,
+      "orderDate": "2022-01-02",
+      "productName": "Product 2",
+      "jobPrice": 15,
+      "comments": "Comment 2",
+      "fileUrl": "http://example.com/file2.pdf",
+      "pickekRequests": []
+    },
+    {
+      "id": 3,
+      "orderDate": "2022-01-03",
+      "productName": "Product 3",
+      "jobPrice": 25,
+      "comments": "Comment 3",
+      "fileUrl": "http://example.com/file3.pdf",
+      "pickekRequests": [
+        { "id": 1, "user_name": "John", "email": "job@mail.com" },
+        { "id": 1, "user_name": "John", "email": "job@mail.com" },
+        { "id": 1, "user_name": "John", "email": "job@mail.com" }
+      ]
+    }
+  ],
+  "pickedJobs": [
+    {
+      "orderID": "101",
+      "productID": "101-A",
+      "jobPrice": "$50",
+      "designerID": "D001",
+      "designerEmail": "design1@mail.com",
+      "jobStatus": "processing",
+      "designerFiles": [
+        "https://example.com/file1",
+        "https://example.com/file2"
+      ],
+      "comments": ["Hi, man just do it"]
+    },
+    {
+      "orderID": "102",
+      "productID": "102-B",
+      "jobPrice": "$75",
+      "designerID": "D002",
+      "designerEmail": "design2@mail.com",
+      "jobStatus": "approved",
+      "designerFiles": [
+        "https://example.com/file1",
+        "https://example.com/file2"
+      ],
+      "comments": ["Hi, man just do it"]
+    },
+    {
+      "orderID": "103",
+      "productID": "103-C",
+      "jobPrice": "$100",
+      "designerID": "D003",
+      "designerEmail": "design3@mail.com",
+      "jobStatus": "revise",
+      "designerFiles": [
+        "https://example.com/file1",
+        "https://example.com/file2"
+      ],
+      "comments": ["Hi, man just do it"]
+    },
+    {
+      "orderID": "104",
+      "productID": "104-D",
+      "jobPrice": "$125",
+      "designerID": "D004",
+      "designerEmail": "design4@mail.com",
+      "jobStatus": "cancelled",
+      "designerFiles": [
+        "https://example.com/file1",
+        "https://example.com/file2"
+      ],
+      "comments": ["Hi, man just do it"]
+    }
+  ],
+  "jobStatuses": [
+    { "value": "", "label": "All" },
+    { "value": "processing", "label": "Processing" },
+    { "value": "approved", "label": "Approved" },
+    { "value": "revise", "label": "Revise" },
+    { "value": "cancelled", "label": "Cancelled" }
+  ]
+}

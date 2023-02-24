@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Container, Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
-import AllJobs from "./AllJobs";
-// import MyJobs from "./MyJobs";
+import OpenJobs from "./OpenJobs";
+import AllPickedJobs from "./AllPickedJobs";
+import data from "./../services/data.json";
+import MyJobs from "./MyJobs";
+import NavBar from "../common/NavBar";
+import { getUserRole } from "../services/helper";
 // import AllOrders from "./AllOrders";
 
-function Dashboard() {
-  const [view, setView] = useState("alljobs");
+function Dashboard({ onLogout, User }) {
+  const [view, setView] = useState("openjobs");
 
   const handleViewChange = (view) => {
     setView(view);
@@ -13,53 +17,62 @@ function Dashboard() {
 
   const renderView = () => {
     switch (view) {
-      case "alljobs":
-        return <AllJobs />;
+      case "openjobs":
+        return <OpenJobs jobs={data.openJobs} />;
+      case "allpickedjobs":
+        return (
+          <AllPickedJobs jobs={data.pickedJobs} Statuses={data.jobStatuses} />
+        );
       case "myjobs":
-        return <AllJobs />;
+        return <MyJobs jobs={data.pickedJobs} Statuses={data.jobStatuses} />;
       case "allorders":
-        return <AllJobs />;
+        return <OpenJobs />;
       default:
-        return <AllJobs />;
+        return <OpenJobs />;
     }
   };
 
+  const myRole = getUserRole();
+
   return (
     <Container>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#">My App</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link onClick={() => handleViewChange("alljobs")}>
-              All Jobs
-            </Nav.Link>
-            <Nav.Link onClick={() => handleViewChange("myjobs")}>
-              My Jobs
-            </Nav.Link>
-            <Nav.Link onClick={() => handleViewChange("allorders")}>
-              All Orders
-            </Nav.Link>
-          </Nav>
-          <Nav>
-            <NavDropdown
-              title={`Hi, ${localStorage.getItem("username")}`}
-              id="basic-nav-dropdown"
-            >
-              <NavDropdown.Item href="#">Profile</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#">Settings</NavDropdown.Item>
-              <NavDropdown.Item href="#">Help</NavDropdown.Item>
-            </NavDropdown>
-            <Button
-              variant="outline-danger"
-              onClick={() => localStorage.clear()}
-              className="ml-2"
-            >
-              Logout
-            </Button>
-          </Nav>
-        </Navbar.Collapse>
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand href="#home">DesignerPicker</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link onClick={() => handleViewChange("openjobs")}>
+                Open Jobs
+              </Nav.Link>
+              {myRole === "admin" && (
+                <>
+                  <Nav.Link onClick={() => handleViewChange("allpickedjobs")}>
+                    Picked Jobs
+                  </Nav.Link>
+                  <Nav.Link onClick={() => handleViewChange("allorders")}>
+                    Back to Orders
+                  </Nav.Link>
+                </>
+              )}
+              {myRole === "designer" && (
+                <Nav.Link onClick={() => handleViewChange("myjobs")}>
+                  My Jobs
+                </Nav.Link>
+              )}
+            </Nav>
+            <Nav>
+              <NavDropdown
+                title={`Hi, ${User.data.display_name}`}
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item href="#" onClick={onLogout}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
       </Navbar>
       <div className="container mt-4">{renderView()}</div>
     </Container>
