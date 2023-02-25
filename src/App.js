@@ -11,9 +11,8 @@ const isLoggedIn = true;
 
 function App() {
   const [userInfo, setuserInfo] = useLocalStorage("user_info", {});
-  // console.log(userInfo);
+
   const handleLogin = async (username, password) => {
-    console.log(username, password);
     const user_info = { username, password };
     const login_resp = await doLogin(user_info);
     const { success, data } = login_resp.data;
@@ -26,10 +25,10 @@ function App() {
   };
 
   const handleLogout = () => {
-    setuserInfo(null);
+    setuserInfo({});
   };
-
-  if (!userInfo)
+  // console.log(userInfo);
+  if (!userInfo.data)
     return (
       <>
         <Login onLogin={handleLogin} />
