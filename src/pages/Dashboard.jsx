@@ -5,7 +5,7 @@ import AllPickedJobs from "./AllPickedJobs";
 import data from "./../services/data.json";
 import MyJobs from "./MyJobs";
 import NavBar from "../common/NavBar";
-import { getUserRole } from "../services/helper";
+import { getUserRole } from "../services/auth";
 // import AllOrders from "./AllOrders";
 
 function Dashboard({ onLogout, User }) {
@@ -32,7 +32,7 @@ function Dashboard({ onLogout, User }) {
     }
   };
 
-  const myRole = getUserRole();
+  const UserRole = getUserRole();
 
   return (
     <Container>
@@ -45,7 +45,7 @@ function Dashboard({ onLogout, User }) {
               <Nav.Link onClick={() => handleViewChange("openjobs")}>
                 Open Jobs
               </Nav.Link>
-              {myRole === "admin" && (
+              {UserRole === "admin" && (
                 <>
                   <Nav.Link onClick={() => handleViewChange("allpickedjobs")}>
                     Picked Jobs
@@ -55,7 +55,7 @@ function Dashboard({ onLogout, User }) {
                   </Nav.Link>
                 </>
               )}
-              {myRole === "designer" && (
+              {UserRole === "designer" && (
                 <Nav.Link onClick={() => handleViewChange("myjobs")}>
                   My Jobs
                 </Nav.Link>

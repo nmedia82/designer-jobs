@@ -1,50 +1,48 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import auth from "./services/auth";
 
-import useLocalStorage from "./services/useLocalStorage";
+// import useLocalStorage from "./services/useLocalStorage";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import { doLogin } from "./services/model";
 import { useState, useEffect } from "react";
-const isLoggedIn = true;
 
 function App() {
-  const [userInfo, setuserInfo] = useLocalStorage("user_info", {});
-
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  const [User, setUser] = useState(null);
+  useEffect(() => {
+    const user = auth.getCurrentUser;
+    setUser(user);
+  }, []);
 
   const handleLogin = async (username, password) => {
     const user_info = { username, password };
-    const login_resp = await doLogin(user_info);
-    const { success, data } = login_resp.data;
-    if (success) {
-      console.log(data);
-      setuserInfo(data);
-      await sleep(500);
-      // return window.location.reload();
+    try {
+      await auth.login(user_info);
+      window.location.reload();
+    } catch (ex) {
+      toast.error("Error while login");
+      console.log(ex);
     }
-    return toast.error("Error while login" + data);
     // handle login logic
   };
 
   const handleLogout = () => {
-    setuserInfo({});
+    auth.logout();
+    window.location.reload();
   };
-  console.log("user login", userInfo);
-  if (!userInfo)
+
+  if (!User)
     return (
       <>
         <Login onLogin={handleLogin} />
         <ToastContainer />
       </>
     );
-  if (userInfo)
+  if (User)
     return (
       <>
-        <Dashboard onLogout={handleLogout} User={userInfo} />
+        <Dashboard onLogout={handleLogout} User={User} />
         <ToastContainer />
       </>
     );

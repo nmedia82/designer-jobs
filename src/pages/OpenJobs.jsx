@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Container } from "react-bootstrap";
-import { getUserRole } from "../services/helper";
+import { getUserRole } from "../services/auth";
 
-const userRole = getUserRole();
+const UserRole = getUserRole();
 const OpenJobs = ({ jobs }) => {
   const [openJobs, setOpenJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -34,8 +34,8 @@ const OpenJobs = ({ jobs }) => {
             <th>Product Price</th>
             <th>Comments</th>
             <th>Download File</th>
-            {userRole === "designer" && <th>Request a Pick</th>}
-            {userRole === "admin" && <th>See Requests</th>}
+            {UserRole === "designer" && <th>Request a Pick</th>}
+            {UserRole === "admin" && <th>See Requests</th>}
           </tr>
         </thead>
         <tbody>
@@ -52,12 +52,12 @@ const OpenJobs = ({ jobs }) => {
                 </a>
               </td>
               <td>
-                {userRole === "designer" && (
+                {UserRole === "designer" && (
                   <Button onClick={() => handleRequestPick(job.id)}>
                     Request a Pick
                   </Button>
                 )}
-                {userRole === "admin" && (
+                {UserRole === "admin" && (
                   <Button onClick={() => handleSeeRequests(job)}>
                     See Requests
                   </Button>
