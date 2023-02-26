@@ -21,8 +21,7 @@ function App() {
       await auth.login(user_info);
       window.location.reload();
     } catch (ex) {
-      toast.error("Error while login");
-      console.log(ex);
+      toast.error("Error while login" + ex);
     }
     // handle login logic
   };
