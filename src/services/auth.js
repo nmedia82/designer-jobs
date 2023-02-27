@@ -19,6 +19,16 @@ export function logout() {
   localStorage.removeItem("user");
 }
 
+export function getUserID() {
+  try {
+    let user = localStorage.getItem("user");
+    user = JSON.parse(user);
+    return user.ID;
+  } catch (ex) {
+    return null;
+  }
+}
+
 export function getCurrentUser() {
   try {
     const user = localStorage.getItem("user");

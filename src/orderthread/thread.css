@@ -1,0 +1,44 @@
+#wooconvo-front-wrapper {
+    background-color: white;
+}
+
+.customer {
+    padding: 10px;
+    margin: 20px;
+    background-color: white;
+}
+
+.reply {
+    padding: 10px;
+    margin: 20px;
+    background-color: white;
+}
+
+.preview-thumb {
+    background: #fff;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 1rem;
+    position: relative;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    text-align: center;
+}
+
+.preview-thumb-img {
+    object-fit: contain;
+}
+
+.preview-thumb-tool {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+.preview-thumb-img-upload {
+    object-fit: contain;
+}
+
+.preview-thumb-tool-upload {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}

@@ -51,7 +51,7 @@ const AllPickedJobs = ({ jobs, Statuses }) => {
 
     const job = selectedJob;
     job.comments = [...job.comments, Comment];
-    console.log(job);
+    // console.log(job);
     setComment("");
     setSelectedJob(job);
   };
@@ -69,11 +69,11 @@ const AllPickedJobs = ({ jobs, Statuses }) => {
             value={selectedJobStatus}
             onChange={handleJobStatusChange}
           >
-            <option value="">All</option>
-            <option value="approved">Approved</option>
-            <option value="revise">Revise</option>
-            <option value="processing">Processing</option>
-            <option value="cancelled">Cancelled</option>
+            {Statuses.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </div>
         <div>

@@ -10,7 +10,7 @@ import {
   Row,
 } from "react-bootstrap";
 
-const MyJobs = ({ jobs, Statuses }) => {
+const MyJobs = ({ jobs, Statuses, onJobUpdate }) => {
   const [AllJobs, setAllJobs] = useState([]);
   const [selectedJobStatus, setSelectedJobStatus] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
@@ -47,10 +47,10 @@ const MyJobs = ({ jobs, Statuses }) => {
     return regex.test(testwith);
   };
 
-  const updateJob = (job) => {
-    setSelectedJob(job);
-    setShowModal(true);
-  };
+  // const updateJob = (job) => {
+  //   setSelectedJob(job);
+  //   setShowModal(true);
+  // };
 
   return (
     <div>
@@ -104,7 +104,10 @@ const MyJobs = ({ jobs, Statuses }) => {
               <td>{job.designerEmail}</td>
               <td>{job.jobStatus}</td>
               <td>
-                <Button variant="success" onClick={() => updateJob(job)}>
+                <Button
+                  variant="success"
+                  onClick={() => onJobUpdate(job.orderID)}
+                >
                   Update File
                 </Button>
               </td>

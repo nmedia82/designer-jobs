@@ -7,10 +7,12 @@ import data from "./../services/data.json";
 import MyJobs from "./MyJobs";
 import { getUserRole } from "../services/auth";
 import AdminSettings from "./Settings";
+import OrderConvoHome from "../orderthread/Index";
 // import AllOrders from "./AllOrders";
 
 function Dashboard({ onLogout, User }) {
   const [view, setView] = useState("openjobs");
+  const [JobSelected, setJobSelected] = useState(null);
   const [Settings, setSettings] = useLocalStorage("designjob_settings", {});
 
   useEffect(() => {
@@ -25,6 +27,11 @@ function Dashboard({ onLogout, User }) {
     setSettings(settings);
   };
 
+  const handleJobUpdate = (order_id) => {
+    setJobSelected(order_id);
+    handleViewChange("orderconvo");
+  };
+
   const renderView = () => {
     switch (view) {
       case "openjobs":
@@ -34,9 +41,17 @@ function Dashboard({ onLogout, User }) {
           <AllPickedJobs jobs={data.pickedJobs} Statuses={data.jobStatuses} />
         );
       case "myjobs":
-        return <MyJobs jobs={data.pickedJobs} Statuses={data.jobStatuses} />;
+        return (
+          <MyJobs
+            jobs={data.pickedJobs}
+            Statuses={data.jobStatuses}
+            onJobUpdate={handleJobUpdate()}
+          />
+        );
       case "allorders":
         return <OpenJobs />;
+      case "orderconvo":
+        return <OrderConvoHome OrderID={JobSelected} />;
       case "settings":
         return (
           <AdminSettings
