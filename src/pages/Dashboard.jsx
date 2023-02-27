@@ -6,7 +6,7 @@ import AllPickedJobs from "./AllPickedJobs";
 import data from "./../services/data.json";
 import MyJobs from "./MyJobs";
 import { getUserRole } from "../services/auth";
-import Settings from "./Settings";
+import AdminSettings from "./Settings";
 // import AllOrders from "./AllOrders";
 
 function Dashboard({ onLogout, User }) {
@@ -15,13 +15,14 @@ function Dashboard({ onLogout, User }) {
 
   useEffect(() => {
     setSettings(data.settings);
-    console.log(data);
   }, [setSettings]);
-
-  console.log(Settings);
 
   const handleViewChange = (view) => {
     setView(view);
+  };
+
+  const handleSettingsChange = (settings) => {
+    setSettings(settings);
   };
 
   const renderView = () => {
@@ -37,7 +38,12 @@ function Dashboard({ onLogout, User }) {
       case "allorders":
         return <OpenJobs />;
       case "settings":
-        return <Settings />;
+        return (
+          <AdminSettings
+            Settings={Settings}
+            onSettingsChange={handleSettingsChange}
+          />
+        );
       default:
         return <OpenJobs />;
     }

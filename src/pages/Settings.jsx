@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 
-const Settings = () => {
-  const [automaticModeEnabled, setAutomaticModeEnabled] = useState(false);
-
+const AdminSettings = ({ Settings, onSettingsChange }) => {
   const handleToggleAutomaticMode = () => {
-    setAutomaticModeEnabled(!automaticModeEnabled);
+    // setAutomaticModeEnabled(!automaticModeEnabled);
+    const settings = { ...Settings, automatic_mode: !Settings.automatic_mode };
+    onSettingsChange(settings);
   };
 
   return (
     <div>
       <h2>Settings</h2>
-      <p>Automatic Mode: {automaticModeEnabled ? "Enabled" : "Disabled"}</p>
+      <p>Automatic Mode: {Settings.automatic_mode ? "Enabled" : "Disabled"}</p>
       <label>
         <input
           type="checkbox"
-          checked={automaticModeEnabled}
+          checked={Settings.automatic_mode}
           onChange={handleToggleAutomaticMode}
         />
         Enable Automatic Mode
@@ -23,4 +23,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default AdminSettings;
