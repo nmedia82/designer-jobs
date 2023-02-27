@@ -2,11 +2,12 @@
   "siteurl": "https://wooconvo.najeebmedia.com",
   "openJobs": [
     {
-      "id": 1,
+      "orderID": 1,
+      "id": "1-1",
       "orderDate": "2022-01-01",
       "productName": "Product 1",
       "jobPrice": 15,
-      "comments": "Comment 1",
+      "comments": "This is the long text that you want to hide until the user clicks the 'Click to Expand' button. You can add as much text as you want here.",
       "fileUrl": "http://example.com/file1.pdf",
       "pickekRequests": [
         { "id": 1, "user_name": "John", "email": "job@mail.com" },
@@ -15,7 +16,8 @@
       ]
     },
     {
-      "id": 2,
+      "orderID": 1,
+      "id": "1-2",
       "orderDate": "2022-01-02",
       "productName": "Product 2",
       "jobPrice": 15,
@@ -24,7 +26,8 @@
       "pickekRequests": []
     },
     {
-      "id": 3,
+      "orderID": 2,
+      "id": "2-1",
       "orderDate": "2022-01-03",
       "productName": "Product 3",
       "jobPrice": 25,
@@ -97,5 +100,6 @@
     { "value": "approved", "label": "Approved" },
     { "value": "revise", "label": "Revise" },
     { "value": "cancelled", "label": "Cancelled" }
-  ]
+  ],
+  "settings": { "automatic_mode": false }
 }

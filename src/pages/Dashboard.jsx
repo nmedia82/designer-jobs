@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
+import useLocalStorage from "./../services/useLocalStorage";
 import OpenJobs from "./OpenJobs";
 import AllPickedJobs from "./AllPickedJobs";
 import data from "./../services/data.json";
 import MyJobs from "./MyJobs";
-import NavBar from "../common/NavBar";
 import { getUserRole } from "../services/auth";
+import Settings from "./Settings";
 // import AllOrders from "./AllOrders";
 
 function Dashboard({ onLogout, User }) {
   const [view, setView] = useState("openjobs");
+  const [Settings, setSettings] = useLocalStorage("designjob_settings", {});
+
+  useEffect(() => {
+    setSettings(data.settings);
+    console.log(data);
+  }, [setSettings]);
+
+  console.log(Settings);
 
   const handleViewChange = (view) => {
     setView(view);
@@ -27,6 +36,8 @@ function Dashboard({ onLogout, User }) {
         return <MyJobs jobs={data.pickedJobs} Statuses={data.jobStatuses} />;
       case "allorders":
         return <OpenJobs />;
+      case "settings":
+        return <Settings />;
       default:
         return <OpenJobs />;
     }
@@ -66,6 +77,12 @@ function Dashboard({ onLogout, User }) {
                 title={`Hi, ${User.data.display_name}`}
                 id="basic-nav-dropdown"
               >
+                <NavDropdown.Item
+                  href="#"
+                  onClick={() => handleViewChange("settings")}
+                >
+                  Settings
+                </NavDropdown.Item>
                 <NavDropdown.Item href="#" onClick={onLogout}>
                   Logout
                 </NavDropdown.Item>

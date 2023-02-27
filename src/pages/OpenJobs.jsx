@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Container } from "react-bootstrap";
+import ReadMoreText from "../common/ReadMore";
 import { getUserRole } from "../services/auth";
 
 const UserRole = getUserRole();
@@ -28,11 +29,12 @@ const OpenJobs = ({ jobs }) => {
       <Table striped bordered hover>
         <thead>
           <tr>
+            <th>Job ID</th>
             <th>Order ID</th>
             <th>Order Date</th>
             <th>Product Name</th>
-            <th>Product Price</th>
-            <th>Comments</th>
+            <th>Job Price</th>
+            <th>Client Comments</th>
             <th>Download File</th>
             {UserRole === "designer" && <th>Request a Pick</th>}
             {UserRole === "admin" && <th>See Requests</th>}
@@ -42,10 +44,13 @@ const OpenJobs = ({ jobs }) => {
           {openJobs.map((job) => (
             <tr key={job.id}>
               <td>{job.id}</td>
+              <td>{job.orderID}</td>
               <td>{job.orderDate}</td>
               <td>{job.productName}</td>
-              <td>{job.jobPrice}</td>
-              <td>{job.comments}</td>
+              <td>${job.jobPrice}</td>
+              <td>
+                <ReadMoreText text={job.comments} maxLength={20} />
+              </td>
               <td>
                 <a href={job.fileUrl} target="_blank" rel="noreferrer">
                   Download File
