@@ -3,14 +3,18 @@ import httpService from "./http";
 import pluginData from "./data.json";
 
 const { siteurl } = pluginData;
-const endpoint = `${siteurl}/wp-json/designerpick/v1`;
+const endpoint = `${siteurl}/wp-json/jobdone/v1`;
 
 export async function login(user_info) {
   const url = `${endpoint}/login`;
-  const { data: user } = await httpService.post(url, user_info);
+  const { data } = await httpService.post(url, user_info);
   // console.log(user.success);
-  if (user.success)
-    return localStorage.setItem("user", JSON.stringify(user.data));
+  const { success, data: response } = data;
+  if (success) {
+    localStorage.setItem("user", JSON.stringify(response.user));
+    localStorage.setItem("wc_statuses", JSON.stringify(response.statuses));
+    return;
+  }
 
   throw new Error("Username/password is invalid");
 }

@@ -3,7 +3,6 @@ import { Backdrop, CircularProgress, Divider } from "@mui/material";
 
 import ReplyMsg from "./ReplyMsg";
 import MessagesBody from "./Messages";
-import RevisionsAddon from "./RevisionsAddons";
 import "./thread.css";
 import NavBar from "./NavBar";
 import { addMessage, resetUnread } from "./../services/model";
@@ -13,9 +12,8 @@ import { get_orderconvo_api_url } from "../services/helper";
 const { order_id, context } = pluginData;
 const api_url = get_orderconvo_api_url();
 
-export default function WooConvoThread({ Order }) {
+export default function WooConvoThread({ Order, onBack }) {
   const [Thread, setThread] = useState([]);
-  const [RevisionLimit, setRevisionLimit] = useState(0);
   const [showMore, setshowMore] = useState(true);
   const [isWorking, setIsWorking] = useState(false);
   const [FilterThread, setFilterThread] = useState([]);
@@ -24,14 +22,6 @@ export default function WooConvoThread({ Order }) {
     const thread = [...Order.thread];
     setFilterThread(thread);
     setThread(thread);
-
-    const revisions_limit_order = Order.revisions_limit;
-    const revisions_limit_global = get_setting("revisions_limit");
-    if (revisions_limit_order > 0) {
-      setRevisionLimit(revisions_limit_order);
-    } else if (revisions_limit_global > 0) {
-      setRevisionLimit(revisions_limit_global);
-    }
 
     const markOrderAsRead = async () => {
       const unread_count =
@@ -104,32 +94,10 @@ export default function WooConvoThread({ Order }) {
   };
 
   const handleDownload = async (file) => {
-    const { filename, location, bucket, key, region } = file;
+    const { filename } = file;
 
     const download_url = `${api_url}/download-file?filename=${filename}&order_id=${order_id}`;
     window.open(download_url);
-  };
-
-  const totalCustomerMessages = Thread.filter(
-    (msg) => msg.type === "message" && msg.context === "myaccount"
-  ).length;
-
-  const canReply = () => {
-    let can_reply = true;
-    const disable_on_complete = get_setting("disable_on_completed");
-    can_reply =
-      disable_on_complete && Order.status === "wc-completed" ? false : true;
-    const enable_revisions = get_setting("enable_revisions");
-    if (enable_revisions) {
-      const revisions_limit = get_setting("revisions_limit");
-      can_reply = revisions_limit > totalCustomerMessages;
-    }
-    return can_reply;
-  };
-
-  const canRevise = () => {
-    const enable_revisions = get_setting("enable_revisions");
-    return canReply() && enable_revisions;
   };
 
   return (
@@ -143,6 +111,7 @@ export default function WooConvoThread({ Order }) {
         onCollapsed={() => setshowMore(!showMore)}
         showMore={showMore}
         onSearchThread={handleSearch}
+        onBack={onBack}
       />
       <MessagesBody
         Thread={FilterThread}
@@ -154,14 +123,6 @@ export default function WooConvoThread({ Order }) {
 
       {/* Reply to --- */}
       <ReplyMsg onReplySend={handleReplySend} />
-
-      {/* Revision Addons */}
-      {canRevise() && (
-        <RevisionsAddon
-          RevisionsLimit={RevisionLimit}
-          totalCustomerMessages={totalCustomerMessages}
-        />
-      )}
 
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

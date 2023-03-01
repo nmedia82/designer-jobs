@@ -26,6 +26,7 @@ function NavBar({
   showMore,
   onSearchThread,
   OrderID,
+  onBack,
 }) {
   return (
     <ThemeProvider theme={darkTheme}>
@@ -40,19 +41,20 @@ function NavBar({
               display: { xs: "none", sm: "block" },
             }}
           >
+            <IconButton
+              size="large"
+              edge="start"
+              aria-label="open drawer"
+              sx={{ mr: 2, color: "#fff" }}
+              onClick={onBack}
+            >
+              <ArrowBack />
+            </IconButton>
             <Chip
               label={`#${OrderID}`}
               variant="outlined"
               sx={{ mr: 5, color: "#fff" }}
             />
-
-            {get_setting("enable_msg_count_display") && (
-              <Chip
-                label={`Total Messages ${TotalCount}`}
-                variant="outlined"
-                sx={{ color: "white" }}
-              />
-            )}
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {get_setting("enable_msg_search") && (

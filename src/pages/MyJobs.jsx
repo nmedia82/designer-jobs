@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Table,
-  Modal,
-  Form,
-  Col,
-  Container,
-  Card,
-  Row,
-} from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 
 const MyJobs = ({ jobs, Statuses, onJobUpdate }) => {
   const [AllJobs, setAllJobs] = useState([]);
   const [selectedJobStatus, setSelectedJobStatus] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedJob, setSelectedJob] = useState(null);
-  const [Comment, setComment] = useState("");
 
   useEffect(() => {
     setAllJobs(jobs);
@@ -65,11 +53,11 @@ const MyJobs = ({ jobs, Statuses, onJobUpdate }) => {
             value={selectedJobStatus}
             onChange={handleJobStatusChange}
           >
-            <option value="">All</option>
-            <option value="approved">Approved</option>
-            <option value="revise">Revise</option>
-            <option value="processing">Processing</option>
-            <option value="cancelled">Cancelled</option>
+            {Statuses.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </div>
         <div>
@@ -115,48 +103,6 @@ const MyJobs = ({ jobs, Statuses, onJobUpdate }) => {
           ))}
         </tbody>
       </Table>
-
-      {/* Render modal */}
-
-      {selectedJob && (
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Job #{selectedJob.orderID}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Container>
-              <Row>
-                <Col>
-                  <Card bg="secondary" border="dark">
-                    <Card.Body className="d-flex align-items-center justify-content-center">
-                      <Button variant="primary">Upload file</Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-                <Col>
-                  <h4>Files:</h4>
-                  {selectedJob.designerFiles.map((file, index) => (
-                    <div key={index}>
-                      <a href={file} target="_blank" rel="noreferrer">
-                        File {index + 1}
-                      </a>
-                    </div>
-                  ))}
-                </Col>
-              </Row>
-            </Container>
-          </Modal.Body>
-
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={() => setShowModal(false)}>
-              Notify Admin
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
     </div>
   );
 };

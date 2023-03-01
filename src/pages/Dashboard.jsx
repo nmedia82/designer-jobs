@@ -1,22 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Container, Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import useLocalStorage from "./../services/useLocalStorage";
-import OpenJobs from "./OpenJobs";
+import OpenJobsView from "./OpenJobs";
 import AllPickedJobs from "./AllPickedJobs";
 import data from "./../services/data.json";
 import MyJobs from "./MyJobs";
 import { getUserRole } from "../services/auth";
 import AdminSettings from "./Settings";
 import OrderConvoHome from "../orderthread/Index";
+import { getStatuses } from "../services/localStorage";
+import { _to_options } from "../services/helper";
+import { getOpenJobs } from "../services/model";
 // import AllOrders from "./AllOrders";
 
 function Dashboard({ onLogout, User }) {
   const [view, setView] = useState("openjobs");
+  const [OpenJobs, setOpenJobs] = useState([]);
   const [JobSelected, setJobSelected] = useState(null);
   const [Settings, setSettings] = useLocalStorage("designjob_settings", {});
+  const [Statuses, setStatuses] = useState([]);
 
   useEffect(() => {
-    setSettings(data.settings);
+    const loadData = async () => {
+      setSettings(data.settings);
+
+      let statuses = getStatuses();
+      statuses = _to_options(statuses);
+      setStatuses(statuses);
+
+      const { data: open_jobs } = await getOpenJobs();
+      setOpenJobs(open_jobs);
+    };
+
+    loadData();
   }, [setSettings]);
 
   const handleViewChange = (view) => {
@@ -32,26 +48,34 @@ function Dashboard({ onLogout, User }) {
     handleViewChange("orderconvo");
   };
 
+  const handleJobBack = () => {
+    setJobSelected(null);
+    handleViewChange("myjobs");
+  };
+
   const renderView = () => {
     switch (view) {
       case "openjobs":
-        return <OpenJobs jobs={data.openJobs} />;
+        return <OpenJobsView jobs={OpenJobs} />;
       case "allpickedjobs":
-        return (
-          <AllPickedJobs jobs={data.pickedJobs} Statuses={data.jobStatuses} />
-        );
+        return <AllPickedJobs jobs={data.pickedJobs} Statuses={Statuses} />;
       case "myjobs":
         return (
           <MyJobs
             jobs={data.pickedJobs}
-            Statuses={data.jobStatuses}
-            onJobUpdate={handleJobUpdate()}
+            Statuses={Statuses}
+            onJobUpdate={handleJobUpdate}
           />
         );
       case "allorders":
         return <OpenJobs />;
       case "orderconvo":
-        return <OrderConvoHome OrderID={JobSelected} />;
+        return (
+          <OrderConvoHome
+            OrderID={JobSelected}
+            onBack={() => handleJobBack(null)}
+          />
+        );
       case "settings":
         return (
           <AdminSettings
@@ -60,7 +84,7 @@ function Dashboard({ onLogout, User }) {
           />
         );
       default:
-        return <OpenJobs />;
+        return <OpenJobsView />;
     }
   };
 

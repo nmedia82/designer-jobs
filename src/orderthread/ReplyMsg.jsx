@@ -7,8 +7,7 @@ import { useState } from "react";
 import { common } from "@mui/material/colors";
 import Attachments from "./Attachments";
 import { DeleteOutline, SendOutlined } from "@mui/icons-material";
-import QuickReplyPopup from "./QuickReply";
-import { get_setting, wooconvo_makeid } from "../../services/helper";
+import { get_setting, wooconvo_makeid } from "./../services/helper";
 
 export default function ReplyMsg({ onReplySend }) {
   //Emoji

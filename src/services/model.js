@@ -1,10 +1,10 @@
 // import config from "../config";
 import httpService from "./http";
 import pluginData from "./data.json";
-import { getUserID, getUserRole } from "./auth";
+import { getUserID } from "./auth";
 
 const { siteurl } = pluginData;
-const endpoint = `${siteurl}/wp-json/designerpick/v1`;
+const endpoint = `${siteurl}/wp-json/jobdone/v1`;
 const endpoint_orderconvo = `${siteurl}/wp-json/wooconvo/v1`;
 
 // get order details by id
@@ -27,4 +27,9 @@ export function resetUnread(order_id) {
   const data = { order_id, user_type };
   const url = `${endpoint_orderconvo}/reset-unread`;
   return httpService.post(url, data);
+}
+
+export function getOpenJobs() {
+  const url = `${endpoint}/get-open-jobs`;
+  return httpService.get(url);
 }

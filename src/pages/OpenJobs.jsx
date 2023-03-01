@@ -4,12 +4,13 @@ import ReadMoreText from "../common/ReadMore";
 import { getUserRole } from "../services/auth";
 
 const UserRole = getUserRole();
-const OpenJobs = ({ jobs }) => {
+const OpenJobsView = ({ jobs }) => {
   const [openJobs, setOpenJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
+    console.log(jobs);
     setOpenJobs(jobs);
   }, [jobs]);
 
@@ -42,23 +43,23 @@ const OpenJobs = ({ jobs }) => {
         </thead>
         <tbody>
           {openJobs.map((job) => (
-            <tr key={job.id}>
+            <tr key={job.jobID}>
               <td>{job.id}</td>
               <td>{job.orderID}</td>
               <td>{job.orderDate}</td>
-              <td>{job.productName}</td>
+              <td>{job.itemName}</td>
               <td>${job.jobPrice}</td>
               <td>
-                <ReadMoreText text={job.comments} maxLength={20} />
+                <ReadMoreText text={job.clientComment} maxLength={20} />
               </td>
               <td>
-                <a href={job.fileUrl} target="_blank" rel="noreferrer">
-                  Download File
+                <a href={job.fileDownlload} target="_blank" rel="noreferrer">
+                  <img src={job.fileThumb} alt={job.itemName} />
                 </a>
               </td>
               <td>
                 {UserRole === "designer" && (
-                  <Button onClick={() => handleRequestPick(job.id)}>
+                  <Button onClick={() => handleRequestPick(job.jobID)}>
                     Request a Pick
                   </Button>
                 )}
@@ -127,4 +128,4 @@ const OpenJobs = ({ jobs }) => {
   );
 };
 
-export default OpenJobs;
+export default OpenJobsView;

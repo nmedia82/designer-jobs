@@ -9,7 +9,7 @@ import { getOrderById } from "./../services/model";
 
 const { settings, order_id } = pluginData;
 
-function OrderConvoHome() {
+function OrderConvoHome({ onBack }) {
   const [pluginSettings, setPluginSettings] = useLocalStorage(
     "orderconvo_settings",
     {}
@@ -33,7 +33,7 @@ function OrderConvoHome() {
 
   return (
     <Box sx={{ flexGrow: 1 }} className="wooconvo-admin-wrapper">
-      {Order && <WooConvoThread Order={Order} />}
+      {Order && <WooConvoThread Order={Order} onBack={onBack} />}
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isWorking}
