@@ -1,7 +1,7 @@
 import data from "./../services/data.json";
 
 export const get_setting = (key, defaultValue = "") => {
-  var settings = localStorage.getItem("orderconvo_settings");
+  var settings = localStorage.getItem("designjob_settings");
   if (!settings) return defaultValue;
   settings = JSON.parse(settings);
   if (!settings[key]) return defaultValue;

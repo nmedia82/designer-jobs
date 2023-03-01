@@ -13,6 +13,15 @@ export async function login(user_info) {
   if (success) {
     localStorage.setItem("user", JSON.stringify(response.user));
     localStorage.setItem("wc_statuses", JSON.stringify(response.statuses));
+    localStorage.setItem(
+      "myjobs_assigned",
+      JSON.stringify(response.myjobs_assigned)
+    );
+    localStorage.setItem(
+      "myjobs_requests",
+      JSON.stringify(response.myjobs_requests)
+    );
+
     return;
   }
 
@@ -54,8 +63,38 @@ export function getUserRole() {
   }
 }
 
+export function getMyJobs() {
+  try {
+    const jobs = localStorage.getItem("myjobs_assigned");
+    return JSON.parse(jobs);
+  } catch (ex) {
+    return null;
+  }
+}
+
+export function getMyJobRequests() {
+  try {
+    const jobs = localStorage.getItem("myjobs_requests");
+    return JSON.parse(jobs);
+  } catch (ex) {
+    return null;
+  }
+}
+
+export function setMyJobs(jobs) {
+  localStorage.setItem("myjobs_assigned", JSON.stringify(jobs));
+}
+
+export function setMyJobRequests(jobs) {
+  localStorage.setItem("myjobs_requests", JSON.stringify(jobs));
+}
+
 export default {
   login,
   logout,
   getCurrentUser,
+  getMyJobs,
+  getMyJobRequests,
+  setMyJobs,
+  setMyJobRequests,
 };

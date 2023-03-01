@@ -4,7 +4,7 @@ import useLocalStorage from "./../services/useLocalStorage";
 import OpenJobsView from "./OpenJobs";
 import AllPickedJobs from "./AllPickedJobs";
 import data from "./../services/data.json";
-import MyJobs from "./MyJobs";
+import MyJobsView from "./MyJobs";
 import { getUserRole } from "../services/auth";
 import AdminSettings from "./Settings";
 import OrderConvoHome from "../orderthread/Index";
@@ -28,7 +28,9 @@ function Dashboard({ onLogout, User }) {
       statuses = _to_options(statuses);
       setStatuses(statuses);
 
-      const { data: open_jobs } = await getOpenJobs();
+      let { data: open_jobs } = await getOpenJobs();
+      // since we are getting jobs in object format from server
+      open_jobs = Object.values(open_jobs);
       setOpenJobs(open_jobs);
     };
 
@@ -61,7 +63,7 @@ function Dashboard({ onLogout, User }) {
         return <AllPickedJobs jobs={data.pickedJobs} Statuses={Statuses} />;
       case "myjobs":
         return (
-          <MyJobs
+          <MyJobsView
             jobs={data.pickedJobs}
             Statuses={Statuses}
             onJobUpdate={handleJobUpdate}

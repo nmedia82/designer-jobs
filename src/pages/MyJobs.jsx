@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 
-const MyJobs = ({ jobs, Statuses, onJobUpdate }) => {
-  const [AllJobs, setAllJobs] = useState([]);
+const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
+  const [MyJobs, setMyJobs] = useState([]);
   const [selectedJobStatus, setSelectedJobStatus] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
 
   useEffect(() => {
-    setAllJobs(jobs);
+    setMyJobs(jobs);
   }, [jobs]);
 
   const handleJobStatusChange = (e) => {
     const status = e.target.value;
     setSelectedJobStatus(status);
-    if (!status) return setFilteredJobs(AllJobs);
+    if (!status) return setFilteredJobs(MyJobs);
     const filteredJobs = jobs.filter((job) => job.jobStatus === status);
     setFilteredJobs(filteredJobs);
   };
@@ -22,7 +22,7 @@ const MyJobs = ({ jobs, Statuses, onJobUpdate }) => {
   const handlejobIDFilter = (e) => {
     const jobid = e.target.value;
     setSelectedJobID(jobid);
-    const all_jobs = [...AllJobs];
+    const all_jobs = [...MyJobs];
     if (!jobid) return setFilteredJobs(all_jobs);
     const filteredJobs = all_jobs.filter((job) =>
       matchSearch(job.orderID, jobid)
@@ -78,17 +78,16 @@ const MyJobs = ({ jobs, Statuses, onJobUpdate }) => {
             <th>Order ID</th>
             <th>Product ID</th>
             <th>Job Price</th>
-            <th>Designer Email</th>
             <th>Job Status</th>
             <th>Comment & Notify</th>
           </tr>
         </thead>
         <tbody>
-          {filteredJobs.map((job, index) => (
-            <tr key={job.orderID}>
+          {filteredJobs.map((job) => (
+            <tr key={job.jobID}>
               <td>{job.orderID}</td>
               <td>{job.productID}</td>
-              <td>{job.jobPrice}</td>
+              <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
               <td>{job.designerEmail}</td>
               <td>{job.jobStatus}</td>
               <td>
@@ -107,4 +106,4 @@ const MyJobs = ({ jobs, Statuses, onJobUpdate }) => {
   );
 };
 
-export default MyJobs;
+export default MyJobsView;

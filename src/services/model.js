@@ -2,6 +2,7 @@
 import httpService from "./http";
 import pluginData from "./data.json";
 import { getUserID } from "./auth";
+import { get_setting } from "./helper";
 
 const { siteurl } = pluginData;
 const endpoint = `${siteurl}/wp-json/jobdone/v1`;
@@ -32,4 +33,11 @@ export function resetUnread(order_id) {
 export function getOpenJobs() {
   const url = `${endpoint}/get-open-jobs`;
   return httpService.get(url);
+}
+
+export function requestJob(order_id) {
+  const request_type = get_setting("automatic_mode") ? "direct" : "wait";
+  const data = { user_id: getUserID(), order_id, request_type };
+  const url = `${endpoint}/request-job`;
+  return httpService.post(url, data);
 }

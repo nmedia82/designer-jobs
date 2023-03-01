@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Container } from "react-bootstrap";
+import { toast } from "react-toastify";
 import ReadMoreText from "../common/ReadMore";
 import { getUserRole } from "../services/auth";
+import { requestJob } from "../services/model";
 
 const UserRole = getUserRole();
 const OpenJobsView = ({ jobs }) => {
@@ -14,9 +16,12 @@ const OpenJobsView = ({ jobs }) => {
     setOpenJobs(jobs);
   }, [jobs]);
 
-  const handleRequestPick = (id) => {
+  const handleRequestPick = async (id) => {
     // Do something with the order ID
-    console.log(`Requesting pick for order ${id}`);
+    const { data } = await requestJob(id);
+    const { success, data: response } = data;
+    toast.success(response.message);
+    if (response.reload) return window.location.reload();
   };
 
   const handleSeeRequests = (job) => {
@@ -44,11 +49,11 @@ const OpenJobsView = ({ jobs }) => {
         <tbody>
           {openJobs.map((job) => (
             <tr key={job.jobID}>
-              <td>{job.id}</td>
+              <td>{job.jobID}</td>
               <td>{job.orderID}</td>
               <td>{job.orderDate}</td>
               <td>{job.itemName}</td>
-              <td>${job.jobPrice}</td>
+              <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
               <td>
                 <ReadMoreText text={job.clientComment} maxLength={20} />
               </td>
@@ -59,7 +64,7 @@ const OpenJobsView = ({ jobs }) => {
               </td>
               <td>
                 {UserRole === "designer" && (
-                  <Button onClick={() => handleRequestPick(job.jobID)}>
+                  <Button onClick={() => handleRequestPick(job.orderID)}>
                     Request a Pick
                   </Button>
                 )}
