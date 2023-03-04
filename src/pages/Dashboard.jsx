@@ -10,14 +10,17 @@ import AdminSettings from "./Settings";
 import OrderConvoHome from "../orderthread/Index";
 import { getStatuses } from "../services/localStorage";
 import { _to_options } from "../services/helper";
-import { getOpenJobs } from "../services/model";
+import { getJobsInfo, getOpenJobs, getMyJobs } from "../services/model";
 // import AllOrders from "./AllOrders";
 
 function Dashboard({ onLogout, User }) {
   const [view, setView] = useState("openjobs");
   const [OpenJobs, setOpenJobs] = useState([]);
+  const [MyPickedJobs, setMyPickedJobs] = useState([]);
   const [JobSelected, setJobSelected] = useState(null);
   const [Settings, setSettings] = useLocalStorage("designjob_settings", {});
+  const [MyJobs, setMyJobs] = useLocalStorage("myJobs", []);
+  const [MyRequests, setMyRequests] = useLocalStorage("myRequests", []);
   const [Statuses, setStatuses] = useState([]);
 
   useEffect(() => {
@@ -32,6 +35,17 @@ function Dashboard({ onLogout, User }) {
       // since we are getting jobs in object format from server
       open_jobs = Object.values(open_jobs);
       setOpenJobs(open_jobs);
+
+      let { data: picked_jobs } = await getMyJobs();
+      // since we are getting jobs in object format from server
+      picked_jobs = Object.values(picked_jobs);
+      setMyPickedJobs(picked_jobs);
+
+      // get user jobs info
+      const { data: jobs_info } = await getJobsInfo();
+      // console.log(jobs_info);
+      setMyRequests(jobs_info.my_requests);
+      setMyJobs(jobs_info.my_jobs);
     };
 
     loadData();
@@ -50,6 +64,19 @@ function Dashboard({ onLogout, User }) {
     handleViewChange("orderconvo");
   };
 
+  const handleMyJobs = (jobs, id) => {
+    // once jobs is picked, removed from open
+    // console.log(id);
+    let open_jobs = [...OpenJobs];
+    open_jobs = open_jobs.filter((j) => j.OrderID !== id);
+    setOpenJobs(open_jobs);
+    setMyJobs(jobs);
+  };
+
+  const handleJobRequest = (jobs) => {
+    setMyRequests(jobs);
+  };
+
   const handleJobBack = () => {
     setJobSelected(null);
     handleViewChange("myjobs");
@@ -58,19 +85,27 @@ function Dashboard({ onLogout, User }) {
   const renderView = () => {
     switch (view) {
       case "openjobs":
-        return <OpenJobsView jobs={OpenJobs} />;
+        return (
+          <OpenJobsView
+            jobs={OpenJobs}
+            MyJobs={MyJobs}
+            MyRequests={MyRequests}
+            onMyJob={handleMyJobs}
+            onMyRequest={handleJobRequest}
+          />
+        );
       case "allpickedjobs":
-        return <AllPickedJobs jobs={data.pickedJobs} Statuses={Statuses} />;
+        return <AllPickedJobs jobs={MyPickedJobs} Statuses={Statuses} />;
       case "myjobs":
         return (
           <MyJobsView
-            jobs={data.pickedJobs}
+            jobs={MyPickedJobs}
             Statuses={Statuses}
             onJobUpdate={handleJobUpdate}
           />
         );
       case "allorders":
-        return <OpenJobs />;
+        return null;
       case "orderconvo":
         return (
           <OrderConvoHome
@@ -86,7 +121,7 @@ function Dashboard({ onLogout, User }) {
           />
         );
       default:
-        return <OpenJobsView />;
+        return null;
     }
   };
 

@@ -102,5 +102,5 @@
     { "value": "cancelled", "label": "Cancelled" },
     { "value": "send", "label": "Send" }
   ],
-  "settings": { "automatic_mode": false }
+  "settings": { "automatic_mode": true }
 }

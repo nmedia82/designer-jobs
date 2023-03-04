@@ -6,13 +6,13 @@ import { getUserRole } from "../services/auth";
 import { requestJob } from "../services/model";
 
 const UserRole = getUserRole();
-const OpenJobsView = ({ jobs }) => {
+const OpenJobsView = ({ jobs, MyJobs, MyRequests, onMyJob, onMyRequest }) => {
   const [openJobs, setOpenJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
-    console.log(jobs);
+    // remove jobs which are picked by me
     setOpenJobs(jobs);
   }, [jobs]);
 
@@ -20,8 +20,17 @@ const OpenJobsView = ({ jobs }) => {
     // Do something with the order ID
     const { data } = await requestJob(id);
     const { success, data: response } = data;
+    // return console.log(response);
+    // if (response.myjobs) onMyJob(response.myjobs, id);
+    // if (response.job_requests) onMyRequest(response.job_requests);
     toast.success(response.message);
     if (response.reload) return window.location.reload();
+  };
+
+  const canRequest = (order_id) => {
+    // console.log(MyRequests, order_id);
+    if (MyRequests.includes(order_id)) return true;
+    return false;
   };
 
   const handleSeeRequests = (job) => {
@@ -64,7 +73,10 @@ const OpenJobsView = ({ jobs }) => {
               </td>
               <td>
                 {UserRole === "designer" && (
-                  <Button onClick={() => handleRequestPick(job.orderID)}>
+                  <Button
+                    onClick={() => handleRequestPick(job.orderID)}
+                    disabled={canRequest(job.orderID)}
+                  >
                     Request a Pick
                   </Button>
                 )}

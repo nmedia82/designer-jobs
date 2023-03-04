@@ -1,5 +1,7 @@
+import { ReadMore } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
+import ReadMoreText from "../common/ReadMore";
 
 const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
   const [MyJobs, setMyJobs] = useState([]);
@@ -75,21 +77,32 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
       <Table striped bordered hover>
         <thead>
           <tr>
+            <th>Job ID</th>
             <th>Order ID</th>
-            <th>Product ID</th>
+            <th>Order Date</th>
+            <th>Product Name</th>
             <th>Job Price</th>
-            <th>Job Status</th>
+            <th>Client Comments</th>
+            <th>Download File</th>
             <th>Comment & Notify</th>
           </tr>
         </thead>
         <tbody>
           {filteredJobs.map((job) => (
             <tr key={job.jobID}>
+              <td>{job.jobID}</td>
               <td>{job.orderID}</td>
-              <td>{job.productID}</td>
+              <td>{job.orderDate}</td>
+              <td>{job.itemName}</td>
               <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
-              <td>{job.designerEmail}</td>
-              <td>{job.jobStatus}</td>
+              <td>
+                <ReadMoreText text={job.clientComment} maxLength={20} />
+              </td>
+              <td>
+                <a href={job.fileDownlload} target="_blank" rel="noreferrer">
+                  <img src={job.fileThumb} alt={job.itemName} />
+                </a>
+              </td>
               <td>
                 <Button
                   variant="success"
