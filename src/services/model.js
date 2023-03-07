@@ -41,6 +41,12 @@ export function getMyJobs() {
   return httpService.get(url);
 }
 
+export function getCompletedJobs() {
+  const user_id = getUserID();
+  const url = `${endpoint}/get-completed-jobs?user_id=${user_id}`;
+  return httpService.get(url);
+}
+
 export function getJobsInfo() {
   const user_id = getUserID();
   const url = `${endpoint}/get-jobs-info?user_id=${user_id}`;

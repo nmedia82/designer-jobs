@@ -9,14 +9,16 @@ import { addMessage, resetUnread } from "./../services/model";
 import pluginData from "./../services/OrderConvoData";
 import { get_setting } from "./../services/helper";
 import { get_orderconvo_api_url } from "../services/helper";
-const { order_id, context } = pluginData;
+const { context } = pluginData;
 const api_url = get_orderconvo_api_url();
 
-export default function WooConvoThread({ Order, onBack }) {
+export default function WooConvoThread({ Order, onBack, onOrderStatusUpdate }) {
   const [Thread, setThread] = useState([]);
   const [showMore, setshowMore] = useState(true);
   const [isWorking, setIsWorking] = useState(false);
   const [FilterThread, setFilterThread] = useState([]);
+
+  const { order_id } = Order;
 
   useEffect(() => {
     const thread = [...Order.thread];
@@ -47,6 +49,7 @@ export default function WooConvoThread({ Order, onBack }) {
       );
       const { success, data: order } = response;
       const { thread } = order;
+      onOrderStatusUpdate(order_id);
       setIsWorking(false);
       if (success) {
         setThread(thread);

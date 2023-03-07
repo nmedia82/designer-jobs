@@ -5,18 +5,25 @@ import OpenJobsView from "./OpenJobs";
 import AllPickedJobs from "./AllPickedJobs";
 import data from "./../services/data.json";
 import MyJobsView from "./MyJobs";
+import CompletedJobsView from "./CompletedJobs";
 import { getUserRole } from "../services/auth";
 import AdminSettings from "./Settings";
 import OrderConvoHome from "../orderthread/Index";
 import { getStatuses } from "../services/localStorage";
 import { _to_options } from "../services/helper";
-import { getJobsInfo, getOpenJobs, getMyJobs } from "../services/model";
+import {
+  getJobsInfo,
+  getOpenJobs,
+  getMyJobs,
+  getCompletedJobs,
+} from "../services/model";
 // import AllOrders from "./AllOrders";
 
 function Dashboard({ onLogout, User }) {
   const [view, setView] = useState("openjobs");
   const [OpenJobs, setOpenJobs] = useState([]);
   const [MyPickedJobs, setMyPickedJobs] = useState([]);
+  const [CompletedJobs, setCompletedJobs] = useState([]);
   const [JobSelected, setJobSelected] = useState(null);
   const [Settings, setSettings] = useLocalStorage("designjob_settings", {});
   const [MyJobs, setMyJobs] = useLocalStorage("myJobs", []);
@@ -40,6 +47,11 @@ function Dashboard({ onLogout, User }) {
       // since we are getting jobs in object format from server
       picked_jobs = Object.values(picked_jobs);
       setMyPickedJobs(picked_jobs);
+
+      let { data: completed_jobs } = await getCompletedJobs();
+      // since we are getting jobs in object format from server
+      completed_jobs = Object.values(completed_jobs);
+      setCompletedJobs(completed_jobs);
 
       // get user jobs info
       const { data: jobs_info } = await getJobsInfo();
@@ -82,6 +94,16 @@ function Dashboard({ onLogout, User }) {
     handleViewChange("myjobs");
   };
 
+  const handleOrderStatusUpdate = (order_id) => {
+    const my_jobs = [...MyPickedJobs];
+    const found = my_jobs.find((job) => job.orderID === Number(order_id));
+    // console.log(MyPickedJobs, order_id, found);
+    const index = my_jobs.indexOf(found);
+    found["jobStatus"] = "wc-send";
+    my_jobs[index] = { ...found };
+    setMyPickedJobs(my_jobs);
+  };
+
   const renderView = () => {
     switch (view) {
       case "openjobs":
@@ -104,6 +126,14 @@ function Dashboard({ onLogout, User }) {
             onJobUpdate={handleJobUpdate}
           />
         );
+      case "completedjobs":
+        return (
+          <CompletedJobsView
+            jobs={CompletedJobs}
+            Statuses={Statuses}
+            onJobUpdate={handleJobUpdate}
+          />
+        );
       case "allorders":
         return null;
       case "orderconvo":
@@ -111,6 +141,7 @@ function Dashboard({ onLogout, User }) {
           <OrderConvoHome
             OrderID={JobSelected}
             onBack={() => handleJobBack(null)}
+            onOrderStatusUpdate={handleOrderStatusUpdate}
           />
         );
       case "settings":

@@ -7,9 +7,9 @@ import WooConvoThread from "./OrderThread";
 import useLocalStorage from "./../services/useLocalStorage";
 import { getOrderById } from "./../services/model";
 
-const { settings, order_id } = pluginData;
+const { settings } = pluginData;
 
-function OrderConvoHome({ onBack }) {
+function OrderConvoHome({ OrderID, onBack, onOrderStatusUpdate }) {
   const [pluginSettings, setPluginSettings] = useLocalStorage(
     "orderconvo_settings",
     {}
@@ -21,7 +21,7 @@ function OrderConvoHome({ onBack }) {
   useEffect(() => {
     const loadData = async () => {
       setIsWorking(true);
-      let { data: order } = await getOrderById(order_id);
+      let { data: order } = await getOrderById(OrderID);
       order = order.data;
       console.log(order);
       setOrder(order);
@@ -33,7 +33,13 @@ function OrderConvoHome({ onBack }) {
 
   return (
     <Box sx={{ flexGrow: 1 }} className="wooconvo-admin-wrapper">
-      {Order && <WooConvoThread Order={Order} onBack={onBack} />}
+      {Order && (
+        <WooConvoThread
+          Order={Order}
+          onBack={onBack}
+          onOrderStatusUpdate={onOrderStatusUpdate}
+        />
+      )}
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isWorking}

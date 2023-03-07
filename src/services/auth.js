@@ -11,8 +11,15 @@ export async function login(user_info) {
   // console.log(user.success);
   const { success, data: response } = data;
   if (success) {
+    const allowed = ["wc-in-progress", "wc-revise", "wc-send"];
+    let statuses = Object.fromEntries(
+      Object.entries(response.statuses).filter(([key, value]) =>
+        allowed.includes(key)
+      )
+    );
+    statuses = { "": "Select", ...statuses };
     localStorage.setItem("user", JSON.stringify(response.user));
-    localStorage.setItem("wc_statuses", JSON.stringify(response.statuses));
+    localStorage.setItem("wc_statuses", JSON.stringify(statuses));
 
     return;
   }

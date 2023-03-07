@@ -3,20 +3,20 @@ import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
 
-const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
-  const [MyJobs, setMyJobs] = useState([]);
+const CompletedJobsView = ({ jobs, Statuses, onJobUpdate }) => {
+  const [CompletedJobs, setCompletedJobs] = useState([]);
   const [selectedJobStatus, setSelectedJobStatus] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
 
   useEffect(() => {
-    setMyJobs(jobs);
+    setCompletedJobs(jobs);
   }, [jobs]);
 
   const handleJobStatusChange = (e) => {
     const status = e.target.value;
     setSelectedJobStatus(status);
-    if (!status) return setFilteredJobs(MyJobs);
+    if (!status) return setFilteredJobs(CompletedJobs);
     const filteredJobs = jobs.filter((job) => job.jobStatus === status);
     setFilteredJobs(filteredJobs);
   };
@@ -24,7 +24,7 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
   const handlejobIDFilter = (e) => {
     const jobid = e.target.value;
     setSelectedJobID(jobid);
-    const all_jobs = [...MyJobs];
+    const all_jobs = [...CompletedJobs];
     if (!jobid) return setFilteredJobs(all_jobs);
     const filteredJobs = all_jobs.filter((job) =>
       matchSearch(job.orderID, jobid)
@@ -124,4 +124,4 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
   );
 };
 
-export default MyJobsView;
+export default CompletedJobsView;
