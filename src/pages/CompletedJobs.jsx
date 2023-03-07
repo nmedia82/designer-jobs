@@ -2,12 +2,16 @@ import { ReadMore } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
+import { getJobByDate } from "../services/model";
 
-const CompletedJobsView = ({ jobs, Statuses, onJobUpdate }) => {
+const CompletedJobsView = ({ jobs, Statuses, DesignerUsers }) => {
   const [CompletedJobs, setCompletedJobs] = useState([]);
   const [selectedJobStatus, setSelectedJobStatus] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
+  const [DateAfter, setDateAfter] = useState("");
+  const [DateBefore, setDateBefore] = useState("");
+  const [IsFilter, setIsFilter] = useState(false);
 
   useEffect(() => {
     setCompletedJobs(jobs);
@@ -42,6 +46,23 @@ const CompletedJobsView = ({ jobs, Statuses, onJobUpdate }) => {
     return statusObject ? statusObject.label : "";
   }
 
+  const handleDateFilter = async () => {
+    if (IsFilter) {
+      setCompletedJobs(jobs);
+      setIsFilter(!IsFilter);
+      return;
+    }
+
+    setIsFilter(true);
+
+    const { data: filtered } = await getJobByDate(
+      "completed",
+      DateAfter,
+      DateBefore
+    );
+    setCompletedJobs(filtered);
+  };
+
   // const updateJob = (job) => {
   //   setSelectedJob(job);
   //   setShowModal(true);
@@ -50,7 +71,31 @@ const CompletedJobsView = ({ jobs, Statuses, onJobUpdate }) => {
   return (
     <div>
       <h3>My Jobs</h3>
-      <div className="d-flex mb-3">
+      <div className="d-flex mb-3 justify-content-between">
+        <div className="me-3">
+          <label htmlFor="jobIDFilter" className="me-2">
+            Dates
+          </label>
+          <input
+            id="DateAfter"
+            type="date"
+            value={DateAfter}
+            onChange={(e) => setDateAfter(e.target.value)}
+          />{" "}
+          -
+          <input
+            id="DateBefore"
+            type="date"
+            value={DateBefore}
+            onChange={(e) => setDateBefore(e.target.value)}
+          />
+          <button
+            className="btn btn-info btn-sm m-1"
+            onClick={handleDateFilter}
+          >
+            {IsFilter ? "Reset Filter" : "Filter"}
+          </button>
+        </div>
         <div className="me-3">
           <label htmlFor="jobStatusFilter" className="me-2">
             Job Status:
@@ -60,23 +105,12 @@ const CompletedJobsView = ({ jobs, Statuses, onJobUpdate }) => {
             value={selectedJobStatus}
             onChange={handleJobStatusChange}
           >
-            {Statuses.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
+            {DesignerUsers.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.display_name}
               </option>
             ))}
           </select>
-        </div>
-        <div>
-          <label htmlFor="jobIDFilter" className="me-2">
-            Job ID:
-          </label>
-          <input
-            id="jobIDFilter"
-            type="text"
-            value={selectedJobID}
-            onChange={handlejobIDFilter}
-          />
         </div>
       </div>
       <Table striped bordered hover>
@@ -89,11 +123,11 @@ const CompletedJobsView = ({ jobs, Statuses, onJobUpdate }) => {
             <th>Job Price</th>
             <th>Client Comments</th>
             <th>Download File</th>
-            <th>Comment & Notify</th>
+            <th>Date Completed</th>
           </tr>
         </thead>
         <tbody>
-          {filteredJobs.map((job) => (
+          {CompletedJobs.map((job) => (
             <tr key={job.jobID}>
               <td>{job.jobID}</td>
               <td>{job.orderID}</td>
@@ -108,14 +142,7 @@ const CompletedJobsView = ({ jobs, Statuses, onJobUpdate }) => {
                   <img src={job.fileThumb} alt={job.itemName} />
                 </a>
               </td>
-              <td>
-                <Button
-                  variant="success"
-                  onClick={() => onJobUpdate(job.orderID)}
-                >
-                  Update File
-                </Button>
-              </td>
+              <td>{job.dateCompleted}</td>
             </tr>
           ))}
         </tbody>

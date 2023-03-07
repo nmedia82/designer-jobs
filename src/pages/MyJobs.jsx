@@ -2,12 +2,16 @@ import { ReadMore } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
+import { getJobByDate } from "../services/model";
 
 const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
   const [MyJobs, setMyJobs] = useState([]);
   const [selectedJobStatus, setSelectedJobStatus] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
+  const [DateAfter, setDateAfter] = useState("");
+  const [DateBefore, setDateBefore] = useState("");
+  const [IsFilter, setIsFilter] = useState(false);
 
   useEffect(() => {
     setMyJobs(jobs);
@@ -42,6 +46,19 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
     return statusObject ? statusObject.label : "";
   }
 
+  const handleDateFilter = async () => {
+    if (IsFilter) {
+      setMyJobs(jobs);
+      setIsFilter(!IsFilter);
+      return;
+    }
+
+    setIsFilter(true);
+
+    const jobs = await getJobByDate("progress", DateAfter, DateBefore);
+    setMyJobs(jobs);
+  };
+
   // const updateJob = (job) => {
   //   setSelectedJob(job);
   //   setShowModal(true);
@@ -51,6 +68,30 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
     <div>
       <h3>My Jobs</h3>
       <div className="d-flex mb-3">
+        {/* <div className="me-3">
+          <label htmlFor="jobIDFilter" className="me-2">
+            Dates
+          </label>
+          <input
+            id="DateAfter"
+            type="date"
+            value={DateAfter}
+            onChange={(e) => setDateAfter(e.target.value)}
+          />{" "}
+          -
+          <input
+            id="DateBefore"
+            type="date"
+            value={DateBefore}
+            onChange={(e) => setDateBefore(e.target.value)}
+          />
+          <button
+            className="btn btn-info btn-sm m-1"
+            onClick={handleDateFilter}
+          >
+            {IsFilter ? "Reset Filter" : "Filter"}
+          </button>
+        </div> */}
         <div className="me-3">
           <label htmlFor="jobStatusFilter" className="me-2">
             Job Status:
@@ -67,7 +108,7 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
             ))}
           </select>
         </div>
-        <div>
+        {/* <div>
           <label htmlFor="jobIDFilter" className="me-2">
             Job ID:
           </label>
@@ -77,7 +118,7 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
             value={selectedJobID}
             onChange={handlejobIDFilter}
           />
-        </div>
+        </div> */}
       </div>
       <Table striped bordered hover>
         <thead>

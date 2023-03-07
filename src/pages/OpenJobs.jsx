@@ -3,13 +3,16 @@ import { Table, Button, Modal, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReadMoreText from "../common/ReadMore";
 import { getUserRole } from "../services/auth";
-import { requestJob } from "../services/model";
+import { getJobByDate, requestJob } from "../services/model";
 
 const UserRole = getUserRole();
 const OpenJobsView = ({ jobs, MyJobs, MyRequests, onMyJob, onMyRequest }) => {
   const [openJobs, setOpenJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [DateAfter, setDateAfter] = useState("");
+  const [DateBefore, setDateBefore] = useState("");
+  const [IsFilter, setIsFilter] = useState(false);
 
   useEffect(() => {
     // remove jobs which are picked by me
@@ -38,9 +41,54 @@ const OpenJobsView = ({ jobs, MyJobs, MyRequests, onMyJob, onMyRequest }) => {
     setShowModal(true);
   };
 
+  const handleDateFilter = async () => {
+    if (IsFilter) {
+      setOpenJobs(jobs);
+      setIsFilter(!IsFilter);
+      return;
+    }
+
+    setIsFilter(true);
+
+    const { data: filtered } = await getJobByDate(
+      "open",
+      DateAfter,
+      DateBefore
+    );
+    setOpenJobs(filtered);
+    // console.log(jobs);
+  };
+
   return (
     <div>
       <h2>All Jobs</h2>
+      <div className="d-flex">
+        <div className="me-3">
+          <label htmlFor="jobIDFilter" className="me-2">
+            Dates
+          </label>
+          <input
+            id="DateAfter"
+            type="date"
+            value={DateAfter}
+            onChange={(e) => setDateAfter(e.target.value)}
+          />{" "}
+          -
+          <input
+            id="DateBefore"
+            type="date"
+            value={DateBefore}
+            onChange={(e) => setDateBefore(e.target.value)}
+          />
+          <button
+            className="btn btn-info btn-sm m-1"
+            onClick={handleDateFilter}
+          >
+            {IsFilter ? "Reset Filter" : "Filter"}
+          </button>
+        </div>
+      </div>
+      <p>Total Jobs: {openJobs.length}</p>
       <Table striped bordered hover>
         <thead>
           <tr>

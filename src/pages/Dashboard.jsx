@@ -16,6 +16,7 @@ import {
   getOpenJobs,
   getMyJobs,
   getCompletedJobs,
+  getDesignerUsers,
 } from "../services/model";
 // import AllOrders from "./AllOrders";
 
@@ -29,6 +30,7 @@ function Dashboard({ onLogout, User }) {
   const [MyJobs, setMyJobs] = useLocalStorage("myJobs", []);
   const [MyRequests, setMyRequests] = useLocalStorage("myRequests", []);
   const [Statuses, setStatuses] = useState([]);
+  const [DesignerUsers, setDesignerUsers] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -58,6 +60,9 @@ function Dashboard({ onLogout, User }) {
       // console.log(jobs_info);
       setMyRequests(jobs_info.my_requests);
       setMyJobs(jobs_info.my_jobs);
+
+      const { data: designers } = await getDesignerUsers();
+      setDesignerUsers(designers);
     };
 
     loadData();
@@ -131,7 +136,7 @@ function Dashboard({ onLogout, User }) {
           <CompletedJobsView
             jobs={CompletedJobs}
             Statuses={Statuses}
-            onJobUpdate={handleJobUpdate}
+            DesignerUsers={DesignerUsers}
           />
         );
       case "allorders":
@@ -169,33 +174,27 @@ function Dashboard({ onLogout, User }) {
               <Nav.Link onClick={() => handleViewChange("openjobs")}>
                 Open Jobs
               </Nav.Link>
-              {UserRole === "admin" && (
-                <>
-                  <Nav.Link onClick={() => handleViewChange("allpickedjobs")}>
-                    Picked Jobs
-                  </Nav.Link>
-                  <Nav.Link onClick={() => handleViewChange("allorders")}>
-                    Back to Orders
-                  </Nav.Link>
-                </>
-              )}
-              {UserRole === "designer" && (
-                <Nav.Link onClick={() => handleViewChange("myjobs")}>
-                  My Jobs
-                </Nav.Link>
-              )}
+              <Nav.Link onClick={() => handleViewChange("myjobs")}>
+                {UserRole === "admin" ? "In Progress" : "My Jobs"}
+              </Nav.Link>
+              <Nav.Link onClick={() => handleViewChange("completedjobs")}>
+                Completed Jobs
+              </Nav.Link>
             </Nav>
+
             <Nav>
               <NavDropdown
                 title={`Hi, ${User.data.display_name}`}
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item
-                  href="#"
-                  onClick={() => handleViewChange("settings")}
-                >
-                  Settings
-                </NavDropdown.Item>
+                {UserRole === "admin" && (
+                  <NavDropdown.Item
+                    href="#"
+                    onClick={() => handleViewChange("settings")}
+                  >
+                    Settings
+                  </NavDropdown.Item>
+                )}
                 <NavDropdown.Item href="#" onClick={onLogout}>
                   Logout
                 </NavDropdown.Item>

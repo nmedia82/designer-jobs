@@ -47,6 +47,18 @@ export function getCompletedJobs() {
   return httpService.get(url);
 }
 
+export function getJobByDate(context, after, before) {
+  const user_id = getUserID();
+  const url = `${endpoint}/get-jobs-dates?user_id=${user_id}&after=${after}&before=${before}&context=${context}`;
+  return httpService.get(url);
+}
+
+export function getDesignerUsers() {
+  const user_id = getUserID();
+  const url = `${endpoint}/get-designers`;
+  return httpService.get(url);
+}
+
 export function getJobsInfo() {
   const user_id = getUserID();
   const url = `${endpoint}/get-jobs-info?user_id=${user_id}`;
