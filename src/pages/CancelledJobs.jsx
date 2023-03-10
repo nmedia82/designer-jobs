@@ -4,9 +4,9 @@ import { Button, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
 import { getJobByDate } from "../services/model";
 
-const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
-  const [MyJobs, setMyJobs] = useState([]);
-  const [selectedJobStatus, setSelectedJobStatus] = useState("");
+const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
+  const [CancelledJobs, setCancelledJobs] = useState([]);
+  const [selectedDesigner, setSelectedDesigner] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
   const [DateAfter, setDateAfter] = useState("");
@@ -14,21 +14,25 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
   const [IsFilter, setIsFilter] = useState(false);
 
   useEffect(() => {
-    setMyJobs(jobs);
+    setCancelledJobs(jobs);
+    setFilteredJobs(jobs);
   }, [jobs]);
 
-  const handleJobStatusChange = (e) => {
-    const status = e.target.value;
-    setSelectedJobStatus(status);
-    if (!status) return setFilteredJobs(MyJobs);
-    const filteredJobs = jobs.filter((job) => job.jobStatus === status);
+  const handleDesignerChangeFilter = (e) => {
+    const designer_id = Number(e.target.value);
+    // console.log(jobs, designer_id);
+    setSelectedDesigner(designer_id);
+    if (!designer_id) return setCancelledJobs(CancelledJobs);
+    const filteredJobs = jobs.filter(
+      (job) => job.jobDesigner.ID === designer_id
+    );
     setFilteredJobs(filteredJobs);
   };
 
   const handlejobIDFilter = (e) => {
     const jobid = e.target.value;
     setSelectedJobID(jobid);
-    const all_jobs = [...MyJobs];
+    const all_jobs = [...CancelledJobs];
     if (!jobid) return setFilteredJobs(all_jobs);
     const filteredJobs = all_jobs.filter((job) =>
       matchSearch(job.orderID, jobid)
@@ -41,22 +45,22 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
     return regex.test(testwith);
   };
 
-  function getStatusLabel(key) {
-    const statusObject = Statuses.find((status) => status.value === key);
-    return statusObject ? statusObject.label : "";
-  }
-
   const handleDateFilter = async () => {
     if (IsFilter) {
-      setMyJobs(jobs);
+      const jobs = [...CancelledJobs];
+      setFilteredJobs(jobs);
       setIsFilter(!IsFilter);
       return;
     }
 
     setIsFilter(true);
 
-    const jobs = await getJobByDate("progress", DateAfter, DateBefore);
-    setMyJobs(jobs);
+    const { data: filtered } = await getJobByDate(
+      "Cancelled",
+      DateAfter,
+      DateBefore
+    );
+    setFilteredJobs(filtered);
   };
 
   // const updateJob = (job) => {
@@ -66,9 +70,9 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
 
   return (
     <div>
-      <h3>My Jobs</h3>
-      <div className="d-flex mb-3">
-        {/* <div className="me-3">
+      <h3>Cancelled Jobs</h3>
+      <div className="d-flex mb-3 justify-content-between">
+        <div className="me-3">
           <label htmlFor="jobIDFilter" className="me-2">
             Dates
           </label>
@@ -91,24 +95,8 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
           >
             {IsFilter ? "Reset Filter" : "Filter"}
           </button>
-        </div> */}
-        <div className="me-3">
-          <label htmlFor="jobStatusFilter" className="me-2">
-            Job Status:
-          </label>
-          <select
-            id="jobStatusFilter"
-            value={selectedJobStatus}
-            onChange={handleJobStatusChange}
-          >
-            {Statuses.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
         </div>
-        {/* <div>
+        <div>
           <label htmlFor="jobIDFilter" className="me-2">
             Job ID:
           </label>
@@ -118,19 +106,38 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
             value={selectedJobID}
             onChange={handlejobIDFilter}
           />
-        </div> */}
+        </div>
+        {UserRole === "admin" && (
+          <div className="me-3">
+            <label htmlFor="designerFilter" className="me-2">
+              Designers:
+            </label>
+            <select
+              id="designerFilter"
+              value={selectedDesigner}
+              onChange={handleDesignerChangeFilter}
+            >
+              {DesignerUsers.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.display_name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
+      <p>Total Jobs: {filteredJobs.length}</p>
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>Job ID</th>
             <th>Order ID</th>
             <th>Order Date</th>
-            <th>Jobs Status</th>
             <th>Job Price</th>
             <th>Client Comments</th>
             <th>Download File</th>
-            <th>Comment & Notify</th>
+            <th>Date Cancelled</th>
+            {UserRole === "admin" && <th>Designer Name</th>}
           </tr>
         </thead>
         <tbody>
@@ -139,7 +146,6 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
               <td>{job.jobID}</td>
               <td>{job.orderID}</td>
               <td>{job.orderDate}</td>
-              <td>{getStatusLabel(job.jobStatus)}</td>
               <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
               <td>
                 <ReadMoreText text={job.clientComment} maxLength={20} />
@@ -149,14 +155,10 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
                   <img src={job.fileThumb} alt={job.itemName} />
                 </a>
               </td>
-              <td>
-                <Button
-                  variant="success"
-                  onClick={() => onJobUpdate(job.orderID)}
-                >
-                  Update File
-                </Button>
-              </td>
+              <td>{job.dateCancelled}</td>
+              {UserRole === "admin" && (
+                <td>{job.jobDesigner.data.display_name}</td>
+              )}
             </tr>
           ))}
         </tbody>
@@ -165,4 +167,4 @@ const MyJobsView = ({ jobs, Statuses, onJobUpdate }) => {
   );
 };
 
-export default MyJobsView;
+export default CancelledJobsView;

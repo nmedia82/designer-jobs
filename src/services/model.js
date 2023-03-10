@@ -35,15 +35,21 @@ export function getOpenJobs() {
   return httpService.get(url);
 }
 
-export function getMyJobs() {
+export function getInProgressJobs() {
   const user_id = getUserID();
-  const url = `${endpoint}/get-my-jobs?user_id=${user_id}`;
+  const url = `${endpoint}/get-in-progress-jobs?user_id=${user_id}`;
   return httpService.get(url);
 }
 
 export function getCompletedJobs() {
   const user_id = getUserID();
   const url = `${endpoint}/get-completed-jobs?user_id=${user_id}`;
+  return httpService.get(url);
+}
+
+export function getCancelledJobs() {
+  const user_id = getUserID();
+  const url = `${endpoint}/get-cancelled-jobs?user_id=${user_id}`;
   return httpService.get(url);
 }
 
@@ -65,9 +71,9 @@ export function getJobsInfo() {
   return httpService.get(url);
 }
 
-export function requestJob(order_id) {
+export function requestJob(order_id, user_id) {
   const request_type = get_setting("automatic_mode") ? "direct" : "wait";
-  const data = { user_id: getUserID(), order_id, request_type };
+  const data = { user_id, order_id, request_type };
   const url = `${endpoint}/request-job`;
   return httpService.post(url, data);
 }

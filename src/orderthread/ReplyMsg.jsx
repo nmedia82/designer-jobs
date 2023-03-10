@@ -94,9 +94,7 @@ export default function ReplyMsg({ onReplySend }) {
         component="form"
         sx={{ p: "2px 4px", display: "flex", bgcolor: common }}
       >
-        {get_setting("enable_file_attachments") && (
-          <Attachments onFileSelected={handleFileSelected} />
-        )}
+        <Attachments onFileSelected={handleFileSelected} />
 
         <TextField
           value={ReplyText}

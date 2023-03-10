@@ -1,12 +1,17 @@
-import { ReadMore } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
 import { getJobByDate } from "../services/model";
 
-const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
-  const [CompletedJobs, setCompletedJobs] = useState([]);
-  const [selectedDesigner, setSelectedDesigner] = useState("");
+const InProgressJobsView = ({
+  jobs,
+  Statuses,
+  onJobUpdate,
+  UserRole,
+  UserID,
+}) => {
+  const [MyJobs, setMyJobs] = useState([]);
+  const [selectedJobStatus, setSelectedJobStatus] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
   const [DateAfter, setDateAfter] = useState("");
@@ -14,25 +19,21 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
   const [IsFilter, setIsFilter] = useState(false);
 
   useEffect(() => {
-    setCompletedJobs(jobs);
-    setFilteredJobs(jobs);
+    setMyJobs(jobs);
   }, [jobs]);
 
-  const handleDesignerChangeFilter = (e) => {
-    const designer_id = Number(e.target.value);
-    // console.log(jobs, designer_id);
-    setSelectedDesigner(designer_id);
-    if (!designer_id) return setCompletedJobs(CompletedJobs);
-    const filteredJobs = jobs.filter(
-      (job) => job.jobDesigner.ID === designer_id
-    );
+  const handleJobStatusChange = (e) => {
+    const status = e.target.value;
+    setSelectedJobStatus(status);
+    if (!status) return setFilteredJobs(MyJobs);
+    const filteredJobs = jobs.filter((job) => job.jobStatus === status);
     setFilteredJobs(filteredJobs);
   };
 
   const handlejobIDFilter = (e) => {
     const jobid = e.target.value;
     setSelectedJobID(jobid);
-    const all_jobs = [...CompletedJobs];
+    const all_jobs = [...MyJobs];
     if (!jobid) return setFilteredJobs(all_jobs);
     const filteredJobs = all_jobs.filter((job) =>
       matchSearch(job.orderID, jobid)
@@ -45,22 +46,37 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
     return regex.test(testwith);
   };
 
+  function getStatusLabel(key) {
+    const statusObject = Statuses.find((status) => status.value === key);
+    return statusObject ? statusObject.label : "";
+  }
+
   const handleDateFilter = async () => {
     if (IsFilter) {
-      const jobs = [...CompletedJobs];
-      setFilteredJobs(jobs);
+      setFilteredJobs(MyJobs);
       setIsFilter(!IsFilter);
       return;
     }
 
     setIsFilter(true);
 
-    const { data: filtered } = await getJobByDate(
-      "completed",
+    const { data: jobs } = await getJobByDate(
+      "progress",
       DateAfter,
       DateBefore
     );
-    setFilteredJobs(filtered);
+    // setMyJobs(jobs);
+    setFilteredJobs(jobs);
+  };
+
+  const getPageTitle = () => {
+    if (UserRole === "admin") return "In Progess";
+    return "My Jobs";
+  };
+
+  const getButtonTitle = () => {
+    if (UserRole === "admin") return "Comment";
+    return "Update File";
   };
 
   // const updateJob = (job) => {
@@ -70,7 +86,7 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
 
   return (
     <div>
-      <h3>Completed Jobs</h3>
+      <h3>{getPageTitle()}</h3>
       <div className="d-flex mb-3 justify-content-between">
         <div className="me-3">
           <label htmlFor="jobIDFilter" className="me-2">
@@ -96,6 +112,22 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
             {IsFilter ? "Reset Filter" : "Filter"}
           </button>
         </div>
+        <div className="me-3">
+          <label htmlFor="jobStatusFilter" className="me-2">
+            Status:
+          </label>
+          <select
+            id="jobStatusFilter"
+            value={selectedJobStatus}
+            onChange={handleJobStatusChange}
+          >
+            {Statuses.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
         <div>
           <label htmlFor="jobIDFilter" className="me-2">
             Job ID:
@@ -107,24 +139,6 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
             onChange={handlejobIDFilter}
           />
         </div>
-        {UserRole === "admin" && (
-          <div className="me-3">
-            <label htmlFor="designerFilter" className="me-2">
-              Designers:
-            </label>
-            <select
-              id="designerFilter"
-              value={selectedDesigner}
-              onChange={handleDesignerChangeFilter}
-            >
-              {DesignerUsers.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.display_name}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
       </div>
       <p>Total Jobs: {filteredJobs.length}</p>
       <Table striped bordered hover>
@@ -133,10 +147,11 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
             <th>Job ID</th>
             <th>Order ID</th>
             <th>Order Date</th>
+            <th>Jobs Status</th>
             <th>Job Price</th>
             <th>Client Comments</th>
             <th>Download File</th>
-            <th>Date Completed</th>
+            <th>Comment & Notify</th>
             {UserRole === "admin" && <th>Designer Name</th>}
           </tr>
         </thead>
@@ -146,6 +161,7 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
               <td>{job.jobID}</td>
               <td>{job.orderID}</td>
               <td>{job.orderDate}</td>
+              <td>{getStatusLabel(job.jobStatus)}</td>
               <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
               <td>
                 <ReadMoreText text={job.clientComment} maxLength={20} />
@@ -155,7 +171,14 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
                   <img src={job.fileThumb} alt={job.itemName} />
                 </a>
               </td>
-              <td>{job.dateCompleted}</td>
+              <td>
+                <Button
+                  variant="success"
+                  onClick={() => onJobUpdate(job.orderID)}
+                >
+                  {getButtonTitle()}
+                </Button>
+              </td>
               {UserRole === "admin" && (
                 <td>{job.jobDesigner.data.display_name}</td>
               )}
@@ -167,4 +190,4 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
   );
 };
 
-export default CompletedJobsView;
+export default InProgressJobsView;

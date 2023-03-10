@@ -4,9 +4,9 @@ import useLocalStorage from "./../services/useLocalStorage";
 import OpenJobsView from "./OpenJobs";
 import AllPickedJobs from "./AllPickedJobs";
 import data from "./../services/data.json";
-import MyJobsView from "./MyJobs";
+import InProgressJobsView from "./InProgressJobs";
 import CompletedJobsView from "./CompletedJobs";
-import { getUserRole } from "../services/auth";
+import { getUserID, getUserRole } from "../services/auth";
 import AdminSettings from "./Settings";
 import OrderConvoHome from "../orderthread/Index";
 import { getStatuses } from "../services/localStorage";
@@ -14,17 +14,23 @@ import { _to_options } from "../services/helper";
 import {
   getJobsInfo,
   getOpenJobs,
-  getMyJobs,
   getCompletedJobs,
   getDesignerUsers,
+  getCancelledJobs,
+  getInProgressJobs,
 } from "../services/model";
+import CancelledJobsView from "./CancelledJobs";
 // import AllOrders from "./AllOrders";
+
+const UserRole = getUserRole();
+const UserID = getUserID();
 
 function Dashboard({ onLogout, User }) {
   const [view, setView] = useState("openjobs");
   const [OpenJobs, setOpenJobs] = useState([]);
-  const [MyPickedJobs, setMyPickedJobs] = useState([]);
+  const [InProgressJobs, setInProgressJobs] = useState([]);
   const [CompletedJobs, setCompletedJobs] = useState([]);
+  const [CancelledJobs, setCancelledJobs] = useState([]);
   const [JobSelected, setJobSelected] = useState(null);
   const [Settings, setSettings] = useLocalStorage("designjob_settings", {});
   const [MyJobs, setMyJobs] = useLocalStorage("myJobs", []);
@@ -45,15 +51,20 @@ function Dashboard({ onLogout, User }) {
       open_jobs = Object.values(open_jobs);
       setOpenJobs(open_jobs);
 
-      let { data: picked_jobs } = await getMyJobs();
+      let { data: inprogress_jobs } = await getInProgressJobs();
       // since we are getting jobs in object format from server
-      picked_jobs = Object.values(picked_jobs);
-      setMyPickedJobs(picked_jobs);
+      inprogress_jobs = Object.values(inprogress_jobs);
+      setInProgressJobs(inprogress_jobs);
 
       let { data: completed_jobs } = await getCompletedJobs();
       // since we are getting jobs in object format from server
       completed_jobs = Object.values(completed_jobs);
       setCompletedJobs(completed_jobs);
+
+      let { data: cancelled_jobs } = await getCancelledJobs();
+      // since we are getting jobs in object format from server
+      cancelled_jobs = Object.values(cancelled_jobs);
+      setCancelledJobs(cancelled_jobs);
 
       // get user jobs info
       const { data: jobs_info } = await getJobsInfo();
@@ -100,13 +111,13 @@ function Dashboard({ onLogout, User }) {
   };
 
   const handleOrderStatusUpdate = (order_id) => {
-    const my_jobs = [...MyPickedJobs];
+    const my_jobs = [...InProgressJobs];
     const found = my_jobs.find((job) => job.orderID === Number(order_id));
-    // console.log(MyPickedJobs, order_id, found);
+    // console.log(InProgressJobs, order_id, found);
     const index = my_jobs.indexOf(found);
     found["jobStatus"] = "wc-send";
     my_jobs[index] = { ...found };
-    setMyPickedJobs(my_jobs);
+    setInProgressJobs(my_jobs);
   };
 
   const renderView = () => {
@@ -115,28 +126,37 @@ function Dashboard({ onLogout, User }) {
         return (
           <OpenJobsView
             jobs={OpenJobs}
-            MyJobs={MyJobs}
             MyRequests={MyRequests}
-            onMyJob={handleMyJobs}
-            onMyRequest={handleJobRequest}
+            UserRole={UserRole}
+            UserID={UserID}
           />
         );
       case "allpickedjobs":
-        return <AllPickedJobs jobs={MyPickedJobs} Statuses={Statuses} />;
+        return <AllPickedJobs jobs={InProgressJobs} Statuses={Statuses} />;
       case "myjobs":
         return (
-          <MyJobsView
-            jobs={MyPickedJobs}
+          <InProgressJobsView
+            jobs={InProgressJobs}
             Statuses={Statuses}
             onJobUpdate={handleJobUpdate}
+            UserRole={UserRole}
+            UserID={UserID}
           />
         );
       case "completedjobs":
         return (
           <CompletedJobsView
             jobs={CompletedJobs}
-            Statuses={Statuses}
             DesignerUsers={DesignerUsers}
+            UserRole={UserRole}
+          />
+        );
+      case "cancelledjobs":
+        return (
+          <CancelledJobsView
+            jobs={CancelledJobs}
+            DesignerUsers={DesignerUsers}
+            UserRole={UserRole}
           />
         );
       case "allorders":
@@ -161,8 +181,6 @@ function Dashboard({ onLogout, User }) {
     }
   };
 
-  const UserRole = getUserRole();
-
   return (
     <Container>
       <Navbar bg="dark" variant="dark" expand="lg">
@@ -180,6 +198,17 @@ function Dashboard({ onLogout, User }) {
               <Nav.Link onClick={() => handleViewChange("completedjobs")}>
                 Completed Jobs
               </Nav.Link>
+              <Nav.Link onClick={() => handleViewChange("cancelledjobs")}>
+                Cancelled Jobs
+              </Nav.Link>
+              {UserRole === "admin" && (
+                <Nav.Link
+                  target="__blank"
+                  href="https://wooconvo.najeebmedia.com/wp-admin/edit.php?post_type=shop_order"
+                >
+                  All Jobs
+                </Nav.Link>
+              )}
             </Nav>
 
             <Nav>

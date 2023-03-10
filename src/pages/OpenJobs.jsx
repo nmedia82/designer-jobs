@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReadMoreText from "../common/ReadMore";
-import { getUserRole } from "../services/auth";
 import { getJobByDate, requestJob } from "../services/model";
 
-const UserRole = getUserRole();
-const OpenJobsView = ({ jobs, MyJobs, MyRequests, onMyJob, onMyRequest }) => {
+const OpenJobsView = ({ jobs, MyRequests, UserRole, UserID }) => {
   const [openJobs, setOpenJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
@@ -19,13 +17,18 @@ const OpenJobsView = ({ jobs, MyJobs, MyRequests, onMyJob, onMyRequest }) => {
     setOpenJobs(jobs);
   }, [jobs]);
 
-  const handleRequestPick = async (id) => {
+  const handleRequestPick = async (job_id) => {
     // Do something with the order ID
-    const { data } = await requestJob(id);
-    const { success, data: response } = data;
-    // return console.log(response);
-    // if (response.myjobs) onMyJob(response.myjobs, id);
-    // if (response.job_requests) onMyRequest(response.job_requests);
+    const { data } = await requestJob(job_id, UserID);
+    const { data: response } = data;
+    toast.success(response.message);
+    if (response.reload) return window.location.reload();
+  };
+
+  const handleUserPickedByAdmin = async (job_id, designer_id) => {
+    // Do something with the order ID
+    const { data } = await requestJob(job_id, designer_id);
+    const { data: response } = data;
     toast.success(response.message);
     if (response.reload) return window.location.reload();
   };
@@ -37,6 +40,7 @@ const OpenJobsView = ({ jobs, MyJobs, MyRequests, onMyJob, onMyRequest }) => {
   };
 
   const handleSeeRequests = (job) => {
+    console.log(job);
     setSelectedJob(job);
     setShowModal(true);
   };
@@ -47,9 +51,7 @@ const OpenJobsView = ({ jobs, MyJobs, MyRequests, onMyJob, onMyRequest }) => {
       setIsFilter(!IsFilter);
       return;
     }
-
     setIsFilter(true);
-
     const { data: filtered } = await getJobByDate(
       "open",
       DateAfter,
@@ -144,18 +146,18 @@ const OpenJobsView = ({ jobs, MyJobs, MyRequests, onMyJob, onMyRequest }) => {
       {selectedJob && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>Job #{selectedJob.id}</Modal.Title>
+            <Modal.Title>Job# {selectedJob.orderID}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Container>
-              <p className="d-flex">
+              {/* <p className="d-flex">
                 <input
                   type="text"
                   className="form-control m-1"
                   placeholder="Pick your self: email"
                 />
                 <Button className="btn-sm">Select</Button>
-              </p>
+              </p> */}
               <table className="table table-striped">
                 <thead>
                   <tr>
@@ -165,12 +167,22 @@ const OpenJobsView = ({ jobs, MyJobs, MyRequests, onMyJob, onMyRequest }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {selectedJob.pickekRequests.map((user) => (
+                  {selectedJob.pickedRequests.map((user) => (
                     <tr key={user.id}>
-                      <td>{user.user_name}</td>
-                      <td>{user.email}</td>
+                      <td>{user.data.user_login}</td>
+                      <td>{user.data.user_email}</td>
                       <td>
-                        <Button variant="primary">Select User</Button>
+                        <Button
+                          variant="primary"
+                          onClick={() =>
+                            handleUserPickedByAdmin(
+                              selectedJob.orderID,
+                              user.ID
+                            )
+                          }
+                        >
+                          Select User
+                        </Button>
                       </td>
                     </tr>
                   ))}
