@@ -107,7 +107,7 @@ function Dashboard({ onLogout, User }) {
 
   const handleJobBack = () => {
     setJobSelected(null);
-    handleViewChange("myjobs");
+    handleViewChange("inprogrogressjobs");
   };
 
   const handleOrderStatusUpdate = (order_id) => {
@@ -133,7 +133,7 @@ function Dashboard({ onLogout, User }) {
         );
       case "allpickedjobs":
         return <AllPickedJobs jobs={InProgressJobs} Statuses={Statuses} />;
-      case "myjobs":
+      case "inprogrogressjobs":
         return (
           <InProgressJobsView
             jobs={InProgressJobs}
@@ -181,6 +181,12 @@ function Dashboard({ onLogout, User }) {
     }
   };
 
+  const getNavTitle = (nav) => {
+    if ((nav.slug === "openjobs") & (UserRole === "customer"))
+      return "My Orders";
+    return nav.title;
+  };
+
   return (
     <Container>
       <Navbar bg="dark" variant="dark" expand="lg">
@@ -189,18 +195,16 @@ function Dashboard({ onLogout, User }) {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link onClick={() => handleViewChange("openjobs")}>
-                Open Jobs
-              </Nav.Link>
-              <Nav.Link onClick={() => handleViewChange("myjobs")}>
-                {UserRole === "admin" ? "In Progress" : "My Jobs"}
-              </Nav.Link>
-              <Nav.Link onClick={() => handleViewChange("completedjobs")}>
-                Completed Jobs
-              </Nav.Link>
-              <Nav.Link onClick={() => handleViewChange("cancelledjobs")}>
-                Cancelled Jobs
-              </Nav.Link>
+              {data.navbars
+                .filter((nav) => nav.access.includes(UserRole))
+                .map((nav, index) => (
+                  <Nav.Link
+                    key={index}
+                    onClick={() => handleViewChange(nav.slug)}
+                  >
+                    {getNavTitle(nav)}
+                  </Nav.Link>
+                ))}
               {UserRole === "admin" && (
                 <Nav.Link
                   target="__blank"

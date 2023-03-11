@@ -1,7 +1,7 @@
 // import config from "../config";
 import httpService from "./http";
 import pluginData from "./data.json";
-import { getUserID } from "./auth";
+import { getUserID, getUserRole } from "./auth";
 import { get_setting } from "./helper";
 
 const { siteurl } = pluginData;
@@ -17,7 +17,8 @@ export function getOrderById(order_id) {
 // add message in order
 export function addMessage(order_id, message, attachments = []) {
   const user_id = getUserID();
-  const context = "wp_admin";
+  const user_role = getUserRole();
+  const context = user_role === "designer" ? "wp_admin" : "myaccount";
   const url = `${endpoint_orderconvo}/add-message`;
   const data = { message, user_id, order_id, attachments, context };
   return httpService.post(url, data);
@@ -31,7 +32,8 @@ export function resetUnread(order_id) {
 }
 
 export function getOpenJobs() {
-  const url = `${endpoint}/get-open-jobs`;
+  const user_id = getUserID();
+  const url = `${endpoint}/get-open-jobs?user_id=${user_id}`;
   return httpService.get(url);
 }
 

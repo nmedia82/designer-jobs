@@ -20,6 +20,7 @@ export async function login(user_info) {
     statuses = { "": "Select", ...statuses };
     localStorage.setItem("user", JSON.stringify(response.user));
     localStorage.setItem("wc_statuses", JSON.stringify(statuses));
+    localStorage.setItem("user_roles", JSON.stringify(response.user_roles));
 
     return;
   }
@@ -52,11 +53,12 @@ export function getCurrentUser() {
 
 export function getUserRole() {
   try {
-    const user = getCurrentUser();
-    const { roles } = user;
+    let roles = localStorage.getItem("user_roles");
+    roles = JSON.parse(roles);
 
-    if (roles.includes("designer")) return "designer";
     if (roles.includes("administrator")) return "admin";
+    if (roles.includes("designer")) return "designer";
+    if (roles.includes("customer")) return "customer";
   } catch (ex) {
     return null;
   }
