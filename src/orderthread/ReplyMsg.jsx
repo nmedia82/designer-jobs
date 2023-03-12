@@ -8,8 +8,9 @@ import { common } from "@mui/material/colors";
 import Attachments from "./Attachments";
 import { DeleteOutline, SendOutlined } from "@mui/icons-material";
 import { get_setting, wooconvo_makeid } from "./../services/helper";
+import { Button } from "react-bootstrap";
 
-export default function ReplyMsg({ onReplySend }) {
+export default function ReplyMsg({ onReplySend, onJobClose }) {
   //Emoji
   const [ReplyText, setReplyText] = useState("");
   const [Files, setFiles] = useState([]);
@@ -115,6 +116,17 @@ export default function ReplyMsg({ onReplySend }) {
           <SendOutlined />
         </IconButton>
       </Paper>
+
+      {/* Notices */}
+      <Box>
+        <Typography color={"green"}>
+          If you are satisfied with the result and have downloaded the final
+          file, please click the Next button. Please note: This design proposal
+          will then be accepted by you and you will not be able to ask any
+          further changes.
+        </Typography>
+        <Button onClick={onJobClose}>Approve and close this task</Button>
+      </Box>
 
       {/* Attachments Display*/}
 

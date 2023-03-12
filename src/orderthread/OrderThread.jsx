@@ -11,7 +11,12 @@ import { get_orderconvo_api_url } from "../services/helper";
 const { context } = pluginData;
 const api_url = get_orderconvo_api_url();
 
-export default function WooConvoThread({ Order, onBack, onOrderStatusUpdate }) {
+export default function WooConvoThread({
+  Order,
+  onBack,
+  onOrderStatusUpdate,
+  onJobClose,
+}) {
   const [Thread, setThread] = useState([]);
   const [showMore, setshowMore] = useState(true);
   const [isWorking, setIsWorking] = useState(false);
@@ -124,7 +129,7 @@ export default function WooConvoThread({ Order, onBack, onOrderStatusUpdate }) {
       <Divider variant="inset" component="h2" sx={{ height: 10 }} />
 
       {/* Reply to --- */}
-      <ReplyMsg onReplySend={handleReplySend} />
+      <ReplyMsg onReplySend={handleReplySend} onJobClose={onJobClose} />
 
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

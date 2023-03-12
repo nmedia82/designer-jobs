@@ -18,6 +18,7 @@ import {
   getDesignerUsers,
   getCancelledJobs,
   getInProgressJobs,
+  setJobClosed,
 } from "../services/model";
 import CancelledJobsView from "./CancelledJobs";
 // import AllOrders from "./AllOrders";
@@ -120,6 +121,11 @@ function Dashboard({ onLogout, User }) {
     setInProgressJobs(my_jobs);
   };
 
+  const handleJobClose = async () => {
+    const { data: response } = await setJobClosed(JobSelected);
+    response && window.location.reload();
+  };
+
   const renderView = () => {
     switch (view) {
       case "openjobs":
@@ -167,6 +173,7 @@ function Dashboard({ onLogout, User }) {
             OrderID={JobSelected}
             onBack={() => handleJobBack(null)}
             onOrderStatusUpdate={handleOrderStatusUpdate}
+            onJobClose={handleJobClose}
           />
         );
       case "settings":

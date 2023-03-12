@@ -67,6 +67,12 @@ export function getDesignerUsers() {
   return httpService.get(url);
 }
 
+export function setJobClosed(order_id) {
+  const user_id = getUserID();
+  const url = `${endpoint}/set-job-closed?user_id=${user_id}&order_id=${order_id}`;
+  return httpService.get(url);
+}
+
 export function getJobsInfo() {
   const user_id = getUserID();
   const url = `${endpoint}/get-jobs-info?user_id=${user_id}`;

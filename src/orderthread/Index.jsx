@@ -9,7 +9,7 @@ import { getOrderById } from "./../services/model";
 
 const { settings } = pluginData;
 
-function OrderConvoHome({ OrderID, onBack, onOrderStatusUpdate }) {
+function OrderConvoHome({ OrderID, onBack, onOrderStatusUpdate, onJobClose }) {
   const [pluginSettings, setPluginSettings] = useLocalStorage(
     "orderconvo_settings",
     {}
@@ -38,6 +38,7 @@ function OrderConvoHome({ OrderID, onBack, onOrderStatusUpdate }) {
           Order={Order}
           onBack={onBack}
           onOrderStatusUpdate={onOrderStatusUpdate}
+          onJobClose={onJobClose}
         />
       )}
       <Backdrop
