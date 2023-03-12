@@ -7,7 +7,6 @@ import "./thread.css";
 import NavBar from "./NavBar";
 import { addMessage, resetUnread } from "./../services/model";
 import pluginData from "./../services/OrderConvoData";
-import { get_setting } from "./../services/helper";
 import { get_orderconvo_api_url } from "../services/helper";
 const { context } = pluginData;
 const api_url = get_orderconvo_api_url();
