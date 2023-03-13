@@ -16,7 +16,6 @@ function OrderConvoHome({ OrderID, onBack, onOrderStatusUpdate, onJobClose }) {
   );
   const [Order, setOrder] = useState(null);
   const [isWorking, setIsWorking] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -29,7 +28,7 @@ function OrderConvoHome({ OrderID, onBack, onOrderStatusUpdate, onJobClose }) {
     };
     setPluginSettings(settings);
     loadData();
-  }, [setPluginSettings]);
+  }, [setPluginSettings, OrderID]);
 
   return (
     <Box sx={{ flexGrow: 1 }} className="wooconvo-admin-wrapper">

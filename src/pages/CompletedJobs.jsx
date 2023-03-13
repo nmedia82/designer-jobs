@@ -4,7 +4,7 @@ import { Button, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
 import { getJobByDate } from "../services/model";
 
-const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
+const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const [CompletedJobs, setCompletedJobs] = useState([]);
   const [selectedDesigner, setSelectedDesigner] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
@@ -22,7 +22,8 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
     const designer_id = Number(e.target.value);
     // console.log(jobs, designer_id);
     setSelectedDesigner(designer_id);
-    if (!designer_id) return setCompletedJobs(CompletedJobs);
+    const completed_jobs = [...CompletedJobs];
+    if (!designer_id) return setFilteredJobs(completed_jobs);
     const filteredJobs = jobs.filter(
       (job) => job.jobDesigner.ID === designer_id
     );
@@ -63,10 +64,10 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
     setFilteredJobs(filtered);
   };
 
-  // const updateJob = (job) => {
-  //   setSelectedJob(job);
-  //   setShowModal(true);
-  // };
+  const getButtonTitle = () => {
+    if (UserRole === "admin") return "Comment";
+    return "Update File";
+  };
 
   return (
     <div>
@@ -137,6 +138,7 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
             <th>Client Comments</th>
             <th>Download File</th>
             <th>Date Completed</th>
+            <th>Comment & Notify</th>
             {UserRole === "admin" && <th>Designer Name</th>}
           </tr>
         </thead>
@@ -156,6 +158,14 @@ const CompletedJobsView = ({ jobs, Statuses, DesignerUsers, UserRole }) => {
                 </a>
               </td>
               <td>{job.dateCompleted}</td>
+              <td>
+                <Button
+                  variant="success"
+                  onClick={() => onJobUpdate(job.orderID)}
+                >
+                  {getButtonTitle()}
+                </Button>
+              </td>
               {UserRole === "admin" && (
                 <td>{job.jobDesigner.data.display_name}</td>
               )}

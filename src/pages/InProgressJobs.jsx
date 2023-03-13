@@ -8,7 +8,7 @@ const InProgressJobsView = ({
   Statuses,
   onJobUpdate,
   UserRole,
-  UserID,
+  DesignerUsers,
 }) => {
   const [MyJobs, setMyJobs] = useState([]);
   const [selectedJobStatus, setSelectedJobStatus] = useState("");
@@ -17,9 +17,11 @@ const InProgressJobsView = ({
   const [DateAfter, setDateAfter] = useState("");
   const [DateBefore, setDateBefore] = useState("");
   const [IsFilter, setIsFilter] = useState(false);
+  const [selectedDesigner, setSelectedDesigner] = useState("");
 
   useEffect(() => {
     setMyJobs(jobs);
+    setFilteredJobs(jobs);
   }, [jobs]);
 
   const handleJobStatusChange = (e) => {
@@ -38,6 +40,18 @@ const InProgressJobsView = ({
     const filteredJobs = all_jobs.filter((job) =>
       matchSearch(job.orderID, jobid)
     );
+    setFilteredJobs(filteredJobs);
+  };
+
+  const handleDesignerChangeFilter = (e) => {
+    const designer_id = Number(e.target.value);
+    setSelectedDesigner(designer_id);
+    const inprogress_jobs = [...MyJobs];
+    if (!designer_id) return setFilteredJobs(inprogress_jobs);
+    const filteredJobs = jobs.filter(
+      (job) => job.jobDesigner.ID === designer_id
+    );
+    console.log(MyJobs, designer_id);
     setFilteredJobs(filteredJobs);
   };
 
@@ -139,6 +153,24 @@ const InProgressJobsView = ({
             onChange={handlejobIDFilter}
           />
         </div>
+        {UserRole === "admin" && (
+          <div className="me-3">
+            <label htmlFor="designerFilter" className="me-2">
+              Designers:
+            </label>
+            <select
+              id="designerFilter"
+              value={selectedDesigner}
+              onChange={handleDesignerChangeFilter}
+            >
+              {DesignerUsers.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.display_name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
       <p>Total Jobs: {filteredJobs.length}</p>
       <Table striped bordered hover>

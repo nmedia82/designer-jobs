@@ -73,12 +73,17 @@ function Dashboard({ onLogout, User }) {
       setMyRequests(jobs_info.my_requests);
       setMyJobs(jobs_info.my_jobs);
 
-      const { data: designers } = await getDesignerUsers();
+      let { data: designers } = await getDesignerUsers();
+      designers = [
+        { id: 0, email: "", display_name: "All Designers" },
+        ...designers,
+      ];
+      console.log(designers);
       setDesignerUsers(designers);
     };
 
     loadData();
-  }, [setSettings]);
+  }, [setSettings, setMyJobs, setMyRequests]);
 
   const handleViewChange = (view) => {
     setView(view);
@@ -144,9 +149,9 @@ function Dashboard({ onLogout, User }) {
           <InProgressJobsView
             jobs={InProgressJobs}
             Statuses={Statuses}
+            DesignerUsers={DesignerUsers}
             onJobUpdate={handleJobUpdate}
             UserRole={UserRole}
-            UserID={UserID}
           />
         );
       case "completedjobs":
@@ -154,6 +159,7 @@ function Dashboard({ onLogout, User }) {
           <CompletedJobsView
             jobs={CompletedJobs}
             DesignerUsers={DesignerUsers}
+            onJobUpdate={handleJobUpdate}
             UserRole={UserRole}
           />
         );

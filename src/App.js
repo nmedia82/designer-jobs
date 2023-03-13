@@ -2,7 +2,8 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import auth from "./services/auth";
+import auth, { login_user_locally } from "./services/auth";
+import jwtDecode from "jwt-decode";
 
 // import useLocalStorage from "./services/useLocalStorage";
 import Login from "./pages/Login";
@@ -12,7 +13,18 @@ import { useState, useEffect } from "react";
 function App() {
   const [User, setUser] = useState(null);
   useEffect(() => {
-    const user = auth.getCurrentUser;
+    let user = auth.getCurrentUser;
+    // Get the token from the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    if (token) {
+      const { data: user_data } = jwtDecode(token);
+      login_user_locally(user_data);
+      urlParams.delete("token");
+      const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+      window.history.replaceState({}, "", newUrl);
+    }
+
     setUser(user);
   }, []);
 

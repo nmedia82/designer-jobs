@@ -22,7 +22,8 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
     const designer_id = Number(e.target.value);
     // console.log(jobs, designer_id);
     setSelectedDesigner(designer_id);
-    if (!designer_id) return setCancelledJobs(CancelledJobs);
+    const cancelled_jobs = [...CancelledJobs];
+    if (!designer_id) return setFilteredJobs(cancelled_jobs);
     const filteredJobs = jobs.filter(
       (job) => job.jobDesigner.ID === designer_id
     );

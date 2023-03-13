@@ -11,21 +11,24 @@ export async function login(user_info) {
   // console.log(user.success);
   const { success, data: response } = data;
   if (success) {
-    const allowed = ["wc-in-progress", "wc-revise", "wc-send"];
-    let statuses = Object.fromEntries(
-      Object.entries(response.statuses).filter(([key, value]) =>
-        allowed.includes(key)
-      )
-    );
-    statuses = { "": "Select", ...statuses };
-    localStorage.setItem("user", JSON.stringify(response.user));
-    localStorage.setItem("wc_statuses", JSON.stringify(statuses));
-    localStorage.setItem("user_roles", JSON.stringify(response.user_roles));
-
+    login_user_locally(response);
     return;
   }
 
   throw new Error("Username/password is invalid");
+}
+
+export function login_user_locally(user_data) {
+  const allowed = ["wc-in-progress", "wc-revise", "wc-send"];
+  let statuses = Object.fromEntries(
+    Object.entries(user_data.statuses).filter(([key, value]) =>
+      allowed.includes(key)
+    )
+  );
+  statuses = { "": "Select", ...statuses };
+  localStorage.setItem("user", JSON.stringify(user_data.user));
+  localStorage.setItem("wc_statuses", JSON.stringify(statuses));
+  localStorage.setItem("user_roles", JSON.stringify(user_data.user_roles));
 }
 
 export function logout() {
