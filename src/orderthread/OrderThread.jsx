@@ -22,7 +22,7 @@ export default function WooConvoThread({
   const [isWorking, setIsWorking] = useState(false);
   const [FilterThread, setFilterThread] = useState([]);
 
-  const { order_id } = Order;
+  const { order_id, status: order_status } = Order;
 
   useEffect(() => {
     const thread = [...Order.thread];
@@ -129,7 +129,9 @@ export default function WooConvoThread({
       <Divider variant="inset" component="h2" sx={{ height: 10 }} />
 
       {/* Reply to --- */}
-      <ReplyMsg onReplySend={handleReplySend} onJobClose={onJobClose} />
+      {order_status !== "completed" && (
+        <ReplyMsg onReplySend={handleReplySend} onJobClose={onJobClose} />
+      )}
 
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

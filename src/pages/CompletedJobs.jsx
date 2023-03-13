@@ -136,6 +136,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
             <th>Order Date</th>
             <th>Job Price</th>
             <th>Client Comments</th>
+            {UserRole === "customer" && <th>Case No</th>}
             <th>Download File</th>
             <th>Date Completed</th>
             <th>Comment & Notify</th>
@@ -152,6 +153,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
               <td>
                 <ReadMoreText text={job.clientComment} maxLength={20} />
               </td>
+              {UserRole === "customer" && <td>{job.caseNo}</td>}
               <td>
                 <a href={job.fileDownlload} target="_blank" rel="noreferrer">
                   <img src={job.fileThumb} alt={job.itemName} />

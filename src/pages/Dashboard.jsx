@@ -19,8 +19,11 @@ import {
   getCancelledJobs,
   getInProgressJobs,
   setJobClosed,
+  saveSettings,
+  getSettings,
 } from "../services/model";
 import CancelledJobsView from "./CancelledJobs";
+import { toast } from "react-toastify";
 // import AllOrders from "./AllOrders";
 
 const UserRole = getUserRole();
@@ -33,7 +36,7 @@ function Dashboard({ onLogout, User }) {
   const [CompletedJobs, setCompletedJobs] = useState([]);
   const [CancelledJobs, setCancelledJobs] = useState([]);
   const [JobSelected, setJobSelected] = useState(null);
-  const [Settings, setSettings] = useLocalStorage("designjob_settings", {});
+  const [Settings, setSettings] = useLocalStorage("jobdone_settings", {});
   const [MyJobs, setMyJobs] = useLocalStorage("myJobs", []);
   const [MyRequests, setMyRequests] = useLocalStorage("myRequests", []);
   const [Statuses, setStatuses] = useState([]);
@@ -41,7 +44,8 @@ function Dashboard({ onLogout, User }) {
 
   useEffect(() => {
     const loadData = async () => {
-      setSettings(data.settings);
+      const { data: admin_settings } = await getSettings();
+      setSettings(JSON.parse(admin_settings));
 
       let statuses = getStatuses();
       statuses = _to_options(statuses);
@@ -78,7 +82,6 @@ function Dashboard({ onLogout, User }) {
         { id: 0, email: "", display_name: "All Designers" },
         ...designers,
       ];
-      console.log(designers);
       setDesignerUsers(designers);
     };
 
@@ -89,7 +92,9 @@ function Dashboard({ onLogout, User }) {
     setView(view);
   };
 
-  const handleSettingsChange = (settings) => {
+  const handleSettingsSave = async (settings) => {
+    const { data: response } = saveSettings(settings);
+    toast.info("Settings are saved");
     setSettings(settings);
   };
 
@@ -180,13 +185,14 @@ function Dashboard({ onLogout, User }) {
             onBack={() => handleJobBack(null)}
             onOrderStatusUpdate={handleOrderStatusUpdate}
             onJobClose={handleJobClose}
+            UserRole={UserRole}
           />
         );
       case "settings":
         return (
           <AdminSettings
-            Settings={Settings}
-            onSettingsChange={handleSettingsChange}
+            admin_settings={Settings}
+            onSettingsSave={handleSettingsSave}
           />
         );
       default:
@@ -224,6 +230,14 @@ function Dashboard({ onLogout, User }) {
                   href="https://wooconvo.najeebmedia.com/wp-admin/edit.php?post_type=shop_order"
                 >
                   All Jobs
+                </Nav.Link>
+              )}
+              {UserRole === "customer" && (
+                <Nav.Link
+                  target="__blank"
+                  href="https://wooconvo.najeebmedia.com/my-account/orders/"
+                >
+                  Back to Orders
                 </Nav.Link>
               )}
             </Nav>

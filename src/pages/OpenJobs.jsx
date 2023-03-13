@@ -100,6 +100,7 @@ const OpenJobsView = ({ jobs, MyRequests, UserRole, UserID }) => {
             <th>Product Name</th>
             <th>Job Price</th>
             <th>Client Comments</th>
+            {UserRole === "customer" && <th>Case No</th>}
             <th>Download File</th>
             {UserRole === "designer" && <th>Request a Pick</th>}
             {UserRole === "admin" && <th>See Requests</th>}
@@ -116,6 +117,7 @@ const OpenJobsView = ({ jobs, MyRequests, UserRole, UserID }) => {
               <td>
                 <ReadMoreText text={job.clientComment} maxLength={20} />
               </td>
+              {UserRole === "customer" && <td>{job.caseNo}</td>}
               <td>
                 <a href={job.fileDownlload} target="_blank" rel="noreferrer">
                   <img src={job.fileThumb} alt={job.itemName} />

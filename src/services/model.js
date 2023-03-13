@@ -85,3 +85,14 @@ export function requestJob(order_id, user_id) {
   const url = `${endpoint}/request-job`;
   return httpService.post(url, data);
 }
+
+export function saveSettings(settings) {
+  const url = `${endpoint}/save-settings`;
+  const data = { settings: JSON.stringify(settings) };
+  return httpService.post(url, data);
+}
+
+export function getSettings(settings) {
+  const url = `${endpoint}/get-settings`;
+  return httpService.get(url);
+}

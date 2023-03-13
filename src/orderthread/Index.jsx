@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
-import { Box, Backdrop, CircularProgress } from "@mui/material";
+import { Box, Backdrop, CircularProgress, Typography } from "@mui/material";
 // import "./App.css";
 
 import pluginData from "./../services/OrderConvoData";
 import WooConvoThread from "./OrderThread";
 import useLocalStorage from "./../services/useLocalStorage";
 import { getOrderById } from "./../services/model";
+import { get_setting } from "../services/helper";
 
 const { settings } = pluginData;
 
-function OrderConvoHome({ OrderID, onBack, onOrderStatusUpdate, onJobClose }) {
+function OrderConvoHome({
+  OrderID,
+  onBack,
+  onOrderStatusUpdate,
+  onJobClose,
+  UserRole,
+}) {
   const [pluginSettings, setPluginSettings] = useLocalStorage(
     "orderconvo_settings",
     {}
@@ -30,8 +37,15 @@ function OrderConvoHome({ OrderID, onBack, onOrderStatusUpdate, onJobClose }) {
     loadData();
   }, [setPluginSettings, OrderID]);
 
+  const getHeaderNote = () => {
+    return UserRole === "customer"
+      ? get_setting("header_note_customers")
+      : get_setting("header_note_designers");
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }} className="wooconvo-admin-wrapper">
+      <pre>{getHeaderNote()}</pre>
       {Order && (
         <WooConvoThread
           Order={Order}
