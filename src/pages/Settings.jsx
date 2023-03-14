@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 import data from "./../services/data.json";
 
-const { settings_meta } = data;
+let { settings_meta } = data;
 
-const AdminSettings = ({ admin_settings, onSettingsSave }) => {
+const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
   const [formValues, setFormValues] = useState({
-    automatic_mode: admin_settings?.automatic_mode || true,
+    automatic_mode: admin_settings?.automatic_mode || false,
     disable_emails_designers: admin_settings?.disable_emails_designers || false,
     disable_emails_customers: admin_settings?.disable_emails_customers || false,
     cronjob_days_limit: admin_settings?.cronjob_days_limit || 7,
@@ -21,10 +24,25 @@ const AdminSettings = ({ admin_settings, onSettingsSave }) => {
     }));
   };
 
+  const handleEditorChange = (value, id, source) => {
+    console.log(`Editor ${id} changed: ${value} (${source})`);
+    setFormValues((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     onSettingsSave(formValues);
   };
+
+  // filter settings by user role
+  settings_meta = settings_meta.filter(
+    (setting) => setting.visibility === UserRole
+  );
+
+  // console.log(formValues);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -47,6 +65,19 @@ const AdminSettings = ({ admin_settings, onSettingsSave }) => {
                   {label}
                 </label>
               </div>
+            </div>
+          );
+        } else if (type === "textarea") {
+          return (
+            <div className="form-group mt-3" key={id}>
+              <label htmlFor={id}>{label}</label>
+              <ReactQuill
+                key={id}
+                value={value}
+                onChange={(value, delta, source) =>
+                  handleEditorChange(value, id, source)
+                }
+              />
             </div>
           );
         } else {

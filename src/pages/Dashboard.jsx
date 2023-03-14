@@ -193,6 +193,7 @@ function Dashboard({ onLogout, User }) {
           <AdminSettings
             admin_settings={Settings}
             onSettingsSave={handleSettingsSave}
+            UserRole={UserRole}
           />
         );
       default:
@@ -247,14 +248,12 @@ function Dashboard({ onLogout, User }) {
                 title={`Hi, ${User.data.display_name}`}
                 id="basic-nav-dropdown"
               >
-                {UserRole === "admin" && (
-                  <NavDropdown.Item
-                    href="#"
-                    onClick={() => handleViewChange("settings")}
-                  >
-                    Settings
-                  </NavDropdown.Item>
-                )}
+                <NavDropdown.Item
+                  href="#"
+                  onClick={() => handleViewChange("settings")}
+                >
+                  Settings
+                </NavDropdown.Item>
                 <NavDropdown.Item href="#" onClick={onLogout}>
                   Logout
                 </NavDropdown.Item>

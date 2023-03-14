@@ -45,7 +45,7 @@ function OrderConvoHome({
 
   return (
     <Box sx={{ flexGrow: 1 }} className="wooconvo-admin-wrapper">
-      <pre>{getHeaderNote()}</pre>
+      <div dangerouslySetInnerHTML={{ __html: getHeaderNote() }}></div>
       {Order && (
         <WooConvoThread
           Order={Order}

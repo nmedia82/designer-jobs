@@ -22,43 +22,42 @@
       "access": ["admin"]
     }
   ],
-  "settings": { "automatic_mode": true },
   "settings_meta": [
     {
       "id": "automatic_mode",
       "label": "Enable Automatic Mode",
       "type": "checkbox",
-      "default_value": true
+      "visibility": "admin"
     },
     {
       "id": "disable_emails_designers",
       "label": "Disable Email Notification for Designers",
       "type": "checkbox",
-      "default_value": false
+      "visibility": "designer"
     },
     {
       "id": "disable_emails_customers",
       "label": "Disable Email Notification for Customers",
       "type": "checkbox",
-      "default_value": false
+      "visibility": "customer"
     },
     {
       "id": "cronjob_days_limit",
       "label": "Run CronJob Days Limit",
       "type": "number",
-      "default_value": 7
+      "visibilit": "admin"
     },
     {
       "id": "header_note_designers",
       "label": "Header Note for Designers",
       "type": "textarea",
-      "default_value": ""
+      "visibility": "admin"
     },
     {
       "id": "header_note_customers",
       "label": "Header Note for Customers",
       "type": "textarea",
-      "default_value": ""
+      "visibility": "admin"
     }
   ]
 }
