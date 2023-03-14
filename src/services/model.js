@@ -86,6 +86,12 @@ export function requestJob(order_id, user_id) {
   return httpService.post(url, data);
 }
 
+export function changeDesigner(order_id, user_id) {
+  const data = { user_id, order_id };
+  const url = `${endpoint}/change-designer`;
+  return httpService.post(url, data);
+}
+
 export function saveSettings(settings) {
   const url = `${endpoint}/save-settings`;
   const data = { settings: JSON.stringify(settings) };

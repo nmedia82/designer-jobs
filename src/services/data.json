@@ -58,6 +58,12 @@
       "label": "Header Note for Customers",
       "type": "textarea",
       "visibility": "admin"
+    },
+    {
+      "id": "max_jobs_limit",
+      "label": "Max. Job Limits for Designer",
+      "type": "number",
+      "visibility": "admin"
     }
   ]
 }

@@ -10,7 +10,7 @@ import { getUserID, getUserRole } from "../services/auth";
 import AdminSettings from "./Settings";
 import OrderConvoHome from "../orderthread/Index";
 import { getStatuses } from "../services/localStorage";
-import { _to_options } from "../services/helper";
+import { get_setting, _to_options } from "../services/helper";
 import {
   getJobsInfo,
   getOpenJobs,
@@ -136,6 +136,16 @@ function Dashboard({ onLogout, User }) {
     response && window.location.reload();
   };
 
+  // if designer has reach the limit of max allowed jobs return false
+  const allowDesignersToPick = () => {
+    if (UserRole === "designer") {
+      let max_jobs_limit = get_setting("max_jobs_limit");
+      if (InProgressJobs.length < Number(max_jobs_limit)) return true;
+      return false;
+    }
+    return true;
+  };
+
   const renderView = () => {
     switch (view) {
       case "openjobs":
@@ -145,10 +155,10 @@ function Dashboard({ onLogout, User }) {
             MyRequests={MyRequests}
             UserRole={UserRole}
             UserID={UserID}
+            allowDesignersToPick={allowDesignersToPick()}
           />
         );
-      case "allpickedjobs":
-        return <AllPickedJobs jobs={InProgressJobs} Statuses={Statuses} />;
+
       case "inprogrogressjobs":
         return (
           <InProgressJobsView

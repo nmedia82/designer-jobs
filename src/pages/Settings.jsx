@@ -14,6 +14,7 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
     cronjob_days_limit: admin_settings?.cronjob_days_limit || 7,
     header_note_designers: admin_settings?.header_note_designers || "",
     header_note_customers: admin_settings?.header_note_customers || "",
+    max_jobs_limit: admin_settings?.max_jobs_limit || "",
   });
 
   const handleInputChange = (event) => {

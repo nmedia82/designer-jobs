@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Modal, Container } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
-import { getJobByDate } from "../services/model";
+import { toast } from "react-toastify";
+import { changeDesigner, getJobByDate } from "../services/model";
 
 const InProgressJobsView = ({
   jobs,
@@ -18,6 +19,9 @@ const InProgressJobsView = ({
   const [DateBefore, setDateBefore] = useState("");
   const [IsFilter, setIsFilter] = useState(false);
   const [selectedDesigner, setSelectedDesigner] = useState("");
+  // it's for Modal
+  const [showModal, setShowModal] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
     setMyJobs(jobs);
@@ -93,10 +97,19 @@ const InProgressJobsView = ({
     return "Update File";
   };
 
-  // const updateJob = (job) => {
-  //   setSelectedJob(job);
-  //   setShowModal(true);
-  // };
+  const handleSeeRequests = (job) => {
+    setSelectedJob(job);
+    setShowModal(true);
+  };
+
+  const handleDesignerChange = async (job_id, designer_id) => {
+    // Do something with the order ID
+    const { data } = await changeDesigner(job_id, designer_id);
+    const { data: response } = data;
+    // console.log(response);
+    toast.success("Designer changed successully");
+    return window.location.reload();
+  };
 
   return (
     <div>
@@ -214,12 +227,78 @@ const InProgressJobsView = ({
                 </Button>
               </td>
               {UserRole === "admin" && (
-                <td>{job.jobDesigner.data.display_name}</td>
+                <td>
+                  <p>
+                    {job.jobDesigner.data.display_name ||
+                      job.jobDesigner.data.user_email}
+                    <Button onClick={() => handleSeeRequests(job)}>
+                      Change Designer
+                    </Button>
+                  </p>
+                </td>
               )}
             </tr>
           ))}
         </tbody>
       </Table>
+
+      {/* Render modal */}
+
+      {selectedJob && (
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Job# {selectedJob.orderID}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container>
+              {/* <p className="d-flex">
+                <input
+                  type="text"
+                  className="form-control m-1"
+                  placeholder="Pick your self: email"
+                />
+                <Button className="btn-sm">Select</Button>
+              </p> */}
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Select User</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {DesignerUsers.filter((user) => user.id !== 0).map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.display_name}</td>
+                      <td>{user.email}</td>
+                      <td>
+                        <Button
+                          variant="primary"
+                          onClick={() =>
+                            handleDesignerChange(selectedJob.orderID, user.id)
+                          }
+                        >
+                          Select User
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Container>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Close
+            </Button>
+            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
+              Notify Designer
+            </Button> */}
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };

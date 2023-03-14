@@ -1,8 +1,8 @@
-import { ReadMore } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
+
 import ReadMoreText from "../common/ReadMore";
-import { getJobByDate } from "../services/model";
+import { getJobByDate, requestJob } from "../services/model";
 
 const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const [CompletedJobs, setCompletedJobs] = useState([]);

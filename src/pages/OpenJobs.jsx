@@ -4,7 +4,13 @@ import { toast } from "react-toastify";
 import ReadMoreText from "../common/ReadMore";
 import { getJobByDate, requestJob } from "../services/model";
 
-const OpenJobsView = ({ jobs, MyRequests, UserRole, UserID }) => {
+const OpenJobsView = ({
+  jobs,
+  MyRequests,
+  UserRole,
+  UserID,
+  allowDesignersToPick,
+}) => {
   const [openJobs, setOpenJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
@@ -33,14 +39,12 @@ const OpenJobsView = ({ jobs, MyRequests, UserRole, UserID }) => {
     if (response.reload) return window.location.reload();
   };
 
-  const canRequest = (order_id) => {
-    // console.log(MyRequests, order_id);
-    if (MyRequests.includes(order_id)) return true;
+  const disableRequest = (order_id) => {
+    if (MyRequests.includes(order_id) || !allowDesignersToPick) return true;
     return false;
   };
 
   const handleSeeRequests = (job) => {
-    console.log(job);
     setSelectedJob(job);
     setShowModal(true);
   };
@@ -90,7 +94,14 @@ const OpenJobsView = ({ jobs, MyRequests, UserRole, UserID }) => {
           </button>
         </div>
       </div>
-      <p>Total Jobs: {openJobs.length}</p>
+      <p>
+        Total Jobs: {openJobs.length}
+        <span className="bg-light text-danger m-2">
+          {!allowDesignersToPick
+            ? "Sorry, you already have enough jobs open. Please finish them and request than an new  pick"
+            : ""}
+        </span>
+      </p>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -125,12 +136,14 @@ const OpenJobsView = ({ jobs, MyRequests, UserRole, UserID }) => {
               </td>
               <td>
                 {UserRole === "designer" && (
-                  <Button
-                    onClick={() => handleRequestPick(job.orderID)}
-                    disabled={canRequest(job.orderID)}
-                  >
-                    Request a Pick
-                  </Button>
+                  <>
+                    <Button
+                      onClick={() => handleRequestPick(job.orderID)}
+                      disabled={disableRequest(job.orderID)}
+                    >
+                      Request a Pick
+                    </Button>
+                  </>
                 )}
                 {UserRole === "admin" && (
                   <Button onClick={() => handleSeeRequests(job)}>
