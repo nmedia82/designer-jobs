@@ -64,6 +64,12 @@
       "label": "Max. Job Limits for Designer",
       "type": "number",
       "visibility": "admin"
+    },
+    {
+      "id": "quick_messages",
+      "label": "Max. Job Limits for Designer",
+      "type": "repeater",
+      "visibility": "admin"
     }
   ]
 }

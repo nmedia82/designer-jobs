@@ -3,6 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 import data from "./../services/data.json";
+import QuickMessages from "./QuickMessages";
 
 let { settings_meta } = data;
 
@@ -15,6 +16,7 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
     header_note_designers: admin_settings?.header_note_designers || "",
     header_note_customers: admin_settings?.header_note_customers || "",
     max_jobs_limit: admin_settings?.max_jobs_limit || "",
+    quick_messages: admin_settings?.quick_messages || [],
   });
 
   const handleInputChange = (event) => {
@@ -43,7 +45,13 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
     (setting) => setting.visibility === UserRole
   );
 
-  // console.log(formValues);
+  const handleQuickMessageChange = (messages) => {
+    setFormValues((prevState) => ({
+      ...prevState,
+      ["quick_messages"]: messages,
+    }));
+  };
+  console.log(formValues);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -78,6 +86,16 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
                 onChange={(value, delta, source) =>
                   handleEditorChange(value, id, source)
                 }
+              />
+            </div>
+          );
+        } else if (type === "repeater") {
+          return (
+            <div className="form-group mt-3" key={id}>
+              <label htmlFor={id}>{label}</label>
+              <QuickMessages
+                quick_messages={value}
+                onChange={handleQuickMessageChange}
               />
             </div>
           );
