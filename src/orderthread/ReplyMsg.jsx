@@ -10,12 +10,15 @@ import { DeleteOutline, SendOutlined } from "@mui/icons-material";
 import { get_setting, wooconvo_makeid } from "./../services/helper";
 import { Button } from "react-bootstrap";
 import { getUserRole } from "../services/auth";
+import QuickReplies from "./QuickReply";
 
 const UserRole = getUserRole();
 export default function ReplyMsg({ onReplySend, onJobClose }) {
   //Emoji
   const [ReplyText, setReplyText] = useState("");
   const [Files, setFiles] = useState([]);
+
+  const quick_messages = get_setting("quick_messages");
 
   const validateSelectedFiles = (files_selected) => {
     // max_files_allowed
@@ -45,6 +48,20 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
 
     if (msg) alert(msg);
     return msg === "";
+  };
+
+  const onReplyTextChanged = (e) => {
+    const value = e.target.value;
+    setReplyText(value);
+
+    const match = value.match(/^#(\d+)$/);
+
+    if (match) {
+      const index = parseInt(match[1], 10) - 1;
+      if (index >= 0 && index < quick_messages.length) {
+        setReplyText(quick_messages[index]);
+      }
+    }
   };
 
   const handleFileSelected = (event) => {
@@ -101,7 +118,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
 
         <TextField
           value={ReplyText}
-          onChange={(e) => setReplyText(e.target.value)}
+          onChange={(e) => onReplyTextChanged(e)}
           fullWidth
           id="standard-basic"
           variant="standard"
@@ -167,6 +184,11 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
           </Box>
         ))}
       </Box>
+
+      {/* Quick Messages */}
+      {quick_messages.length > 0 && (
+        <QuickReplies quick_messages={quick_messages} />
+      )}
     </Box>
   );
 }
