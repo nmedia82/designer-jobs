@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 
 import ReadMoreText from "../common/ReadMore";
-import { getJobByDate, requestJob } from "../services/model";
+import { getJobByDate } from "../services/model";
+import Calculator from "./Calculator";
 
 const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const [CompletedJobs, setCompletedJobs] = useState([]);
   const [selectedDesigner, setSelectedDesigner] = useState("");
   const [selectedJobID, setSelectedJobID] = useState("");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
+  const [DateFilteredJobs, setDateFilteredJobs] = useState([]);
   const [DateAfter, setDateAfter] = useState("");
   const [DateBefore, setDateBefore] = useState("");
   const [IsFilter, setIsFilter] = useState(false);
+  const [ShowCalculator, setShowCalculator] = useState(false);
 
   useEffect(() => {
     setCompletedJobs(jobs);
@@ -20,14 +23,20 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
 
   const handleDesignerChangeFilter = (e) => {
     const designer_id = Number(e.target.value);
-    // console.log(jobs, designer_id);
     setSelectedDesigner(designer_id);
-    const completed_jobs = [...CompletedJobs];
-    if (!designer_id) return setFilteredJobs(completed_jobs);
-    const filteredJobs = jobs.filter(
+    let jobs = [];
+    if (DateFilteredJobs.length) {
+      jobs = [...DateFilteredJobs];
+    } else {
+      jobs = [...filteredJobs];
+    }
+    // const completed_jobs = [...filteredJobs];
+    console.log(jobs);
+    if (!designer_id) return setFilteredJobs(jobs);
+    const filtered_jobs = jobs.filter(
       (job) => job.jobDesigner.ID === designer_id
     );
-    setFilteredJobs(filteredJobs);
+    setFilteredJobs(filtered_jobs);
   };
 
   const handlejobIDFilter = (e) => {
@@ -61,6 +70,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
       DateAfter,
       DateBefore
     );
+    setDateFilteredJobs(filtered);
     setFilteredJobs(filtered);
   };
 
@@ -127,7 +137,22 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
           </div>
         )}
       </div>
-      <p>Total Jobs: {filteredJobs.length}</p>
+      <div className="d-flex mb-3 justify-content-between">
+        <p>Total Jobs: {filteredJobs.length}</p>
+        <button
+          className="btn btn-info btn-calculator"
+          onClick={() => setShowCalculator(!ShowCalculator)}
+        >
+          {ShowCalculator ? "Close" : "Calculator"}
+        </button>
+      </div>
+      {ShowCalculator && (
+        <Calculator
+          jobs={filteredJobs}
+          startDate={DateAfter}
+          endDate={DateBefore}
+        />
+      )}
       <Table striped bordered hover>
         <thead>
           <tr>
