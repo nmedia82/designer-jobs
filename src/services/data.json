@@ -20,6 +20,11 @@
       "title": "Cancelled Jobs",
       "slug": "cancelledjobs",
       "access": ["admin"]
+    },
+    {
+      "title": "Invoices",
+      "slug": "invoices",
+      "access": ["admin", "designer"]
     }
   ],
   "settings_meta": [

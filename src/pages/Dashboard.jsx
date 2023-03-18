@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import {
+  Container,
+  Navbar,
+  Nav,
+  NavDropdown,
+  Modal,
+  Spinner,
+} from "react-bootstrap";
 import useLocalStorage from "./../services/useLocalStorage";
 import OpenJobsView from "./OpenJobs";
 import AllPickedJobs from "./AllPickedJobs";
@@ -21,15 +28,19 @@ import {
   setJobClosed,
   saveSettings,
   getSettings,
+  getInvoices,
+  deleteInvoice,
 } from "../services/model";
 import CancelledJobsView from "./CancelledJobs";
 import { toast } from "react-toastify";
+import DesignerInvoices from "./DesignerInvoices";
 // import AllOrders from "./AllOrders";
 
 const UserRole = getUserRole();
 const UserID = getUserID();
 
 function Dashboard({ onLogout, User }) {
+  const [showWorking, setShowWorking] = useState(false);
   const [view, setView] = useState("openjobs");
   const [OpenJobs, setOpenJobs] = useState([]);
   const [InProgressJobs, setInProgressJobs] = useState([]);
@@ -41,11 +52,19 @@ function Dashboard({ onLogout, User }) {
   const [MyRequests, setMyRequests] = useLocalStorage("myRequests", []);
   const [Statuses, setStatuses] = useState([]);
   const [DesignerUsers, setDesignerUsers] = useState([]);
+  const [Invoices, setInvoices] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
-      const { data: admin_settings } = await getSettings();
-      setSettings(JSON.parse(admin_settings));
+      setShowWorking(true);
+
+      const { data: settings } = await getSettings();
+      const { global_settings, user_settings } = settings;
+      const settings_merged = {
+        ...JSON.parse(global_settings),
+        ...JSON.parse(user_settings),
+      };
+      setSettings(settings_merged);
 
       let statuses = getStatuses();
       statuses = _to_options(statuses);
@@ -83,6 +102,11 @@ function Dashboard({ onLogout, User }) {
         ...designers,
       ];
       setDesignerUsers(designers);
+
+      const { data: invoices } = await getInvoices();
+      setInvoices(invoices);
+
+      setShowWorking(false);
     };
 
     loadData();
@@ -103,17 +127,14 @@ function Dashboard({ onLogout, User }) {
     handleViewChange("orderconvo");
   };
 
-  const handleMyJobs = (jobs, id) => {
-    // once jobs is picked, removed from open
-    // console.log(id);
-    let open_jobs = [...OpenJobs];
-    open_jobs = open_jobs.filter((j) => j.OrderID !== id);
-    setOpenJobs(open_jobs);
-    setMyJobs(jobs);
-  };
+  const handleInvoiceDelete = async (id) => {
+    const a = window.confirm("Are you sure?");
+    if (!a) return;
 
-  const handleJobRequest = (jobs) => {
-    setMyRequests(jobs);
+    const { data: response } = await deleteInvoice(id);
+    if (!response.success) return toast.error(response.data);
+    setInvoices(response.data);
+    toast.info("Deleted successfully");
   };
 
   const handleJobBack = () => {
@@ -183,6 +204,15 @@ function Dashboard({ onLogout, User }) {
           <CancelledJobsView
             jobs={CancelledJobs}
             DesignerUsers={DesignerUsers}
+            UserRole={UserRole}
+          />
+        );
+      case "invoices":
+        return (
+          <DesignerInvoices
+            designer_users={DesignerUsers}
+            designer_invoices={Invoices}
+            onInvoiceDelete={handleInvoiceDelete}
             UserRole={UserRole}
           />
         );
@@ -273,6 +303,24 @@ function Dashboard({ onLogout, User }) {
         </Container>
       </Navbar>
       <div className="container mt-4">{renderView()}</div>
+      <Modal
+        show={showWorking}
+        onHide={() => setShowWorking(false)}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Body className="text-center">
+          <Spinner
+            animation="border"
+            role="status"
+            className="modal-spinner"
+            centered
+          >
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 }

@@ -28,7 +28,6 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
   };
 
   const handleEditorChange = (value, id, source) => {
-    console.log(`Editor ${id} changed: ${value} (${source})`);
     setFormValues((prevState) => ({
       ...prevState,
       [id]: value,
@@ -37,7 +36,19 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSettingsSave(formValues);
+
+    let settings_data = formValues;
+    // if user is not admin then save single values
+    if (UserRole !== "admin") {
+      const ids = settings_meta.map((item) => item.id);
+      settings_data = Object.keys(formValues)
+        .filter((key) => ids.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = formValues[key];
+          return obj;
+        }, {});
+    }
+    onSettingsSave(settings_data);
   };
 
   // filter settings by user role

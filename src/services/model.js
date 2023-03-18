@@ -62,7 +62,6 @@ export function getJobByDate(context, after, before) {
 }
 
 export function getDesignerUsers() {
-  const user_id = getUserID();
   const url = `${endpoint}/get-designers`;
   return httpService.get(url);
 }
@@ -93,12 +92,27 @@ export function changeDesigner(order_id, user_id) {
 }
 
 export function saveSettings(settings) {
+  const role = getUserRole();
+  const user_id = getUserID();
   const url = `${endpoint}/save-settings`;
-  const data = { settings: JSON.stringify(settings) };
+  const data = { role, user_id, settings: JSON.stringify(settings) };
   return httpService.post(url, data);
 }
 
 export function getSettings(settings) {
-  const url = `${endpoint}/get-settings`;
+  const user_id = getUserID();
+  const url = `${endpoint}/get-settings?user_id=${user_id}`;
+  return httpService.get(url);
+}
+
+export function getInvoices(data) {
+  const user_id = getUserID();
+  const url = `${endpoint}/get-invoices?user_id=${user_id}`;
+  return httpService.get(url);
+}
+
+export function deleteInvoice(id) {
+  const user_id = getUserID();
+  const url = `${endpoint}/delete-invoice?post_id=${id}&user_id=${user_id}`;
   return httpService.get(url);
 }
