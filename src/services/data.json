@@ -19,7 +19,7 @@
     {
       "title": "Cancelled Jobs",
       "slug": "cancelledjobs",
-      "access": ["admin"]
+      "access": ["admin", "designer"]
     },
     {
       "title": "Invoices",
@@ -72,7 +72,7 @@
     },
     {
       "id": "quick_messages",
-      "label": "Max. Job Limits for Designer",
+      "label": "Short Codes:",
       "type": "repeater",
       "visibility": "admin"
     }

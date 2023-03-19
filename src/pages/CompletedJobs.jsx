@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 
 import ReadMoreText from "../common/ReadMore";
+import { get_job_thumb } from "../services/helper";
 import { getJobByDate } from "../services/model";
 import Calculator from "./Calculator";
 
@@ -139,12 +140,14 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
       </div>
       <div className="d-flex mb-3 justify-content-between">
         <p>Total Jobs: {filteredJobs.length}</p>
-        <button
-          className="btn btn-info btn-calculator"
-          onClick={() => setShowCalculator(!ShowCalculator)}
-        >
-          {ShowCalculator ? "Close" : "Calculator"}
-        </button>
+        {UserRole !== "customer" && (
+          <button
+            className="btn btn-info btn-calculator"
+            onClick={() => setShowCalculator(!ShowCalculator)}
+          >
+            {ShowCalculator ? "Close" : "Calculator"}
+          </button>
+        )}
       </div>
       {ShowCalculator && (
         <Calculator
@@ -159,7 +162,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
             <th>Job ID</th>
             <th>Order ID</th>
             <th>Order Date</th>
-            <th>Job Price</th>
+            {UserRole !== "customer" && <th>Job Price</th>}
             <th>Client Comments</th>
             {UserRole === "customer" && <th>Case No</th>}
             <th>Download File</th>
@@ -174,14 +177,16 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
               <td>{job.jobID}</td>
               <td>{job.orderID}</td>
               <td>{job.orderDate}</td>
-              <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
+              {UserRole !== "customer" && (
+                <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
+              )}
               <td>
                 <ReadMoreText text={job.clientComment} maxLength={20} />
               </td>
               {UserRole === "customer" && <td>{job.caseNo}</td>}
-              <td>
+              <td className="text-center">
                 <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                  <img src={job.fileThumb} alt={job.itemName} />
+                  {get_job_thumb(job)}
                 </a>
               </td>
               <td>{job.dateCompleted}</td>

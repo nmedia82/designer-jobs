@@ -213,6 +213,7 @@ function Dashboard({ onLogout, User }) {
             designer_users={DesignerUsers}
             designer_invoices={Invoices}
             onInvoiceDelete={handleInvoiceDelete}
+            DesignerUsers={DesignerUsers}
             UserRole={UserRole}
           />
         );
@@ -311,12 +312,7 @@ function Dashboard({ onLogout, User }) {
         centered
       >
         <Modal.Body className="text-center">
-          <Spinner
-            animation="border"
-            role="status"
-            className="modal-spinner"
-            centered
-          >
+          <Spinner animation="border" role="status" className="modal-spinner">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </Modal.Body>

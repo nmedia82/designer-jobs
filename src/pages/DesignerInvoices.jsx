@@ -9,6 +9,7 @@ function DesignerInvoices({
   designer_invoices,
   designer_users,
   onInvoiceDelete,
+  DesignerUsers,
   UserRole,
 }) {
   const [AllInvoices, setAllInvoices] = useState(designer_invoices);
@@ -16,13 +17,14 @@ function DesignerInvoices({
   const [selectedDesigner, setSelectedDesigner] = useState("");
   const [ShowAddInvoice, setShowAddInvoice] = useState(false);
   const [invoiceComment, setInvoiceComment] = useState("");
+  const [filteredInvoices, setFilteredInvoices] = useState(designer_invoices);
 
   useEffect(() => {
     setAllInvoices(designer_invoices);
+    setFilteredInvoices(designer_invoices);
   }, [designer_invoices]);
 
   const handleFileChange = (e) => {
-    console.log(e.target.files[0]);
     setSelectedFile(e.target.files[0]);
   };
 
@@ -65,9 +67,9 @@ function DesignerInvoices({
   };
 
   const renderInvoices = () => {
-    return AllInvoices.map((invoice) => (
+    return filteredInvoices.map((invoice) => (
       <tr key={invoice.invoice_id}>
-        <td>{invoice.invoice_id}</td>
+        <td>{invoice.comment}</td>
         <td>
           <a
             target="__blank"
@@ -83,6 +85,7 @@ function DesignerInvoices({
           <button
             className="btn btn-danger"
             onClick={() => onInvoiceDelete(invoice.post_id)}
+            disabled={UserRole !== "admin"}
           >
             Delete
           </button>
@@ -95,6 +98,17 @@ function DesignerInvoices({
     return !ShowAddInvoice && UserRole === "admin";
   };
 
+  const handleDesignerChangeFilter = (e) => {
+    const designer_id = Number(e.target.value);
+    setSelectedDesigner(designer_id);
+    const invoices = [...AllInvoices];
+    if (!designer_id) return setFilteredInvoices(invoices);
+    const filteredInvoices = invoices.filter(
+      (invoice) => Number(invoice.designer_id) === designer_id
+    );
+    setFilteredInvoices(filteredInvoices);
+  };
+
   return (
     <div className="container mt-4">
       {enableAddInvoices() && (
@@ -105,6 +119,24 @@ function DesignerInvoices({
           >
             Add New Invoice
           </button>
+          {UserRole === "admin" && (
+            <div className="me-3">
+              <label htmlFor="designerFilter" className="me-2">
+                Designers:
+              </label>
+              <select
+                id="designerFilter"
+                value={selectedDesigner}
+                onChange={handleDesignerChangeFilter}
+              >
+                {DesignerUsers.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.display_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
       )}
       {ShowAddInvoice && (
@@ -158,10 +190,10 @@ function DesignerInvoices({
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>Invoice ID</th>
+            <th>Invoice Comment</th>
             <th>Download</th>
             <th>Designer</th>
-            <th>Invoice Date</th>
+            <th>Uploaded Date</th>
           </tr>
         </thead>
         <tbody>{renderInvoices()}</tbody>

@@ -2,6 +2,7 @@ import { ReadMore } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
+import { get_job_thumb } from "../services/helper";
 import { getJobByDate } from "../services/model";
 
 const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
@@ -151,9 +152,9 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
               <td>
                 <ReadMoreText text={job.clientComment} maxLength={20} />
               </td>
-              <td>
+              <td className="text-center">
                 <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                  <img src={job.fileThumb} alt={job.itemName} />
+                  {get_job_thumb(job)}
                 </a>
               </td>
               <td>{job.dateCancelled}</td>

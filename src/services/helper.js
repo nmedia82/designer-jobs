@@ -29,3 +29,13 @@ export const _to_options = (options) => {
 export function get_orderconvo_api_url() {
   return `${data.siteurl}/wp-json/wooconvo/v1`;
 }
+
+export function get_job_thumb(job) {
+  return (
+    <img
+      src={process.env.PUBLIC_URL + "/download-icon.png"}
+      width="75"
+      alt={job.orderID}
+    />
+  );
+}

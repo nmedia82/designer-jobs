@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReadMoreText from "../common/ReadMore";
+import { get_job_thumb } from "../services/helper";
 import { getJobByDate, requestJob } from "../services/model";
 
 const OpenJobsView = ({
@@ -129,9 +130,9 @@ const OpenJobsView = ({
                 <ReadMoreText text={job.clientComment} maxLength={20} />
               </td>
               {UserRole === "customer" && <td>{job.caseNo}</td>}
-              <td>
+              <td className="text-center">
                 <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                  <img src={job.fileThumb} alt={job.itemName} />
+                  {get_job_thumb(job)}
                 </a>
               </td>
               <td>

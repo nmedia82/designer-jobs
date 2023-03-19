@@ -19,6 +19,21 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
     quick_messages: admin_settings?.quick_messages || [],
   });
 
+  const quillModules = {
+    toolbar: [
+      [{ font: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+      ["link"],
+      ["clean"],
+    ],
+  };
+
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormValues((prevState) => ({
@@ -57,12 +72,12 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
   );
 
   const handleQuickMessageChange = (messages) => {
+    const new_key = "quick_messages";
     setFormValues((prevState) => ({
       ...prevState,
-      ["quick_messages"]: messages,
+      [new_key]: messages,
     }));
   };
-  console.log(formValues);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -97,6 +112,8 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
                 onChange={(value, delta, source) =>
                   handleEditorChange(value, id, source)
                 }
+                modules={quillModules}
+                theme="snow"
               />
             </div>
           );
@@ -114,16 +131,7 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
           return (
             <div className="form-group" key={id}>
               <label htmlFor={id}>{label}</label>
-              {type === "textarea" ? (
-                <textarea
-                  className="form-control"
-                  name={id}
-                  id={id}
-                  value={value}
-                  onChange={handleInputChange}
-                  rows="3"
-                />
-              ) : (
+              {
                 <input
                   type={type}
                   className="form-control"
@@ -132,7 +140,7 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
                   value={value}
                   onChange={handleInputChange}
                 />
-              )}
+              }
             </div>
           );
         }
