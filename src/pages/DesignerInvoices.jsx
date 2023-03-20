@@ -56,6 +56,7 @@ function DesignerInvoices({
         // Show success message to user
         toast.success(data.message);
         setAllInvoices(data.invoices);
+        setFilteredInvoices(data.invoices);
       } else {
         // Show error message to user
         toast.error(data.message);
@@ -81,15 +82,16 @@ function DesignerInvoices({
         </td>
         <td>{invoice.designer}</td>
         <td>{invoice.invoice_date}</td>
-        <td>
-          <button
-            className="btn btn-danger"
-            onClick={() => onInvoiceDelete(invoice.post_id)}
-            disabled={UserRole !== "admin"}
-          >
-            Delete
-          </button>
-        </td>
+        {UserRole !== "admin" && (
+          <td>
+            <button
+              className="btn btn-danger"
+              onClick={() => onInvoiceDelete(invoice.post_id)}
+            >
+              Delete
+            </button>
+          </td>
+        )}
       </tr>
     ));
   };
@@ -187,17 +189,19 @@ function DesignerInvoices({
         </div>
       )}
 
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Invoice Comment</th>
-            <th>Download</th>
-            <th>Designer</th>
-            <th>Uploaded Date</th>
-          </tr>
-        </thead>
-        <tbody>{renderInvoices()}</tbody>
-      </table>
+      <div class="table-responsive">
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Invoice Comment</th>
+              <th>Download</th>
+              <th>Designer</th>
+              <th>Uploaded Date</th>
+            </tr>
+          </thead>
+          <tbody>{renderInvoices()}</tbody>
+        </table>
+      </div>
     </div>
   );
 }

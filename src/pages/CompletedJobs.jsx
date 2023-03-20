@@ -156,55 +156,57 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
           endDate={DateBefore}
         />
       )}
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Job ID</th>
-            <th>Order ID</th>
-            <th>Order Date</th>
-            {UserRole !== "customer" && <th>Job Price</th>}
-            <th>Client Comments</th>
-            {UserRole === "customer" && <th>Case No</th>}
-            <th>Download File</th>
-            <th>Date Completed</th>
-            <th>Comment & Notify</th>
-            {UserRole === "admin" && <th>Designer Name</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredJobs.map((job) => (
-            <tr key={job.jobID}>
-              <td>{job.jobID}</td>
-              <td>{job.orderID}</td>
-              <td>{job.orderDate}</td>
-              {UserRole !== "customer" && (
-                <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
-              )}
-              <td>
-                <ReadMoreText text={job.clientComment} maxLength={20} />
-              </td>
-              {UserRole === "customer" && <td>{job.caseNo}</td>}
-              <td className="text-center">
-                <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                  {get_job_thumb(job)}
-                </a>
-              </td>
-              <td>{job.dateCompleted}</td>
-              <td>
-                <Button
-                  variant="success"
-                  onClick={() => onJobUpdate(job.orderID)}
-                >
-                  {getButtonTitle()}
-                </Button>
-              </td>
-              {UserRole === "admin" && (
-                <td>{job.jobDesigner.data.display_name}</td>
-              )}
+      <div class="table-responsive">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Job ID</th>
+              <th>Order ID</th>
+              <th>Order Date</th>
+              {UserRole !== "customer" && <th>Job Price</th>}
+              <th>Client Comments</th>
+              {UserRole === "customer" && <th>Case No</th>}
+              <th>Download File</th>
+              <th>Date Completed</th>
+              <th>Comment & Notify</th>
+              {UserRole === "admin" && <th>Designer Name</th>}
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {filteredJobs.map((job) => (
+              <tr key={job.jobID}>
+                <td>{job.jobID}</td>
+                <td>{job.orderID}</td>
+                <td>{job.orderDate}</td>
+                {UserRole !== "customer" && (
+                  <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
+                )}
+                <td>
+                  <ReadMoreText text={job.clientComment} maxLength={20} />
+                </td>
+                {UserRole === "customer" && <td>{job.caseNo}</td>}
+                <td className="text-center">
+                  <a href={job.fileDownlload} target="_blank" rel="noreferrer">
+                    {get_job_thumb(job)}
+                  </a>
+                </td>
+                <td>{job.dateCompleted}</td>
+                <td>
+                  <Button
+                    variant="success"
+                    onClick={() => onJobUpdate(job.orderID)}
+                  >
+                    {getButtonTitle()}
+                  </Button>
+                </td>
+                {UserRole === "admin" && (
+                  <td>{job.jobDesigner.data.display_name}</td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
     </div>
   );
 };

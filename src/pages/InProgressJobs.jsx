@@ -187,63 +187,67 @@ const InProgressJobsView = ({
         )}
       </div>
       <p>Total Jobs: {filteredJobs.length}</p>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Job ID</th>
-            <th>Order ID</th>
-            <th>Order Date</th>
-            <th>Jobs Status</th>
-            <th>Job Price</th>
-            <th>Client Comments</th>
-            {UserRole === "customer" && <th>Case No</th>}
-            <th>Download File</th>
-            <th>Comment & Notify</th>
-            {UserRole === "admin" && <th>Designer Name</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredJobs.map((job) => (
-            <tr key={job.jobID}>
-              <td>{job.jobID}</td>
-              <td>{job.orderID}</td>
-              <td>{job.orderDate}</td>
-              <td>{getStatusLabel(job.jobStatus)}</td>
-              <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
-              <td>
-                <ReadMoreText text={job.clientComment} maxLength={20} />
-              </td>
-              {UserRole === "customer" && <td>{job.caseNo}</td>}
-              <td className="text-center">
-                <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                  {get_job_thumb(job)}
-                </a>
-              </td>
-              <td>
-                <Button
-                  variant="success"
-                  onClick={() => onJobUpdate(job.orderID)}
-                >
-                  {getButtonTitle()}
-                </Button>
-              </td>
-              {UserRole === "admin" && (
-                <td>
-                  <p>
-                    {job.jobDesigner.data.display_name ||
-                      job.jobDesigner.data.user_email}
-                    <Button onClick={() => handleSeeRequests(job)}>
-                      Change Designer
-                    </Button>
-                  </p>
-                </td>
-              )}
+      <div class="table-responsive">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Job ID</th>
+              <th>Order ID</th>
+              <th>Order Date</th>
+              <th>Jobs Status</th>
+              {UserRole !== "customer" && <th>Job Price</th>}
+              <th>Client Comments</th>
+              {UserRole === "customer" && <th>Case No</th>}
+              <th>Download File</th>
+              <th>Comment & Notify</th>
+              {UserRole === "admin" && <th>Designer Name</th>}
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {filteredJobs.map((job) => (
+              <tr key={job.jobID}>
+                <td>{job.jobID}</td>
+                <td>{job.orderID}</td>
+                <td>{job.orderDate}</td>
+                <td>{getStatusLabel(job.jobStatus)}</td>
+                {UserRole !== "customer" && (
+                  <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
+                )}
+                <td>
+                  <ReadMoreText text={job.clientComment} maxLength={20} />
+                </td>
+                {UserRole === "customer" && <td>{job.caseNo}</td>}
+                <td className="text-center">
+                  <a href={job.fileDownlload} target="_blank" rel="noreferrer">
+                    {get_job_thumb(job)}
+                  </a>
+                </td>
+                <td>
+                  <Button
+                    variant="success"
+                    onClick={() => onJobUpdate(job.orderID)}
+                  >
+                    {getButtonTitle()}
+                  </Button>
+                </td>
+                {UserRole === "admin" && (
+                  <td>
+                    <p>
+                      {job.jobDesigner.data.display_name ||
+                        job.jobDesigner.data.user_email}
+                      <Button onClick={() => handleSeeRequests(job)}>
+                        Change Designer
+                      </Button>
+                    </p>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
-      {/* Render modal */}
+      {/* Change Designer */}
 
       {selectedJob && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>

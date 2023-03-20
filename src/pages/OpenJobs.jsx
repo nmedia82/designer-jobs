@@ -11,6 +11,7 @@ const OpenJobsView = ({
   UserRole,
   UserID,
   allowDesignersToPick,
+  DesignerUsers,
 }) => {
   const [openJobs, setOpenJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -103,59 +104,67 @@ const OpenJobsView = ({
             : ""}
         </span>
       </p>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Job ID</th>
-            <th>Order ID</th>
-            <th>Order Date</th>
-            <th>Product Name</th>
-            <th>Job Price</th>
-            <th>Client Comments</th>
-            {UserRole === "customer" && <th>Case No</th>}
-            <th>Download File</th>
-            {UserRole === "designer" && <th>Request a Pick</th>}
-            {UserRole === "admin" && <th>See Requests</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {openJobs.map((job) => (
-            <tr key={job.jobID}>
-              <td>{job.jobID}</td>
-              <td>{job.orderID}</td>
-              <td>{job.orderDate}</td>
-              <td>{job.itemName}</td>
-              <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
-              <td>
-                <ReadMoreText text={job.clientComment} maxLength={20} />
-              </td>
-              {UserRole === "customer" && <td>{job.caseNo}</td>}
-              <td className="text-center">
-                <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                  {get_job_thumb(job)}
-                </a>
-              </td>
-              <td>
-                {UserRole === "designer" && (
-                  <>
-                    <Button
-                      onClick={() => handleRequestPick(job.orderID)}
-                      disabled={disableRequest(job.orderID)}
-                    >
-                      Request a Pick
-                    </Button>
-                  </>
-                )}
-                {UserRole === "admin" && (
-                  <Button onClick={() => handleSeeRequests(job)}>
-                    See Requests
-                  </Button>
-                )}
-              </td>
+      <div className="table-responsive">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Job ID</th>
+              <th>Order ID</th>
+              <th>Order Date</th>
+              <th>Product Name</th>
+              {UserRole !== "customer" && <th>Job Price</th>}
+              <th>Client Comments</th>
+              {UserRole === "customer" && <th>Case No</th>}
+              <th>Download File</th>
+              {UserRole !== "customer" && (
+                <th>
+                  {UserRole === "admin" ? "Request/Assign" : "Request a Pick"}
+                </th>
+              )}
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {openJobs.map((job) => (
+              <tr key={job.jobID}>
+                <td>{job.jobID}</td>
+                <td>{job.orderID}</td>
+                <td>{job.orderDate}</td>
+                <td>{job.itemName}</td>
+                {UserRole !== "customer" && (
+                  <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
+                )}
+                <td>
+                  <ReadMoreText text={job.clientComment} maxLength={20} />
+                </td>
+                {UserRole === "customer" && <td>{job.caseNo}</td>}
+                <td className="text-center">
+                  <a href={job.fileDownlload} target="_blank" rel="noreferrer">
+                    {get_job_thumb(job)}
+                  </a>
+                </td>
+                {UserRole !== "customer" && (
+                  <td>
+                    <>
+                      {UserRole === "admin" ? (
+                        <Button onClick={() => handleSeeRequests(job)}>
+                          Request/Assign
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => handleRequestPick(job.orderID)}
+                          disabled={disableRequest(job.orderID)}
+                        >
+                          Request a Pick
+                        </Button>
+                      )}
+                    </>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
       {/* Render modal */}
 
@@ -166,44 +175,74 @@ const OpenJobsView = ({
           </Modal.Header>
           <Modal.Body>
             <Container>
-              {/* <p className="d-flex">
-                <input
-                  type="text"
-                  className="form-control m-1"
-                  placeholder="Pick your self: email"
-                />
-                <Button className="btn-sm">Select</Button>
-              </p> */}
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>User Name</th>
-                    <th>Email</th>
-                    <th>Select User</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedJob.pickedRequests.map((user) => (
-                    <tr key={user.id}>
-                      <td>{user.data.user_login}</td>
-                      <td>{user.data.user_email}</td>
-                      <td>
-                        <Button
-                          variant="primary"
-                          onClick={() =>
-                            handleUserPickedByAdmin(
-                              selectedJob.orderID,
-                              user.ID
-                            )
-                          }
-                        >
-                          Select User
-                        </Button>
-                      </td>
+              <div className="table-responsive">
+                <h3>Requests ({selectedJob.pickedRequests.length})</h3>
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>User Name</th>
+                      <th>Email</th>
+                      <th>Select User</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {selectedJob.pickedRequests.map((user) => (
+                      <tr key={user.id}>
+                        <td>{user.data.user_login}</td>
+                        <td>{user.data.user_email}</td>
+                        <td>
+                          <Button
+                            variant="primary"
+                            onClick={() =>
+                              handleUserPickedByAdmin(
+                                selectedJob.orderID,
+                                user.ID
+                              )
+                            }
+                          >
+                            Select User
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="table-responsive">
+                <h3>Choose Designer ({DesignerUsers.length})</h3>
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>User Name</th>
+                      <th>Email</th>
+                      <th>Select User</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {DesignerUsers.filter((user) => user.id !== 0).map(
+                      (user) => (
+                        <tr key={user.id}>
+                          <td>{user.display_name}</td>
+                          <td>{user.email}</td>
+                          <td>
+                            <Button
+                              variant="primary"
+                              onClick={() =>
+                                handleUserPickedByAdmin(
+                                  selectedJob.orderID,
+                                  user.id
+                                )
+                              }
+                            >
+                              Select User
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </Container>
           </Modal.Body>
 

@@ -129,42 +129,44 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
         )}
       </div>
       <p>Total Jobs: {filteredJobs.length}</p>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Job ID</th>
-            <th>Order ID</th>
-            <th>Order Date</th>
-            <th>Job Price</th>
-            <th>Client Comments</th>
-            <th>Download File</th>
-            <th>Date Cancelled</th>
-            {UserRole === "admin" && <th>Designer Name</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredJobs.map((job) => (
-            <tr key={job.jobID}>
-              <td>{job.jobID}</td>
-              <td>{job.orderID}</td>
-              <td>{job.orderDate}</td>
-              <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
-              <td>
-                <ReadMoreText text={job.clientComment} maxLength={20} />
-              </td>
-              <td className="text-center">
-                <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                  {get_job_thumb(job)}
-                </a>
-              </td>
-              <td>{job.dateCancelled}</td>
-              {UserRole === "admin" && (
-                <td>{job.jobDesigner.data.display_name}</td>
-              )}
+      <div class="table-responsive">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Job ID</th>
+              <th>Order ID</th>
+              <th>Order Date</th>
+              <th>Job Price</th>
+              <th>Client Comments</th>
+              <th>Download File</th>
+              <th>Date Cancelled</th>
+              {UserRole === "admin" && <th>Designer Name</th>}
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {filteredJobs.map((job) => (
+              <tr key={job.jobID}>
+                <td>{job.jobID}</td>
+                <td>{job.orderID}</td>
+                <td>{job.orderDate}</td>
+                <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
+                <td>
+                  <ReadMoreText text={job.clientComment} maxLength={20} />
+                </td>
+                <td className="text-center">
+                  <a href={job.fileDownlload} target="_blank" rel="noreferrer">
+                    {get_job_thumb(job)}
+                  </a>
+                </td>
+                <td>{job.dateCancelled}</td>
+                {UserRole === "admin" && (
+                  <td>{job.jobDesigner.data.display_name}</td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
     </div>
   );
 };

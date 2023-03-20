@@ -177,6 +177,7 @@ function Dashboard({ onLogout, User }) {
             UserRole={UserRole}
             UserID={UserID}
             allowDesignersToPick={allowDesignersToPick()}
+            DesignerUsers={DesignerUsers}
           />
         );
 

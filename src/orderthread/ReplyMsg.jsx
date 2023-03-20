@@ -186,7 +186,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
       </Box>
 
       {/* Quick Messages */}
-      {quick_messages.length > 0 && (
+      {quick_messages.length > 0 && UserRole !== "customer" && (
         <QuickReplies quick_messages={quick_messages} />
       )}
     </Box>
