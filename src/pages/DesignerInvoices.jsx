@@ -82,7 +82,7 @@ function DesignerInvoices({
         </td>
         <td>{invoice.designer}</td>
         <td>{invoice.invoice_date}</td>
-        {UserRole !== "admin" && (
+        {UserRole === "admin" && (
           <td>
             <button
               className="btn btn-danger"
@@ -197,6 +197,7 @@ function DesignerInvoices({
               <th>Download</th>
               <th>Designer</th>
               <th>Uploaded Date</th>
+              {UserRole === "admin" && <td>Delete</td>}
             </tr>
           </thead>
           <tbody>{renderInvoices()}</tbody>
