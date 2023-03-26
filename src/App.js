@@ -21,8 +21,9 @@ function App() {
       const { data: user_data } = jwtDecode(token);
       login_user_locally(user_data);
       urlParams.delete("token");
-      const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+      const newUrl = `${window.location.pathname}`;
       window.history.replaceState({}, "", newUrl);
+      window.location.reload();
     }
 
     setUser(user);

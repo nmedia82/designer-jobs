@@ -39,3 +39,7 @@ export function get_job_thumb(job) {
     />
   );
 }
+
+export function get_preview_thumb() {
+  return process.env.PUBLIC_URL + "/download-icon.png";
+}

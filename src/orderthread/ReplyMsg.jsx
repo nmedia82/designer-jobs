@@ -7,7 +7,11 @@ import { useState } from "react";
 import { common } from "@mui/material/colors";
 import Attachments from "./Attachments";
 import { DeleteOutline, SendOutlined } from "@mui/icons-material";
-import { get_setting, wooconvo_makeid } from "./../services/helper";
+import {
+  get_preview_thumb,
+  get_setting,
+  wooconvo_makeid,
+} from "./../services/helper";
 import { Button } from "react-bootstrap";
 import { getUserRole } from "../services/auth";
 import QuickReplies from "./QuickReply";
@@ -74,19 +78,23 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
       return fileUploaded[f];
     });
     const files = [...Files, ...fileUploaded];
-    previewFile(files);
+    // console.log(fileUploaded);
+    // document.getElementById(`preview-${fileUploaded.name}`).src =
+    //   get_preview_thumb();
+    // previewFile(files);
     setFiles(files);
   };
 
-  const previewFile = (files) => {
-    files.forEach((file) => {
-      var reader = new FileReader();
-      reader.onloadend = function () {
-        document.getElementById(`preview-${file.name}`).src = reader.result;
-      };
-      reader.readAsDataURL(file);
-    });
-  };
+  // const previewFile = (files) => {
+  //   files.forEach((file) => {
+  //     var reader = new FileReader();
+  //     reader.onloadend = function () {
+  //       document.getElementById(`preview-${file.name}`).src =
+  //         get_preview_thumb();
+  //     };
+  //     reader.readAsDataURL(file);
+  //   });
+  // };
 
   const hanldeImageRemove = (file_id) => {
     const files = [...Files];
@@ -167,6 +175,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
               width={getThumbSize()}
               id={`preview-${file.name}`}
               alt={file.name}
+              src={get_preview_thumb()}
             />
             <p className="preview-thumb-tool">
               <IconButton

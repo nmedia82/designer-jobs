@@ -1,5 +1,6 @@
 {
-  "siteurl": "https://wooconvo.najeebmedia.com",
+  "siteurlz": "https://wooconvo.najeebmedia.com",
+  "siteurl": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -68,6 +69,18 @@
       "id": "max_jobs_limit",
       "label": "Max. Job Limits for Designer",
       "type": "number",
+      "visibility": "admin"
+    },
+    {
+      "id": "max_file_size",
+      "label": "Max file size in KB:",
+      "type": "number",
+      "visibility": "admin"
+    },
+    {
+      "id": "file_types_allowed",
+      "label": "Filetypes seperated by comma like: obj,stl,step,fbx:",
+      "type": "text",
       "visibility": "admin"
     },
     {
