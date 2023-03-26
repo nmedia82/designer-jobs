@@ -1,7 +1,7 @@
 {
   "name": "designer-jobs",
   "version": "0.1.0",
-  "homepage": "https://nmedia82.github.io/designer-jobs",
+  "homepage": "https://cad-labs.com/design",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
