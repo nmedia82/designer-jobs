@@ -67,9 +67,13 @@ const OpenJobsView = ({
     // console.log(jobs);
   };
 
+  const getTitle = () => {
+    return UserRole === "customer" ? "My Orders" : "All Jobs";
+  };
+
   return (
     <div>
-      <h2>All Jobs</h2>
+      <h2>{getTitle()}</h2>
       <div className="d-flex">
         <div className="me-3">
           <label htmlFor="jobIDFilter" className="me-2">
