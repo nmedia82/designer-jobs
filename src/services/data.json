@@ -66,6 +66,12 @@
       "visibility": "admin"
     },
     {
+      "id": "email_admin_to_designer",
+      "label": "Email message Admin to Designer",
+      "type": "textarea",
+      "visibility": "admin"
+    },
+    {
       "id": "max_jobs_limit",
       "label": "Max. Job Limits for Designer",
       "type": "number",
