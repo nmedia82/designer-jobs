@@ -9,8 +9,7 @@ import {
 } from "react-bootstrap";
 import useLocalStorage from "./../services/useLocalStorage";
 import OpenJobsView from "./OpenJobs";
-import AllPickedJobs from "./AllPickedJobs";
-import data from "./../services/data.json";
+import plugin_data from "./../services/data.json";
 import InProgressJobsView from "./InProgressJobs";
 import CompletedJobsView from "./CompletedJobs";
 import { getUserID, getUserRole } from "../services/auth";
@@ -36,6 +35,7 @@ import { toast } from "react-toastify";
 import DesignerInvoices from "./DesignerInvoices";
 // import AllOrders from "./AllOrders";
 
+const { siteurl, navbars: Navbars_data } = plugin_data;
 const UserRole = getUserRole();
 const UserID = getUserID();
 
@@ -257,20 +257,20 @@ function Dashboard({ onLogout, User }) {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              {data.navbars
-                .filter((nav) => nav.access.includes(UserRole))
-                .map((nav, index) => (
+              {Navbars_data.filter((nav) => nav.access.includes(UserRole)).map(
+                (nav, index) => (
                   <Nav.Link
                     key={index}
                     onClick={() => handleViewChange(nav.slug)}
                   >
                     {getNavTitle(nav)}
                   </Nav.Link>
-                ))}
+                )
+              )}
               {UserRole === "admin" && (
                 <Nav.Link
                   target="__blank"
-                  href="https://wooconvo.najeebmedia.com/wp-admin/edit.php?post_type=shop_order"
+                  href={`${siteurl}/wp-admin/edit.php?post_type=shop_order`}
                 >
                   All Jobs
                 </Nav.Link>
@@ -278,7 +278,7 @@ function Dashboard({ onLogout, User }) {
               {UserRole === "customer" && (
                 <Nav.Link
                   target="__blank"
-                  href="https://wooconvo.najeebmedia.com/my-account/orders/"
+                  href={`${siteurl}/my-account/orders/`}
                 >
                   Back to Orders
                 </Nav.Link>

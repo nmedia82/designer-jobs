@@ -115,6 +115,11 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
     return thum_size;
   };
 
+  const onReplyClick = (message, files) => {
+    setReplyText("");
+    onReplySend(message, files);
+  };
+
   return (
     <Box>
       <Paper
@@ -137,7 +142,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
         <IconButton
           sx={{ p: 1, color: get_setting("icon_color_send_button") }}
           aria-label="Send"
-          onClick={() => onReplySend(ReplyText, Files)}
+          onClick={() => onReplyClick(ReplyText, Files)}
           disabled={ReplyText === "" || validateAttachments()}
         >
           <SendOutlined />
