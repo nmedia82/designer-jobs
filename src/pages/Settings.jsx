@@ -6,6 +6,7 @@ import data from "./../services/data.json";
 import QuickMessages from "./QuickMessages";
 
 let { settings_meta } = data;
+console.log(settings_meta);
 
 const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
   const [formValues, setFormValues] = useState({
@@ -17,6 +18,9 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
     header_note_customers: admin_settings?.header_note_customers || "",
     max_jobs_limit: admin_settings?.max_jobs_limit || "",
     quick_messages: admin_settings?.quick_messages || [],
+    email_admin_to_designer: admin_settings?.email_admin_to_designer || [],
+    max_file_size: admin_settings?.max_file_size || [],
+    file_types_allowed: admin_settings?.file_types_allowed || [],
   });
 
   const quillModules = {
@@ -84,6 +88,7 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
       {settings_meta.map((field) => {
         const { id, label, type, default_value } = field;
         const value = formValues[id] || default_value;
+        console.log(id, value);
         if (type === "checkbox") {
           return (
             <div className="form-group" key={id}>
