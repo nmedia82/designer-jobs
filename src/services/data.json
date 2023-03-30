@@ -1,6 +1,6 @@
 {
-  "siteurl": "https://wooconvo.najeebmedia.com",
-  "siteurlz": "https://cad-labs.com",
+  "siteurlz": "https://wooconvo.najeebmedia.com",
+  "siteurl": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -26,11 +26,6 @@
       "title": "Invoices",
       "slug": "invoices",
       "access": ["admin", "designer"]
-    },
-    {
-      "title": "FAQ",
-      "slug": "faq",
-      "access": ["designer", "customer"]
     }
   ],
   "settings_meta": [
@@ -61,25 +56,13 @@
     {
       "id": "header_note_designers",
       "label": "Header Note for Designers",
-      "type": "tiny",
+      "type": "textarea",
       "visibility": "admin"
     },
     {
       "id": "header_note_customers",
       "label": "Header Note for Customers",
-      "type": "tiny",
-      "visibility": "admin"
-    },
-    {
-      "id": "faq_for_designers",
-      "label": "FAQs for Designers",
-      "type": "tiny",
-      "visibility": "admin"
-    },
-    {
-      "id": "faq_for_customers",
-      "label": "FAQs for Customers",
-      "type": "tiny",
+      "type": "textarea",
       "visibility": "admin"
     },
     {
@@ -103,12 +86,6 @@
     {
       "id": "file_types_allowed",
       "label": "Filetypes seperated by comma like: obj,stl,step,fbx:",
-      "type": "text",
-      "visibility": "admin"
-    },
-    {
-      "id": "tinymce_api_key",
-      "label": "Get API key from https://www.tiny.cloud/",
       "type": "text",
       "visibility": "admin"
     },
