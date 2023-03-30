@@ -65,11 +65,9 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
     setFilteredJobs(filtered);
   };
 
-  // const updateJob = (job) => {
-  //   setSelectedJob(job);
-  //   setShowModal(true);
-  // };
-
+  const getDisplayName = (job) => {
+    const displayName = job?.jobDesigner?.data?.display_name ?? "";
+  };
   return (
     <div>
       <h3>Cancelled Jobs</h3>
@@ -159,9 +157,7 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
                   </a>
                 </td>
                 <td>{job.dateCancelled}</td>
-                {UserRole === "admin" && (
-                  <td>{job.jobDesigner.data.display_name}</td>
-                )}
+                {UserRole === "admin" && <td>{getDisplayName(job)}</td>}
               </tr>
             ))}
           </tbody>

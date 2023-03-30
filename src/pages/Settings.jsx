@@ -1,6 +1,4 @@
 import React, { useState, useRef } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { Editor } from "@tinymce/tinymce-react";
 
 import data from "./../services/data.json";
@@ -53,14 +51,7 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
     }));
   };
 
-  const handleEditorChange = (value, id, source) => {
-    setFormValues((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
-  };
-
-  const handleEditorChange2 = (value, editor) => {
+  const handleEditorChange = (value, editor) => {
     setFormValues((prevState) => ({
       ...prevState,
       [editor.id]: value,
@@ -120,21 +111,6 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
               </div>
             </div>
           );
-        } else if (type === "textarea") {
-          return (
-            <div className="form-group mt-3" key={id}>
-              <label htmlFor={id}>{label}</label>
-              <ReactQuill
-                key={id}
-                value={value}
-                onChange={(value, delta, source) =>
-                  handleEditorChange(value, id, source)
-                }
-                modules={quillModules}
-                theme="snow"
-              />
-            </div>
-          );
         } else if (type === "tiny") {
           return (
             <div className="form-group mt-3" key={id}>
@@ -142,7 +118,7 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
               <Editor
                 id={id}
                 value={value}
-                onEditorChange={handleEditorChange2}
+                onEditorChange={handleEditorChange}
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 apiKey={tinymce_api_key}
                 init={{

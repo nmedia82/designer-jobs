@@ -21,10 +21,10 @@ const Login = ({ onLogin }) => {
           <h1>Login</h1>
           <Form onSubmit={onLoginForm}>
             <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label>Email address or Username</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Username"
+                placeholder="Email address or Username"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
               />
