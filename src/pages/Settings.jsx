@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { Editor } from "@tinymce/tinymce-react";
 
 import data from "./../services/data.json";
 import QuickMessages from "./QuickMessages";
+import { get_setting } from "../services/helper";
 
 let { settings_meta } = data;
-console.log(settings_meta);
 
 const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
   const [formValues, setFormValues] = useState({
@@ -16,12 +17,18 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
     cronjob_days_limit: admin_settings?.cronjob_days_limit || 7,
     header_note_designers: admin_settings?.header_note_designers || "",
     header_note_customers: admin_settings?.header_note_customers || "",
+    faq_for_designers: admin_settings?.faq_for_designers || "",
+    faq_for_customers: admin_settings?.faq_for_customers || "",
     max_jobs_limit: admin_settings?.max_jobs_limit || "",
     quick_messages: admin_settings?.quick_messages || [],
     email_admin_to_designer: admin_settings?.email_admin_to_designer || [],
     max_file_size: admin_settings?.max_file_size || [],
     file_types_allowed: admin_settings?.file_types_allowed || [],
+    tinymce_api_key: admin_settings?.tinymce_api_key || [],
   });
+
+  const editorRef = useRef(null);
+  const tinymce_api_key = get_setting("tinymce_api_key");
 
   const quillModules = {
     toolbar: [
@@ -50,6 +57,13 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
     setFormValues((prevState) => ({
       ...prevState,
       [id]: value,
+    }));
+  };
+
+  const handleEditorChange2 = (value, editor) => {
+    setFormValues((prevState) => ({
+      ...prevState,
+      [editor.id]: value,
     }));
   };
 
@@ -88,7 +102,6 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
       {settings_meta.map((field) => {
         const { id, label, type, default_value } = field;
         const value = formValues[id] || default_value;
-        console.log(id, value);
         if (type === "checkbox") {
           return (
             <div className="form-group" key={id}>
@@ -119,6 +132,50 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
                 }
                 modules={quillModules}
                 theme="snow"
+              />
+            </div>
+          );
+        } else if (type === "tiny") {
+          return (
+            <div className="form-group mt-3" key={id}>
+              <label htmlFor={id}>{label}</label>
+              <Editor
+                id={id}
+                value={value}
+                onEditorChange={handleEditorChange2}
+                onInit={(evt, editor) => (editorRef.current = editor)}
+                apiKey={tinymce_api_key}
+                init={{
+                  height: 200,
+                  menubar: true,
+                  plugins: [
+                    "advlist",
+                    "autolink",
+                    "lists",
+                    "link",
+                    "image",
+                    "charmap",
+                    "preview",
+                    "anchor",
+                    "searchreplace",
+                    "visualblocks",
+                    "code",
+                    "fullscreen",
+                    "insertdatetime",
+                    "media",
+                    "table",
+                    "code",
+                    "help",
+                    "wordcount",
+                  ],
+                  toolbar:
+                    "undo redo | blocks | code" +
+                    "bold italic forecolor | alignleft aligncenter " +
+                    "alignright alignjustify | bullist numlist outdent indent | " +
+                    "removeformat | help",
+                  content_style:
+                    "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                }}
               />
             </div>
           );

@@ -1,5 +1,9 @@
+import { Link } from "@mui/material";
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import data from "./../services/data.json";
+
+const { siteurl } = data;
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -36,9 +40,25 @@ const Login = ({ onLogin }) => {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-3">
-              Submit
-            </Button>
+            <div className="d-flex justify-content-between">
+              <Button
+                id="login-btn"
+                variant="primary"
+                type="submit"
+                className="mt-3"
+              >
+                Submit
+              </Button>
+              <Link
+                href={`${siteurl}/my-account/lost-password/`}
+                id="reset-password-btn"
+                variant="primary"
+                type="submit"
+                className="mt-3 btn btn-info"
+              >
+                Reset password
+              </Link>
+            </div>
           </Form>
         </div>
       </div>

@@ -4,6 +4,17 @@ details {
   padding: 10px;
 }
 
+#login-btn {
+  background-color: #543dae;
+  border-color: #543dae;
+}
+
+#reset-password-btn {
+  background-color: #ffd604;
+  border-color: #ffd604;
+  text-decoration: none;
+}
+
 summary {
   font-weight: bold;
   cursor: pointer;

@@ -33,6 +33,7 @@ import {
 import CancelledJobsView from "./CancelledJobs";
 import { toast } from "react-toastify";
 import DesignerInvoices from "./DesignerInvoices";
+import FAQ from "./FAQ";
 // import AllOrders from "./AllOrders";
 
 const { siteurl, navbars: Navbars_data } = plugin_data;
@@ -218,8 +219,8 @@ function Dashboard({ onLogout, User }) {
             UserRole={UserRole}
           />
         );
-      case "allorders":
-        return null;
+      case "faq":
+        return <FAQ UserRole={UserRole} />;
       case "orderconvo":
         return (
           <OrderConvoHome
