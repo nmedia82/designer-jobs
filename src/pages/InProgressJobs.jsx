@@ -192,7 +192,6 @@ const InProgressJobsView = ({
           <thead>
             <tr>
               <th>Job ID</th>
-              <th>Order ID</th>
               <th>Order Date</th>
               <th>Jobs Status</th>
               {UserRole !== "customer" && <th>Job Price</th>}
@@ -207,7 +206,6 @@ const InProgressJobsView = ({
             {filteredJobs.map((job) => (
               <tr key={job.jobID}>
                 <td>{job.jobID}</td>
-                <td>{job.orderID}</td>
                 <td>{job.orderDate}</td>
                 <td>{getStatusLabel(job.jobStatus)}</td>
                 {UserRole !== "customer" && (

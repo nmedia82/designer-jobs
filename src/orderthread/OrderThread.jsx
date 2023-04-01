@@ -13,6 +13,7 @@ const api_url = get_orderconvo_api_url();
 
 export default function WooConvoThread({
   Order,
+  JobID,
   onBack,
   onOrderStatusUpdate,
   onJobClose,
@@ -113,7 +114,7 @@ export default function WooConvoThread({
         TotalCount={
           FilterThread.filter((thread) => thread.type === "message").length
         }
-        OrderID={order_id}
+        OrderID={JobID}
         Context={context}
         onCollapsed={() => setshowMore(!showMore)}
         showMore={showMore}

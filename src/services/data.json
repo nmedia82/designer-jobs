@@ -53,12 +53,6 @@
       "visibility": "customer"
     },
     {
-      "id": "cronjob_days_limit",
-      "label": "Run CronJob Days Limit",
-      "type": "number",
-      "visibilit": "admin"
-    },
-    {
       "id": "header_note_designers",
       "label": "Header Note for Designers",
       "type": "tiny",
@@ -86,6 +80,12 @@
       "id": "email_admin_to_designer",
       "label": "Email message Admin to Designer",
       "type": "textarea",
+      "visibility": "admin"
+    },
+    {
+      "id": "cronjob_days_limit",
+      "label": "Run CronJob Days Limit",
+      "type": "number",
       "visibility": "admin"
     },
     {

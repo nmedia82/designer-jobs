@@ -12,6 +12,7 @@ const { settings } = pluginData;
 
 function OrderConvoHome({
   OrderID,
+  JobID,
   onBack,
   onOrderStatusUpdate,
   onJobClose,
@@ -29,7 +30,6 @@ function OrderConvoHome({
       setIsWorking(true);
       let { data: order } = await getOrderById(OrderID);
       order = order.data;
-      console.log(order);
       setOrder(order);
       setIsWorking(false);
     };
@@ -49,6 +49,7 @@ function OrderConvoHome({
       {Order && (
         <WooConvoThread
           Order={Order}
+          JobID={JobID}
           onBack={onBack}
           onOrderStatusUpdate={onOrderStatusUpdate}
           onJobClose={onJobClose}

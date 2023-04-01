@@ -23,7 +23,7 @@ function Calculator({ jobs, startDate, endDate }) {
         ))}
       </div>
       <p className="total-earnings">
-        Total Earnings: ${totalEarnings.toFixed(2)}
+        Total Earnings: €{totalEarnings.toFixed(2)}
       </p>
     </div>
   );

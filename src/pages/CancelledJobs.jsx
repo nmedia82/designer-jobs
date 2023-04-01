@@ -133,7 +133,6 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
             <tr>
               <th>Job ID</th>
               <th>Order ID</th>
-              <th>Order Date</th>
               <th>Job Price</th>
               <th>Client Comments</th>
               <th>Download File</th>
@@ -145,7 +144,6 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
             {filteredJobs.map((job) => (
               <tr key={job.jobID}>
                 <td>{job.jobID}</td>
-                <td>{job.orderID}</td>
                 <td>{job.orderDate}</td>
                 <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
                 <td>

@@ -128,6 +128,11 @@ function Dashboard({ onLogout, User }) {
     handleViewChange("orderconvo");
   };
 
+  const getJobIDByOrderID = (order_id) => {
+    const found = InProgressJobs.find((order) => order.orderID === order_id);
+    return found ? found.jobID : "";
+  };
+
   const handleInvoiceDelete = async (id) => {
     const a = window.confirm("Are you sure?");
     if (!a) return;
@@ -225,6 +230,7 @@ function Dashboard({ onLogout, User }) {
         return (
           <OrderConvoHome
             OrderID={JobSelected}
+            JobID={getJobIDByOrderID(JobSelected)}
             onBack={() => handleJobBack(null)}
             onOrderStatusUpdate={handleOrderStatusUpdate}
             onJobClose={handleJobClose}

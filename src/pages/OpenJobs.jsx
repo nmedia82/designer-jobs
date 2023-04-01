@@ -113,7 +113,6 @@ const OpenJobsView = ({
           <thead>
             <tr>
               <th>Job ID</th>
-              <th>Order ID</th>
               <th>Order Date</th>
               <th>Product Name</th>
               {UserRole !== "customer" && <th>Job Price</th>}
@@ -131,7 +130,6 @@ const OpenJobsView = ({
             {openJobs.map((job) => (
               <tr key={job.jobID}>
                 <td>{job.jobID}</td>
-                <td>{job.orderID}</td>
                 <td>{job.orderDate}</td>
                 <td>{job.itemName}</td>
                 {UserRole !== "customer" && (

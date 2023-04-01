@@ -161,7 +161,6 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
           <thead>
             <tr>
               <th>Job ID</th>
-              <th>Order ID</th>
               <th>Order Date</th>
               {UserRole !== "customer" && <th>Job Price</th>}
               <th>Client Comments</th>
@@ -176,7 +175,6 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
             {filteredJobs.map((job) => (
               <tr key={job.jobID}>
                 <td>{job.jobID}</td>
-                <td>{job.orderID}</td>
                 <td>{job.orderDate}</td>
                 {UserRole !== "customer" && (
                   <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />

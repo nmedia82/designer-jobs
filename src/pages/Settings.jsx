@@ -28,21 +28,6 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
   const editorRef = useRef(null);
   const tinymce_api_key = get_setting("tinymce_api_key");
 
-  const quillModules = {
-    toolbar: [
-      [{ font: [] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ color: [] }, { background: [] }],
-      [{ script: "sub" }, { script: "super" }],
-      ["blockquote", "code-block"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
-      ["link"],
-      ["clean"],
-    ],
-  };
-
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormValues((prevState) => ({
