@@ -16,7 +16,12 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import { DownloadOutlined } from "@mui/icons-material";
 import { get_setting } from "./../services/helper";
 
-export default function CustomerMsg({ message, showMore, onDownload }) {
+export default function CustomerMsg({
+  message,
+  showMore,
+  onDownload,
+  UserRole,
+}) {
   function stringAvatar(name) {
     return {
       children: `${name.split(" ")[0][0]}`,
@@ -30,6 +35,12 @@ export default function CustomerMsg({ message, showMore, onDownload }) {
   const handleClick = () => {
     setOpen(!open);
   };
+
+  const getDisplayName = (message) => {
+    if (UserRole === "designer" && message.user_type === "customer")
+      return "Customer";
+    return message.user_name;
+  };
   return (
     <div>
       <ListItemButton onClick={handleClick}>
@@ -39,7 +50,7 @@ export default function CustomerMsg({ message, showMore, onDownload }) {
               bgcolor:
                 message.user_type === "customer" ? green[600] : blue[600],
             }}
-            {...stringAvatar(message.user_name.toUpperCase())}
+            {...stringAvatar(getDisplayName(message).toUpperCase())}
           />
         </ListItemAvatar>
         <ListItemText
@@ -50,7 +61,7 @@ export default function CustomerMsg({ message, showMore, onDownload }) {
                 variant="span"
                 color="text.primary"
               >
-                {message.user_name}
+                {getDisplayName(message)}
               </Typography>
               <Typography
                 sx={{ display: "inline", ml: 2 }}

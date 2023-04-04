@@ -41,6 +41,7 @@ function MessagesBody({ Thread, showMore, onDownload }) {
                 message={msg}
                 showMore={showMore}
                 onDownload={onDownload}
+                UserRole={UserRole}
               />
 
               <Divider variant="inset" component="h2" />

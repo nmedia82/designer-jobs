@@ -120,11 +120,17 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
     onReplySend(message, files);
   };
 
+  const onEnterKeyPressed = (e) => {
+    if (e.key === "Enter") {
+      onReplyClick(ReplyText, Files);
+    }
+  };
+
   return (
     <Box>
       <Paper
         className="reply"
-        component="form"
+        component="div"
         sx={{ p: "2px 4px", display: "flex", bgcolor: common }}
       >
         <Attachments onFileSelected={handleFileSelected} />
@@ -132,6 +138,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
         <TextField
           value={ReplyText}
           onChange={(e) => onReplyTextChanged(e)}
+          onKeyDown={onEnterKeyPressed}
           fullWidth
           id="standard-basic"
           variant="standard"
