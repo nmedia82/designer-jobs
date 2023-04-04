@@ -30,6 +30,8 @@ import {
   getInvoices,
   deleteInvoice,
 } from "../services/model";
+import { parse } from "query-string";
+import queryString from "query-string";
 import CancelledJobsView from "./CancelledJobs";
 import { toast } from "react-toastify";
 import DesignerInvoices from "./DesignerInvoices";
@@ -54,6 +56,8 @@ function Dashboard({ onLogout, User }) {
   const [Statuses, setStatuses] = useState([]);
   const [DesignerUsers, setDesignerUsers] = useState([]);
   const [Invoices, setInvoices] = useState([]);
+  const urlParams = queryString.parse(window.location.search);
+  const pageParam = urlParams.page;
 
   useEffect(() => {
     const loadData = async () => {
@@ -111,7 +115,8 @@ function Dashboard({ onLogout, User }) {
     };
 
     loadData();
-  }, [setSettings, setMyJobs, setMyRequests]);
+    if (pageParam) setView(pageParam);
+  }, [setSettings, setMyJobs, setMyRequests, pageParam]);
 
   const handleViewChange = (view) => {
     setView(view);
