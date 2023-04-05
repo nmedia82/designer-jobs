@@ -178,11 +178,14 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
           </Typography>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography className="m-1">
+                Did you read the message above?
+              </Typography>
               <FormControlLabel
                 control={
                   <Checkbox checked={isRead} onChange={handleCheckboxChange} />
                 }
-                label="Yes, I read this"
+                label="Yes, I have read it."
                 labelPlacement="end"
               />
               <Button disabled={!isRead} onClick={onJobClose}>
