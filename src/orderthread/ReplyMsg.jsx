@@ -189,7 +189,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
                 labelPlacement="end"
               />
               <Button disabled={!isRead} onClick={onJobClose}>
-                Approve and close this task
+                I approve the design file
               </Button>
             </Box>
           </div>
