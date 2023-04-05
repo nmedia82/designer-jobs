@@ -2,7 +2,13 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import { Box, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { common } from "@mui/material/colors";
 import Attachments from "./Attachments";
@@ -21,6 +27,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
   //Emoji
   const [ReplyText, setReplyText] = useState("");
   const [Files, setFiles] = useState([]);
+  const [isRead, setIsRead] = useState(false);
 
   const quick_messages = get_setting("quick_messages");
 
@@ -126,6 +133,9 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
     }
   };
 
+  const handleCheckboxChange = (event) => {
+    setIsRead(event.target.checked);
+  };
   return (
     <Box>
       <Paper
@@ -159,13 +169,27 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
       {/* Notice to customer */}
       {UserRole !== "designer" && (
         <Box>
-          <Typography color={"green"}>
-            If you are satisfied with the result and have downloaded the final
-            file, please click the Next button. Please note: This design
-            proposal will then be accepted by you and you will not be able to
-            ask any further changes.
+          <Typography>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: get_setting("agreement_text_for_customer"),
+              }}
+            ></div>
           </Typography>
-          <Button onClick={onJobClose}>Approve and close this task</Button>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <FormControlLabel
+                control={
+                  <Checkbox checked={isRead} onChange={handleCheckboxChange} />
+                }
+                label="Yes, I read this"
+                labelPlacement="end"
+              />
+              <Button disabled={!isRead} onClick={onJobClose}>
+                Approve and close this task
+              </Button>
+            </Box>
+          </div>
         </Box>
       )}
 

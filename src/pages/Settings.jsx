@@ -19,10 +19,12 @@ const AdminSettings = ({ admin_settings, onSettingsSave, UserRole }) => {
     faq_for_customers: admin_settings?.faq_for_customers || "",
     max_jobs_limit: admin_settings?.max_jobs_limit || "",
     quick_messages: admin_settings?.quick_messages || [],
-    email_admin_to_designer: admin_settings?.email_admin_to_designer || [],
-    max_file_size: admin_settings?.max_file_size || [],
-    file_types_allowed: admin_settings?.file_types_allowed || [],
-    tinymce_api_key: admin_settings?.tinymce_api_key || [],
+    email_admin_to_designer: admin_settings?.email_admin_to_designer || "",
+    max_file_size: admin_settings?.max_file_size || "",
+    file_types_allowed: admin_settings?.file_types_allowed || "",
+    tinymce_api_key: admin_settings?.tinymce_api_key || "",
+    agreement_text_for_customer:
+      admin_settings?.agreement_text_for_customer || "",
   });
 
   const editorRef = useRef(null);

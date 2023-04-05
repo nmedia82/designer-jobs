@@ -1,6 +1,6 @@
 {
-  "siteurlz": "https://wooconvo.najeebmedia.com",
-  "siteurl": "https://cad-labs.com",
+  "siteurl": "https://wooconvo.najeebmedia.com",
+  "siteurlz": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -73,6 +73,12 @@
     {
       "id": "faq_for_customers",
       "label": "FAQs for Customers",
+      "type": "tiny",
+      "visibility": "admin"
+    },
+    {
+      "id": "agreement_text_for_customer",
+      "label": "Agreement Content",
       "type": "tiny",
       "visibility": "admin"
     },
