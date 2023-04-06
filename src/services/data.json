@@ -38,91 +38,106 @@
       "id": "automatic_mode",
       "label": "Enable Automatic Mode",
       "type": "checkbox",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "general"
     },
     {
       "id": "disable_emails_designers",
       "label": "Disable Email Notification for Designers",
       "type": "checkbox",
-      "visibility": "designer"
+      "visibility": "designer",
+      "tab": "general"
     },
     {
       "id": "disable_emails_customers",
       "label": "Disable Email Notification for Customers",
       "type": "checkbox",
-      "visibility": "customer"
+      "visibility": "customer",
+      "tab": "content"
     },
     {
       "id": "header_note_designers",
       "label": "Header Note for Designers",
       "type": "tiny",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "content"
     },
     {
       "id": "header_note_customers",
       "label": "Header Note for Customers",
       "type": "tiny",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "content"
     },
     {
       "id": "faq_for_designers",
       "label": "FAQs for Designers",
       "type": "tiny",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "content"
     },
     {
       "id": "faq_for_customers",
       "label": "FAQs for Customers",
       "type": "tiny",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "content"
     },
     {
       "id": "agreement_text_for_customer",
       "label": "Agreement Content",
       "type": "tiny",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "content"
     },
     {
       "id": "email_admin_to_designer",
       "label": "Email message Admin to Designer",
       "type": "textarea",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "content"
     },
     {
       "id": "cronjob_days_limit",
       "label": "Run CronJob Days Limit",
       "type": "number",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "general"
     },
     {
       "id": "max_jobs_limit",
       "label": "Max. Job Limits for Designer",
       "type": "number",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "general"
     },
     {
       "id": "max_file_size",
       "label": "Max file size in KB:",
       "type": "number",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "general"
     },
     {
       "id": "file_types_allowed",
       "label": "Filetypes seperated by comma like: obj,stl,step,fbx:",
       "type": "text",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "general"
     },
     {
       "id": "tinymce_api_key",
       "label": "Get API key from https://www.tiny.cloud/",
       "type": "text",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "general"
     },
     {
       "id": "quick_messages",
       "label": "Short Codes:",
       "type": "repeater",
-      "visibility": "admin"
+      "visibility": "admin",
+      "tab": "general"
     }
   ]
 }
