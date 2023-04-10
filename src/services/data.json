@@ -1,6 +1,6 @@
 {
-  "siteurlz": "https://wooconvo.najeebmedia.com",
-  "siteurl": "https://cad-labs.com",
+  "siteurl": "https://wooconvo.najeebmedia.com",
+  "siteurlz": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -46,7 +46,8 @@
       "label": "Disable Email Notification for Designers",
       "type": "checkbox",
       "visibility": "designer",
-      "tab": "general"
+      "tab": "general",
+      "col": 6
     },
     {
       "id": "disable_emails_customers",
@@ -102,35 +103,40 @@
       "label": "Run CronJob Days Limit",
       "type": "number",
       "visibility": "admin",
-      "tab": "general"
+      "tab": "general",
+      "col": 6
     },
     {
       "id": "max_jobs_limit",
       "label": "Max. Job Limits for Designer",
       "type": "number",
       "visibility": "admin",
-      "tab": "general"
+      "tab": "general",
+      "col": 6
     },
     {
       "id": "max_file_size",
       "label": "Max file size in KB:",
       "type": "number",
       "visibility": "admin",
-      "tab": "general"
+      "tab": "general",
+      "col": 6
     },
     {
       "id": "file_types_allowed",
       "label": "Filetypes seperated by comma like: obj,stl,step,fbx:",
       "type": "text",
       "visibility": "admin",
-      "tab": "general"
+      "tab": "general",
+      "col": 6
     },
     {
       "id": "tinymce_api_key",
       "label": "Get API key from https://www.tiny.cloud/",
       "type": "text",
       "visibility": "admin",
-      "tab": "general"
+      "tab": "general",
+      "col": 6
     },
     {
       "id": "quick_messages",
@@ -138,6 +144,14 @@
       "type": "repeater",
       "visibility": "admin",
       "tab": "general"
+    },
+    {
+      "id": "label_job_id",
+      "label": "Change Job Id label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
     }
   ]
 }

@@ -231,8 +231,8 @@ const InProgressJobsView = ({
                 {UserRole === "admin" && (
                   <td>
                     <p>
-                      {job.jobDesigner.data.display_name ||
-                        job.jobDesigner.data.user_email}
+                      {job?.jobDesigner?.data?.display_name ||
+                        job?.jobDesigner?.data?.user_email}
                       <Button onClick={() => handleSeeRequests(job)}>
                         Change Designer
                       </Button>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReadMoreText from "../common/ReadMore";
-import { get_job_thumb } from "../services/helper";
+import { get_job_thumb, get_setting } from "../services/helper";
 import { getJobByDate, requestJob } from "../services/model";
 
 const OpenJobsView = ({
@@ -112,7 +112,7 @@ const OpenJobsView = ({
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Job ID</th>
+              <th>{get_setting("label_job_id")}</th>
               <th>Order Date</th>
               <th>Product Name</th>
               {UserRole !== "customer" && <th>Job Price</th>}

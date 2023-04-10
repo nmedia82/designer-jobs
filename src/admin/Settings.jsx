@@ -83,35 +83,58 @@ function AdminSettings({ admin_settings, onSettingsSave, UserRole }) {
           <Col sm={9}>
             <Tab.Content>
               <Tab.Pane eventKey="general">
-                {FieldMeta.filter((field) => field.tab === "general").map(
-                  (field) => (
-                    <RenderField
-                      field={field}
-                      QuickMessages={QuickMessages}
-                      formValues={formValues}
-                      onInputChange={handleInputChange}
-                      onEditorChange={handleEditorChange}
-                      onQuickMessageChange={handleQuickMessageChange}
-                    />
-                  )
-                )}
+                <Row className="m-10">
+                  {FieldMeta.filter((field) => field.tab === "general").map(
+                    (field) => (
+                      <Col sm={field.col || 12}>
+                        <RenderField
+                          field={field}
+                          QuickMessages={QuickMessages}
+                          formValues={formValues}
+                          onInputChange={handleInputChange}
+                          onEditorChange={handleEditorChange}
+                          onQuickMessageChange={handleQuickMessageChange}
+                        />
+                      </Col>
+                    )
+                  )}
+                </Row>
               </Tab.Pane>
               <Tab.Pane eventKey="content">
-                {FieldMeta.filter((field) => field.tab === "content").map(
-                  (field) => (
-                    <RenderField
-                      field={field}
-                      QuickMessages={QuickMessages}
-                      formValues={formValues}
-                      onInputChange={handleInputChange}
-                      onEditorChange={handleEditorChange}
-                      onQuickMessageChange={handleQuickMessageChange}
-                    />
-                  )
-                )}
+                <Row className="m-10">
+                  {FieldMeta.filter((field) => field.tab === "content").map(
+                    (field) => (
+                      <Col sm={field.col || 12}>
+                        <RenderField
+                          field={field}
+                          QuickMessages={QuickMessages}
+                          formValues={formValues}
+                          onInputChange={handleInputChange}
+                          onEditorChange={handleEditorChange}
+                          onQuickMessageChange={handleQuickMessageChange}
+                        />
+                      </Col>
+                    )
+                  )}
+                </Row>
               </Tab.Pane>
               <Tab.Pane eventKey="design">
-                <h2>Hi You</h2>
+                <Row className="m-10">
+                  {FieldMeta.filter((field) => field.tab === "design").map(
+                    (field) => (
+                      <Col sm={field.col || 12}>
+                        <RenderField
+                          field={field}
+                          QuickMessages={QuickMessages}
+                          formValues={formValues}
+                          onInputChange={handleInputChange}
+                          onEditorChange={handleEditorChange}
+                          onQuickMessageChange={handleQuickMessageChange}
+                        />
+                      </Col>
+                    )
+                  )}
+                </Row>
               </Tab.Pane>
             </Tab.Content>
           </Col>

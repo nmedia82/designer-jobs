@@ -198,7 +198,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
                   </Button>
                 </td>
                 {UserRole === "admin" && (
-                  <td>{job.jobDesigner.data.display_name}</td>
+                  <td>{job?.jobDesigner?.data?.display_name}</td>
                 )}
               </tr>
             ))}
