@@ -189,7 +189,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
                   </a>
                 </td>
                 <td>{job.dateCompleted}</td>
-                <td>
+                <td style={{ textAlign: "center" }}>
                   <Button
                     variant="success"
                     onClick={() => onJobUpdate(job.orderID)}
@@ -198,7 +198,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
                   </Button>
                 </td>
                 {UserRole === "admin" && (
-                  <td>{job?.jobDesigner?.data?.display_name}</td>
+                  <td style={{ textAlign: "center" }}>{job?.jobDesigner?.data?.display_name}</td>
                 )}
               </tr>
             ))}

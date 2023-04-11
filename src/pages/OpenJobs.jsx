@@ -68,7 +68,7 @@ const OpenJobsView = ({
   };
 
   const getTitle = () => {
-    return UserRole === "customer" ? "My Orders" : "All Jobs";
+    return UserRole === "customer" ? "My Orders" : "Open Jobs";
   };
 
   return (
@@ -145,14 +145,16 @@ const OpenJobsView = ({
                   </a>
                 </td>
                 {UserRole !== "customer" && (
-                  <td>
+                  <td style={{textAlign: "center"}}>
                     <>
                       {UserRole === "admin" ? (
-                        <Button onClick={() => handleSeeRequests(job)}>
+                        <Button 
+                            onClick={() => handleSeeRequests(job)}>
                           Request/Assign
                         </Button>
                       ) : (
-                        <Button
+                        <Button 
+                          
                           onClick={() => handleRequestPick(job.orderID)}
                           disabled={disableRequest(job.orderID)}
                         >

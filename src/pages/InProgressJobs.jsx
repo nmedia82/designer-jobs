@@ -220,7 +220,7 @@ const InProgressJobsView = ({
                     {get_job_thumb(job)}
                   </a>
                 </td>
-                <td>
+                <td style={{ textAlign: "center" }}>
                   <Button
                     variant="success"
                     onClick={() => onJobUpdate(job.orderID)}
@@ -229,11 +229,11 @@ const InProgressJobsView = ({
                   </Button>
                 </td>
                 {UserRole === "admin" && (
-                  <td>
+                  <td style={{ textAlign: "center" }}>
                     <p>
                       {job?.jobDesigner?.data?.display_name ||
                         job?.jobDesigner?.data?.user_email}
-                      <Button onClick={() => handleSeeRequests(job)}>
+                      <Button  style={{marginLeft:"10px"}} onClick={() => handleSeeRequests(job)}>
                         Change Designer
                       </Button>
                     </p>
