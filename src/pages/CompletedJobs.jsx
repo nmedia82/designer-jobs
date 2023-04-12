@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 
 import ReadMoreText from "../common/ReadMore";
-import { get_job_thumb } from "../services/helper";
+import { get_job_thumb, get_setting } from "../services/helper";
 import { getJobByDate } from "../services/model";
 import Calculator from "./Calculator";
 
@@ -101,12 +101,17 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
             value={DateBefore}
             onChange={(e) => setDateBefore(e.target.value)}
           />
-          <button
-            className="btn btn-info btn-sm m-1"
+          <Button
+            style={{
+              background: get_setting("filter_button_bg_color"),
+              color: get_setting("filter_button_font_color"),
+              marginLeft: "10px",
+              border: "none",
+            }}
             onClick={handleDateFilter}
           >
             {IsFilter ? "Reset Filter" : "Filter"}
-          </button>
+          </Button>
         </div>
         <div>
           <label htmlFor="jobIDFilter" className="me-2">
@@ -191,14 +196,20 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
                 <td>{job.dateCompleted}</td>
                 <td style={{ textAlign: "center" }}>
                   <Button
-                    variant="success"
+                    style={{
+                      background: get_setting("comment_button_bg_color"),
+                      color: get_setting("comment_button_font_color"),
+                      border: "none",
+                    }}
                     onClick={() => onJobUpdate(job.orderID)}
                   >
                     {getButtonTitle()}
                   </Button>
                 </td>
                 {UserRole === "admin" && (
-                  <td style={{ textAlign: "center" }}>{job?.jobDesigner?.data?.display_name}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {job?.jobDesigner?.data?.display_name}
+                  </td>
                 )}
               </tr>
             ))}

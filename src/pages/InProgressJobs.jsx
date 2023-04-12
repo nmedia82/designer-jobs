@@ -3,7 +3,8 @@ import { Button, Table, Modal, Container } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
 import { toast } from "react-toastify";
 import { changeDesigner, getJobByDate } from "../services/model";
-import { get_job_thumb } from "../services/helper";
+import { get_job_thumb, get_setting } from "../services/helper";
+import { Settings } from "@mui/icons-material";
 
 const InProgressJobsView = ({
   jobs,
@@ -111,6 +112,15 @@ const InProgressJobsView = ({
     toast.success("Designer changed successully");
     return window.location.reload();
   };
+  function getStatusColor(status) {
+    if (status === "send") {
+      return "purple";
+    } else if (status === "in progress") {
+      return "black";
+    } else {
+      return "white";
+    }
+  }
 
   return (
     <div>
@@ -133,12 +143,16 @@ const InProgressJobsView = ({
             value={DateBefore}
             onChange={(e) => setDateBefore(e.target.value)}
           />
-          <button
-            className="btn btn-info btn-sm m-1"
-            onClick={handleDateFilter}
+          <Button
+            style={{
+              background: get_setting("filter_button_bg_color"),
+              color: get_setting("filter_button_font_color"),
+              marginLeft: "10px",
+              border: "none",
+            }}
           >
             {IsFilter ? "Reset Filter" : "Filter"}
-          </button>
+          </Button>
         </div>
         <div className="me-3">
           <label htmlFor="jobStatusFilter" className="me-2">
@@ -191,15 +205,19 @@ const InProgressJobsView = ({
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Job ID</th>
-              <th>Order Date</th>
-              <th>Jobs Status</th>
-              {UserRole !== "customer" && <th>Job Price</th>}
-              <th>Client Comments</th>
+              <th>{get_setting("label_job_id")}</th>
+              <th>{get_setting("label_job_order_date")}</th>
+              <th>{get_setting("label_job_status")}</th>
+              {UserRole !== "customer" && (
+                <th>{get_setting("label_job_price")}</th>
+              )}
+              <th>{get_setting("label_client_comments")}</th>
               {UserRole === "customer" && <th>Case No</th>}
-              <th>Download File</th>
-              <th>Comment & Notify</th>
-              {UserRole === "admin" && <th>Designer Name</th>}
+              <th>{get_setting("label_download_file")}</th>
+              <th>{get_setting("label_comment_notify")}</th>
+              {UserRole === "admin" && (
+                <th>{get_setting("label_designer_name")}</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -207,7 +225,14 @@ const InProgressJobsView = ({
               <tr key={job.jobID}>
                 <td>{job.jobID}</td>
                 <td>{job.orderDate}</td>
-                <td>{getStatusLabel(job.jobStatus)}</td>
+                <td
+                  style={{
+                    background: getStatusColor(job.jobStatus),
+                    color: "white",
+                  }}
+                >
+                  {getStatusLabel(job.jobStatus)}
+                </td>
                 {UserRole !== "customer" && (
                   <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
                 )}
@@ -222,7 +247,11 @@ const InProgressJobsView = ({
                 </td>
                 <td style={{ textAlign: "center" }}>
                   <Button
-                    variant="success"
+                    style={{
+                      background: get_setting("comment_button_bg_color"),
+                      color: get_setting("comment_button_font_color"),
+                      border: "none",
+                    }}
                     onClick={() => onJobUpdate(job.orderID)}
                   >
                     {getButtonTitle()}
@@ -233,7 +262,15 @@ const InProgressJobsView = ({
                     <p>
                       {job?.jobDesigner?.data?.display_name ||
                         job?.jobDesigner?.data?.user_email}
-                      <Button  style={{marginLeft:"10px"}} onClick={() => handleSeeRequests(job)}>
+                      <Button
+                        style={{
+                          marginLeft: "10px",
+                          background: get_setting("designer_button_bg_color"),
+                          color: get_setting("designer_button_font_color"),
+                          border: "none",
+                        }}
+                        onClick={() => handleSeeRequests(job)}
+                      >
                         Change Designer
                       </Button>
                     </p>

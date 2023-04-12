@@ -152,6 +152,248 @@
       "visibility": "admin",
       "tab": "content",
       "col": 4
+    },
+    {
+      "id": "label_job_order_date",
+      "label": "Change Order Date label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_job_status",
+      "label": "Change Job Status label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_job_price",
+      "label": "Change Job Price label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_product_name",
+      "label": "Change Product Name label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_job_price",
+      "label": "Change Job Price label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_client_comments",
+      "label": "Change Client Comments label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_download_file",
+      "label": "Change Download File label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_comment_notify",
+      "label": "Change Comment & Notify label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_designer_name",
+      "label": "Change Designer Name label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_invoice_comment",
+      "label": "Change Invoice Comment label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_invoice_download",
+      "label": "Change Invoice Download label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_invoice_designer",
+      "label": "Change Invoice Designer label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_invoice_upload_date",
+      "label": "Change Upload Date label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_invoice_delect",
+      "label": "Change Invoice Delect label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "navbar_bg_color",
+      "label": "Navbar Bg Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "navbar_font_color",
+      "label": "Navbar Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "request_button_bg_color",
+      "label": "Request/Assign Button Bg Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "request_button_font_color",
+      "label": "Request/Assign Button Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "comment_button_bg_color",
+      "label": "Comment Button Bg Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "comment_button_font_color",
+      "label": "Comment Button Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "designer_button_bg_color",
+      "label": "Designer Button Bg Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "designer_button_font_color",
+      "label": "Designer Button Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "addnew_invoice_button_bg_color",
+      "label": "Add New Invoice Button Bg Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "addnew_invoice_button_font_color",
+      "label": "Add New Invoice Button Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "download_button_bg_color",
+      "label": "Download Button Bg Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "download_button_font_color",
+      "label": "Download Button Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "delect_button_bg_color",
+      "label": "Delect Button Bg Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "delect_button_font_color",
+      "label": "Delect Button Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "filter_button_bg_color",
+      "label": "Filter Button Bg Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "filter_button_font_color",
+      "label": "Filter Button Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
     }
+
+    
   ]
 }

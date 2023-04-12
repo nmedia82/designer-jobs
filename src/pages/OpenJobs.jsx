@@ -92,12 +92,17 @@ const OpenJobsView = ({
             value={DateBefore}
             onChange={(e) => setDateBefore(e.target.value)}
           />
-          <button
-            className="btn btn-info btn-sm m-1"
+          <Button
+            style={{
+              background: get_setting("filter_button_bg_color"),
+              color: get_setting("filter_button_font_color"),
+              marginLeft: "10px",
+              border: "none",
+            }}
             onClick={handleDateFilter}
           >
             {IsFilter ? "Reset Filter" : "Filter"}
-          </button>
+          </Button>
         </div>
       </div>
       <p>
@@ -113,12 +118,14 @@ const OpenJobsView = ({
           <thead>
             <tr>
               <th>{get_setting("label_job_id")}</th>
-              <th>Order Date</th>
-              <th>Product Name</th>
-              {UserRole !== "customer" && <th>Job Price</th>}
-              <th>Client Comments</th>
+              <th>{get_setting("label_job_order_date")}</th>
+              <th>{get_setting("label_product_name")}</th>
+              {UserRole !== "customer" && (
+                <th>{get_setting("label_job_price")}</th>
+              )}
+              <th>{get_setting("label_client_comments")}</th>
               {UserRole === "customer" && <th>Case No</th>}
-              <th>Download File</th>
+              <th>{get_setting("label_download_file")}</th>
               {UserRole !== "customer" && (
                 <th>
                   {UserRole === "admin" ? "Request/Assign" : "Request a Pick"}
@@ -145,16 +152,21 @@ const OpenJobsView = ({
                   </a>
                 </td>
                 {UserRole !== "customer" && (
-                  <td style={{textAlign: "center"}}>
+                  <td style={{ textAlign: "center" }}>
                     <>
                       {UserRole === "admin" ? (
-                        <Button 
-                            onClick={() => handleSeeRequests(job)}>
+                        <Button
+                          style={{
+                            background: get_setting("request_button_bg_color"),
+                            color: get_setting("request_button_font_color"),
+                            border: "none",
+                          }}
+                          onClick={() => handleSeeRequests(job)}
+                        >
                           Request/Assign
                         </Button>
                       ) : (
-                        <Button 
-                          
+                        <Button
                           onClick={() => handleRequestPick(job.orderID)}
                           disabled={disableRequest(job.orderID)}
                         >

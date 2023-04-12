@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { wooconvo_makeid } from "../services/helper";
+import { get_setting, wooconvo_makeid } from "../services/helper";
 import pluginData from "./../services/data.json";
+import { Button } from "react-bootstrap";
 
 const { siteurl } = pluginData;
 
@@ -72,24 +73,32 @@ function DesignerInvoices({
       <tr key={invoice.invoice_id}>
         <td>{invoice.comment}</td>
         <td>
-          <a
+          <Button
+            style={{
+              background: get_setting("download_button_bg_color"),
+              color: get_setting("download_button_font_color"),
+              border: "none",
+            }}
             target="__blank"
             href={invoice.invoice_url}
-            className="btn btn-info"
           >
             Download
-          </a>
+          </Button>
         </td>
         <td>{invoice.designer}</td>
         <td>{invoice.invoice_date}</td>
         {UserRole === "admin" && (
           <td>
-            <button
-              className="btn btn-danger"
+            <Button
+              style={{
+                background: get_setting("delect_button_bg_color"),
+                color: get_setting("delect_button_font_color"),
+                border: "none",
+              }}
               onClick={() => onInvoiceDelete(invoice.post_id)}
             >
               Delete
-            </button>
+            </Button>
           </td>
         )}
       </tr>
@@ -115,12 +124,17 @@ function DesignerInvoices({
     <div className="container mt-4">
       {enableAddInvoices() && (
         <div className="d-flex mb-3 justify-content-between">
-          <button
-            className="btn btn-info"
+          <Button
+          style={{
+            background: get_setting("addnew_invoice_button_bg_color"),
+            color: get_setting("addnew_invoice_button_font_color"),
+            border: "none",
+          }}
+            //className="btn btn-info"
             onClick={() => setShowAddInvoice(!ShowAddInvoice)}
           >
             Add New Invoice
-          </button>
+          </Button>
           {UserRole === "admin" && (
             <div className="me-3">
               <label htmlFor="designerFilter" className="me-2">
@@ -193,11 +207,13 @@ function DesignerInvoices({
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>Invoice Comment</th>
-              <th>Download</th>
-              <th>Designer</th>
-              <th>Uploaded Date</th>
-              {UserRole === "admin" && <td>Delete</td>}
+              <th>{get_setting("label_invoice_comment")}</th>
+              <th>{get_setting("label_invoice_download")}</th>
+              <th>{get_setting("label_invoice_designer")}</th>
+              <th>{get_setting("label_invoice_upload_date")}</th>
+              {UserRole === "admin" && (
+                <td>{get_setting("label_invoice_delect")}</td>
+              )}
             </tr>
           </thead>
           <tbody>{renderInvoices()}</tbody>
