@@ -319,6 +319,14 @@ function Dashboard({ onLogout, User }) {
             </Nav>
 
             <Nav>
+              <style
+                dangerouslySetInnerHTML={{
+                  __html: `.dropdown-menu.show { background-color: ${get_setting(
+                    "navbar_bg_color"
+                  )}; }`,
+                }}
+              />
+
               <NavDropdown
                 title={
                   <span
@@ -332,7 +340,6 @@ function Dashboard({ onLogout, User }) {
                 className="custom-dropdown"
                 style={{
                   color: get_setting("navbar_font_color"),
-                  backgroundColor: get_setting("navbar_bg_color"),
                 }}
               >
                 <NavDropdown.Item

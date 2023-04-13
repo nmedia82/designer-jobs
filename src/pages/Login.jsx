@@ -14,13 +14,12 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="container">
-
+    <div className="container login-wrapper">
       {/* Image */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div className="text-center">
         <img
-          src="https://lh3.googleusercontent.com/mopLJ9UHWKzwePgUa_ItRu8DGx6bmsoGsegqMXcdylFo3vxHQrXqK0SJLP3Jqhvnwk7wTZxcjfTIaURletGAuGG6RwXyHoTnEfxpA1I"
-          alt="Your Logo"
+          src={process.env.PUBLIC_URL + "/logo-b.jpg"}
+          alt="CAD Labs"
           style={{ margin: "20px 0" }}
         />
       </div>

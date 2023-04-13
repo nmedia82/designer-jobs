@@ -1,16 +1,26 @@
 {
-  "siteurl": "https://wooconvo.najeebmedia.com",
-  "siteurlz": "https://cad-labs.com",
+  "siteurlz": "https://wooconvo.najeebmedia.com",
+  "siteurl": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
       "slug": "openjobs",
-      "access": ["designer", "admin", "customer"]
+      "access": ["designer", "admin"]
+    },
+    {
+      "title": "My Orders",
+      "slug": "openjobs",
+      "access": ["customer"]
     },
     {
       "title": "In Progress",
       "slug": "inprogrogressjobs",
-      "access": ["designer", "admin", "customer"]
+      "access": ["designer", "admin"]
+    },
+    {
+      "title": "My Jobs",
+      "slug": "inprogrogressjobs",
+      "access": ["customer"]
     },
     {
       "title": "Completed Jobs",
