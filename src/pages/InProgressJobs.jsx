@@ -112,13 +112,23 @@ const InProgressJobsView = ({
     toast.success("Designer changed successully");
     return window.location.reload();
   };
-  function getStatusColor(status) {
-    if (status === "send") {
-      return "purple";
-    } else if (status === "in progress") {
-      return "black";
+  function getStatusBGColor(status) {
+    if (status === "wc-send") {
+      return get_setting("status_send_bg_color");
+    } else if (status === "wc-in-progress") {
+      return get_setting("status_progress_bg_color");
     } else {
-      return "white";
+      return get_setting("status_revise_bg_color");
+    }
+  }
+
+  function getStatusFontColor(status) {
+    if (status === "wc-send") {
+      return get_setting("status_send_font_color");
+    } else if (status === "wc-in-progress") {
+      return get_setting("status_progress_font_color");
+    } else {
+      return get_setting("status_revise_font_color");
     }
   }
 
@@ -226,13 +236,15 @@ const InProgressJobsView = ({
                 <td>{job.jobID}</td>
                 <td>{job.orderDate}</td>
                 <td
-                  style={{
-                    background: getStatusColor(job.jobStatus),
-                    color: "white",
+                  dangerouslySetInnerHTML={{
+                    __html: `<span style="background-color: ${getStatusBGColor(
+                      job.jobStatus
+                    )};color:${getStatusFontColor(
+                      job.jobStatus
+                    )};padding:5px">${getStatusLabel(job.jobStatus)}</span>`,
                   }}
-                >
-                  {getStatusLabel(job.jobStatus)}
-                </td>
+                />
+
                 {UserRole !== "customer" && (
                   <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
                 )}

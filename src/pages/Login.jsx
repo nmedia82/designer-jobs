@@ -14,7 +14,12 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="container login-wrapper">
+    <div
+      className="container login-wrapper"
+      style={{
+        width: "75%",
+      }}
+    >
       {/* Image */}
       <div className="text-center">
         <img
@@ -85,7 +90,6 @@ const Login = ({ onLogin }) => {
                   id="reset-password-btn"
                   type="submit"
                   className="mt-3 btn btn-info"
-                  style={{ backgroundColor: "yellow", color: "black" }}
                 >
                   Reset password
                 </Link>

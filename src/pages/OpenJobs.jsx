@@ -68,7 +68,8 @@ const OpenJobsView = ({
   };
 
   const getTitle = () => {
-    return UserRole === "customer" ? "My Orders" : "Open Jobs";
+    // return UserRole === "designer" ? "My Orders" : "Open Jobs";
+    return "Open Jobs";
   };
 
   return (

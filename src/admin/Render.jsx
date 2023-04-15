@@ -84,6 +84,8 @@ export default function RenderField({
         <QuickMessages quick_messages={value} onChange={onQuickMessageChange} />
       </div>
     );
+  } else if (type === "heading") {
+    return <h2>{label}</h2>;
   } else {
     return (
       <div className="form-group" key={id}>

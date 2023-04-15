@@ -1,26 +1,21 @@
 {
-  "siteurlz": "https://wooconvo.najeebmedia.com",
-  "siteurl": "https://cad-labs.com",
+  "siteurl": "https://wooconvo.najeebmedia.com",
+  "siteurlz": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
       "slug": "openjobs",
-      "access": ["designer", "admin"]
-    },
-    {
-      "title": "My Orders",
-      "slug": "openjobs",
-      "access": ["customer"]
+      "access": ["designer", "admin", "customer"]
     },
     {
       "title": "In Progress",
       "slug": "inprogrogressjobs",
-      "access": ["designer", "admin"]
+      "access": ["customer", "admin"]
     },
     {
       "title": "My Jobs",
       "slug": "inprogrogressjobs",
-      "access": ["customer"]
+      "access": ["designer"]
     },
     {
       "title": "Completed Jobs",
@@ -292,6 +287,14 @@
       "col": 4
     },
     {
+      "id": "navbar_font_hover_color",
+      "label": "Navbar Font Hover Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
       "id": "request_button_bg_color",
       "label": "Request/Assign Button Bg Color",
       "type": "color_picker",
@@ -398,6 +401,62 @@
     {
       "id": "filter_button_font_color",
       "label": "Filter Button Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "heading_status",
+      "label": "Status Font Color",
+      "type": "heading",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 12
+    },
+    {
+      "id": "status_progress_font_color",
+      "label": "Status Progress Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "status_progress_bg_color",
+      "label": "Status Progress BG Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "status_send_font_color",
+      "label": "Status Send Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "status_send_bg_color",
+      "label": "Status Send BG Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "status_revise_font_color",
+      "label": "Status Revise Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "status_revise_bg_color",
+      "label": "Status Revise BG Color",
       "type": "color_picker",
       "visibility": "admin",
       "tab": "design",
