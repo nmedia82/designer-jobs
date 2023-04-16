@@ -66,11 +66,11 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
   };
 
   const getDisplayName = (job) => {
-    const displayName = job?.jobDesigner?.data?.display_name ?? "";
+    return job?.jobDesigner?.data?.display_name ?? "";
   };
   return (
     <div>
-      <h3>Cancelled Jobs</h3>
+      <h3>Canceled Jobs</h3>
       <div className="d-flex mb-3 justify-content-between">
         <div className="me-3">
           <label htmlFor="jobIDFilter" className="me-2">

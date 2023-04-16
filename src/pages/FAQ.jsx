@@ -7,7 +7,6 @@ function FAQ({ UserRole }) {
       ? get_setting("faq_for_designers")
       : get_setting("faq_for_customers");
 
-  console.log(faq);
   return (
     <Container>
       <h2>FAQ</h2>

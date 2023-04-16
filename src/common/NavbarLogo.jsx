@@ -6,7 +6,7 @@ export function NavbarLogo() {
       <img
         src={process.env.PUBLIC_URL + "/logo-w.png"}
         alt="CAD Labs"
-        style={{ margin: "20px 0", width: "200px" }}
+        style={{ margin: "10px 0", width: "150px" }}
       />
     </Navbar.Brand>
   );

@@ -1,6 +1,6 @@
 {
-  "siteurl": "https://wooconvo.najeebmedia.com",
-  "siteurlz": "https://cad-labs.com",
+  "siteurlz": "https://wooconvo.najeebmedia.com",
+  "siteurl": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -10,12 +10,7 @@
     {
       "title": "In Progress",
       "slug": "inprogrogressjobs",
-      "access": ["customer", "admin"]
-    },
-    {
-      "title": "My Jobs",
-      "slug": "inprogrogressjobs",
-      "access": ["designer"]
+      "access": ["designer", "admin", "customer"]
     },
     {
       "title": "Completed Jobs",
@@ -23,7 +18,7 @@
       "access": ["designer", "admin", "customer"]
     },
     {
-      "title": "Cancelled Jobs",
+      "title": "Canceled Jobs",
       "slug": "cancelledjobs",
       "access": ["admin", "designer"]
     },
@@ -33,9 +28,29 @@
       "access": ["admin", "designer"]
     },
     {
+      "title": "Our Designers",
+      "slug": "ourdesigners",
+      "access": ["admin"]
+    },
+    {
       "title": "FAQ",
       "slug": "faq",
       "access": ["designer", "customer"]
+    },
+    {
+      "title": "Jobs Overview",
+      "link": "wp-admin/edit.php?post_type=shop_order",
+      "access": ["admin"]
+    },
+    {
+      "title": "Back to Orders",
+      "link": "my-account/orders/",
+      "access": ["customer"]
+    },
+    {
+      "title": "Analytics",
+      "link": "wp-admin",
+      "access": ["admin"]
     }
   ],
   "settings_meta": [
@@ -376,7 +391,7 @@
     },
     {
       "id": "delect_button_bg_color",
-      "label": "Delect Button Bg Color",
+      "label": "Delet Button Bg Color",
       "type": "color_picker",
       "visibility": "admin",
       "tab": "design",
@@ -384,7 +399,7 @@
     },
     {
       "id": "delect_button_font_color",
-      "label": "Delect Button Font Color",
+      "label": "Delet Button Font Color",
       "type": "color_picker",
       "visibility": "admin",
       "tab": "design",

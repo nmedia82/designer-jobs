@@ -90,8 +90,7 @@ const InProgressJobsView = ({
   };
 
   const getPageTitle = () => {
-    if (UserRole === "admin") return "In Progess";
-    return "My Jobs";
+    return "In Progress";
   };
 
   const getButtonTitle = () => {

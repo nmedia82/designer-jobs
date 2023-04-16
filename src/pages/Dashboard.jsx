@@ -38,6 +38,7 @@ import DesignerInvoices from "./DesignerInvoices";
 import FAQ from "./FAQ";
 import { NavbarLogo } from "../common/NavbarLogo";
 import UserSettings from "../admin/UserSettings";
+import OurDesigners from "./OurDesigners";
 // import AllOrders from "./AllOrders";
 
 const { siteurl, navbars: Navbars_data } = plugin_data;
@@ -238,6 +239,8 @@ function Dashboard({ onLogout, User }) {
         );
       case "faq":
         return <FAQ UserRole={UserRole} />;
+      case "ourdesigners":
+        return <OurDesigners />;
       case "orderconvo":
         return (
           <OrderConvoHome
@@ -275,6 +278,17 @@ function Dashboard({ onLogout, User }) {
     return nav.title;
   };
 
+  function handleNavClick(nav) {
+    if (nav.slug) {
+      handleViewChange(nav.slug);
+    } else {
+      const link = document.createElement("a");
+      link.href = `${siteurl}/${nav.link}`;
+      link.target = "_blank"; // Add this line to set target to _blank
+      link.click();
+    }
+  }
+
   return (
     <Container>
       <Navbar
@@ -291,7 +305,7 @@ function Dashboard({ onLogout, User }) {
                 (nav, index) => (
                   <Nav.Link
                     key={index}
-                    onClick={() => handleViewChange(nav.slug)}
+                    onClick={() => handleNavClick(nav)}
                     style={{
                       color: get_setting("navbar_font_color"),
                     }}
@@ -307,44 +321,6 @@ function Dashboard({ onLogout, User }) {
                     {getNavTitle(nav)}
                   </Nav.Link>
                 )
-              )}
-              {UserRole === "admin" && (
-                <Nav.Link
-                  target="__blank"
-                  href={`${siteurl}/wp-admin/edit.php?post_type=shop_order`}
-                  style={{
-                    color: get_setting("navbar_font_color"),
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.target.style.color = get_setting(
-                      "navbar_font_hover_color"
-                    ))
-                  }
-                  onMouseLeave={(e) =>
-                    (e.target.style.color = get_setting("navbar_font_color"))
-                  }
-                >
-                  All Jobs
-                </Nav.Link>
-              )}
-              {UserRole === "customer" && (
-                <Nav.Link
-                  style={{
-                    color: get_setting("navbar_font_color"),
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.target.style.color = get_setting(
-                      "navbar_font_hover_color"
-                    ))
-                  }
-                  onMouseLeave={(e) =>
-                    (e.target.style.color = get_setting("navbar_font_color"))
-                  }
-                  target="__blank"
-                  href={`${siteurl}/my-account/orders/`}
-                >
-                  Back to Orders
-                </Nav.Link>
               )}
             </Nav>
 
