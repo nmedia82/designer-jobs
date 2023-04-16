@@ -13,7 +13,7 @@ export default function RenderField({
   const editorRef = useRef(null);
   const tinymce_api_key = get_setting("tinymce_api_key");
 
-  const { id, label, type, default_value } = field;
+  const { id, label, type, default_value, options } = field;
   const value = formValues[id] || default_value;
   if (type === "checkbox") {
     return (
@@ -31,6 +31,27 @@ export default function RenderField({
             {label}
           </label>
         </div>
+      </div>
+    );
+  } else if (type === "select") {
+    const selectOptions = options.map((option) => (
+      <option key={option.key} value={option.key}>
+        {option.value}
+      </option>
+    ));
+
+    return (
+      <div className="form-group" key={id}>
+        <label htmlFor={id}>{label}</label>
+        <select
+          className="form-control"
+          name={id}
+          id={id}
+          value={value}
+          onChange={onInputChange}
+        >
+          {selectOptions}
+        </select>
       </div>
     );
   } else if (type === "tiny") {

@@ -1,6 +1,6 @@
 {
-  "siteurlz": "https://wooconvo.najeebmedia.com",
-  "siteurl": "https://cad-labs.com",
+  "siteurl": "https://wooconvo.najeebmedia.com",
+  "siteurlz": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -476,6 +476,42 @@
       "visibility": "admin",
       "tab": "design",
       "col": 4
+    },
+    {
+      "id": "heading_login_popup",
+      "label": "Login Popup",
+      "type": "heading",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 12
+    },
+    {
+      "id": "enable_login_popup",
+      "label": "Enable Popup on Login",
+      "type": "checkbox",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "login_popup_appearance",
+      "label": "Popup Appearance",
+      "type": "select",
+      "options": [
+        { "key": "onetime", "value": "One Time" },
+        { "key": "everytime", "value": "Every Time" }
+      ],
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "login_popup_text",
+      "label": "Popup Text",
+      "type": "tiny",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 12
     }
   ]
 }

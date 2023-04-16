@@ -1,5 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Modal, Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import auth, { login_user_locally } from "./services/auth";
@@ -9,9 +10,12 @@ import jwtDecode from "jwt-decode";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { useState, useEffect } from "react";
+import { get_setting } from "./services/helper";
 
 function App() {
   const [User, setUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     let user = auth.getCurrentUser;
     // Get the token from the URL parameters
@@ -33,7 +37,8 @@ function App() {
     const user_info = { username, password };
     try {
       await auth.login(user_info);
-      window.location.reload();
+      // window.location.reload();
+      setShowModal(true); // show the modal
     } catch (ex) {
       toast.error("Error while login" + ex);
     }
@@ -49,9 +54,32 @@ function App() {
     return (
       <>
         <Login onLogin={handleLogin} />
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Login successful!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body
+            dangerouslySetInnerHTML={{
+              __html: get_setting("login_popup_text"),
+            }}
+          ></Modal.Body>
+
+          <Modal.Footer>
+            <Button
+              variant="primary"
+              onClick={() => {
+                setShowModal(false);
+                window.location.reload();
+              }}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <ToastContainer />
       </>
     );
+
   if (User)
     return (
       <>
