@@ -1,6 +1,6 @@
 {
-  "siteurl": "https://wooconvo.najeebmedia.com",
-  "siteurlz": "https://cad-labs.com",
+  "siteurlz": "https://wooconvo.najeebmedia.com",
+  "siteurl": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -391,7 +391,7 @@
     },
     {
       "id": "delect_button_bg_color",
-      "label": "Delet Button Bg Color",
+      "label": "Delete Button Bg Color",
       "type": "color_picker",
       "visibility": "admin",
       "tab": "design",
@@ -399,7 +399,7 @@
     },
     {
       "id": "delect_button_font_color",
-      "label": "Delet Button Font Color",
+      "label": "Delete Button Font Color",
       "type": "color_picker",
       "visibility": "admin",
       "tab": "design",
