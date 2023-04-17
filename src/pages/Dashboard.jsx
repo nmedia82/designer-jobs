@@ -349,7 +349,11 @@ function Dashboard({ onLogout, User }) {
                 }}
               >
                 <NavDropdown.Item
-                  style={{ color: get_setting("navbar_font_color") }}
+                  className="top-nav-dropdown-item"
+                  style={{
+                    color: get_setting("navbar_font_color"),
+                    "--bs-dropdown-link-hover-bg": "#543BAF",
+                  }}
                   href="#"
                   onClick={() => handleViewChange("settings")}
                 >
@@ -358,7 +362,10 @@ function Dashboard({ onLogout, User }) {
                 <NavDropdown.Item
                   href="#"
                   onClick={onLogout}
-                  style={{ color: get_setting("navbar_font_color") }}
+                  style={{
+                    color: get_setting("navbar_font_color"),
+                    "--bs-dropdown-link-hover-bg": "#543BAF",
+                  }}
                 >
                   Logout
                 </NavDropdown.Item>

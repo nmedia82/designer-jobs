@@ -17,10 +17,20 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const [IsFilter, setIsFilter] = useState(false);
   const [ShowCalculator, setShowCalculator] = useState(false);
 
+  jobs = sortByOrderDateDesc(jobs);
+
   useEffect(() => {
     setCompletedJobs(jobs);
     setFilteredJobs(jobs);
   }, [jobs]);
+
+  function sortByOrderDateDesc(array) {
+    return array.sort((a, b) => {
+      const dateA = new Date(a.orderDate.split("-").reverse().join("-"));
+      const dateB = new Date(b.orderDate.split("-").reverse().join("-"));
+      return dateB - dateA;
+    });
+  }
 
   const handleDesignerChangeFilter = (e) => {
     const designer_id = Number(e.target.value);

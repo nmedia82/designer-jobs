@@ -70,3 +70,8 @@ summary {
   font-weight: bold;
   color: #0a7baf;
 }
+
+.top-nav-dropdown-item:hover,
+.dropdown-item:hover {
+  background-color: green;
+}

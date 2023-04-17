@@ -422,6 +422,22 @@
       "col": 4
     },
     {
+      "id": "read_moreless_bg_color",
+      "label": "Read More/Less Bg Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "read_moreless_font_color",
+      "label": "Read More/Less Font Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
       "id": "heading_status",
       "label": "Status Font Color",
       "type": "heading",
