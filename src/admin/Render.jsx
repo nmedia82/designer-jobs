@@ -102,7 +102,11 @@ export default function RenderField({
     return (
       <div className="form-group mt-3" key={id}>
         <label htmlFor={id}>{label}</label>
-        <QuickMessages quick_messages={value} onChange={onQuickMessageChange} />
+        <QuickMessages
+          field={field}
+          quick_messages={value}
+          onChange={onQuickMessageChange}
+        />
       </div>
     );
   } else if (type === "heading") {

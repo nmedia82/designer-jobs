@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const QuickMessages = ({ quick_messages, onChange }) => {
+const QuickMessages = ({ field, quick_messages, onChange }) => {
   const [fields, setFields] = useState(quick_messages || []);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const QuickMessages = ({ quick_messages, onChange }) => {
     const newFields = [...fields];
     newFields[index] = e.target.value;
     setFields(newFields);
-    onChange(newFields);
+    onChange(field.id, newFields);
   };
 
   const handleAddField = () => {

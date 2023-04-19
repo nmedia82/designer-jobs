@@ -159,6 +159,7 @@ const InProgressJobsView = ({
               marginLeft: "10px",
               border: "none",
             }}
+            onClick={handleDateFilter}
           >
             {IsFilter ? "Reset Filter" : "Filter"}
           </Button>

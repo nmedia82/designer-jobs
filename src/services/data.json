@@ -159,11 +159,20 @@
       "col": 6
     },
     {
-      "id": "quick_messages",
-      "label": "Short Codes:",
+      "id": "quick_messages_designers",
+      "label": "Short Codes for Designers:",
       "type": "repeater",
       "visibility": "admin",
-      "tab": "general"
+      "tab": "general",
+      "default_value": []
+    },
+    {
+      "id": "quick_messages_admin",
+      "label": "Short Codes for Admin:",
+      "type": "repeater",
+      "visibility": "admin",
+      "tab": "general",
+      "default_value": []
     },
     {
       "id": "label_job_id",
@@ -200,14 +209,6 @@
     {
       "id": "label_product_name",
       "label": "Change Product Name label",
-      "type": "text",
-      "visibility": "admin",
-      "tab": "content",
-      "col": 4
-    },
-    {
-      "id": "label_job_price",
-      "label": "Change Job Price label",
       "type": "text",
       "visibility": "admin",
       "tab": "content",

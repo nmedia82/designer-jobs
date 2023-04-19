@@ -11,10 +11,12 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { useState, useEffect } from "react";
 import { get_setting } from "./services/helper";
+import useLocalStorage from "./services/useLocalStorage";
 
 function App() {
   const [User, setUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [PopupSeen, setPopupSeen] = useLocalStorage("popup_seen", false);
 
   useEffect(() => {
     let user = auth.getCurrentUser;
@@ -37,8 +39,8 @@ function App() {
     const user_info = { username, password };
     try {
       await auth.login(user_info);
-      // window.location.reload();
-      setShowModal(true); // show the modal
+      if (showPopupOnLogin()) return setShowModal(true);
+      window.location.reload();
     } catch (ex) {
       toast.error("Error while login" + ex);
     }
@@ -47,6 +49,28 @@ function App() {
 
   const handleLogout = () => {
     auth.logout();
+    window.location.reload();
+  };
+
+  const showPopupOnLogin = () => {
+    const popup_enabled = get_setting("enable_login_popup") || false;
+    // console.log(popup_enabled);
+    const popup_appearance =
+      get_setting("login_popup_appearance") || "everytime";
+    if (popup_enabled) {
+      if (
+        popup_appearance === "everytime" ||
+        (popup_appearance === "firsttime" && !PopupSeen)
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const handlePopupSeen = () => {
+    setPopupSeen(true);
+    setShowModal(false);
     window.location.reload();
   };
 
@@ -68,8 +92,7 @@ function App() {
             <Button
               variant="primary"
               onClick={() => {
-                setShowModal(false);
-                window.location.reload();
+                handlePopupSeen();
               }}
             >
               Close

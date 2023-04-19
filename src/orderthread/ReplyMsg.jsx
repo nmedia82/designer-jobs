@@ -29,7 +29,10 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
   const [Files, setFiles] = useState([]);
   const [isRead, setIsRead] = useState(false);
 
-  const quick_messages = get_setting("quick_messages");
+  const quick_messages =
+    UserRole === "designer"
+      ? get_setting("quick_messages_designers", [])
+      : get_setting("quick_messages_admin", []);
 
   const validateSelectedFiles = (files_selected) => {
     // max_files_allowed

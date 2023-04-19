@@ -39,6 +39,7 @@ function AdminSettings({ admin_settings, onSettingsSave, UserRole }) {
     event.preventDefault();
 
     let settings_data = formValues;
+    // return console.log(settings_data);
     // if user is not admin then save single values
     if (UserRole !== "admin") {
       const ids = FieldMeta.map((item) => item.id);
@@ -52,11 +53,11 @@ function AdminSettings({ admin_settings, onSettingsSave, UserRole }) {
     onSettingsSave(settings_data);
   };
 
-  const handleQuickMessageChange = (messages) => {
-    const new_key = "quick_messages";
+  const handleQuickMessageChange = (field_key, messages) => {
+    // const new_key = "quick_messages";
     setFormValues((prevState) => ({
       ...prevState,
-      [new_key]: messages,
+      [field_key]: messages,
     }));
   };
   return (
@@ -86,7 +87,7 @@ function AdminSettings({ admin_settings, onSettingsSave, UserRole }) {
                 <Row className="m-10">
                   {FieldMeta.filter((field) => field.tab === "general").map(
                     (field) => (
-                      <Col sm={field.col || 12}>
+                      <Col sm={field.col || 12} key={field.id}>
                         <RenderField
                           field={field}
                           QuickMessages={QuickMessages}
@@ -104,7 +105,7 @@ function AdminSettings({ admin_settings, onSettingsSave, UserRole }) {
                 <Row className="m-10">
                   {FieldMeta.filter((field) => field.tab === "content").map(
                     (field) => (
-                      <Col sm={field.col || 12}>
+                      <Col sm={field.col || 12} key={field.id}>
                         <RenderField
                           field={field}
                           QuickMessages={QuickMessages}
@@ -122,7 +123,7 @@ function AdminSettings({ admin_settings, onSettingsSave, UserRole }) {
                 <Row className="m-10">
                   {FieldMeta.filter((field) => field.tab === "design").map(
                     (field) => (
-                      <Col sm={field.col || 12}>
+                      <Col sm={field.col || 12} key={field.id}>
                         <RenderField
                           field={field}
                           QuickMessages={QuickMessages}

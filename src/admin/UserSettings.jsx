@@ -52,18 +52,18 @@ function UserSettings({ admin_settings, onSettingsSave, UserRole }) {
     onSettingsSave(settings_data);
   };
 
-  const handleQuickMessageChange = (messages) => {
-    const new_key = "quick_messages";
+  const handleQuickMessageChange = (field_id, messages) => {
+    // const new_key = "quick_messages";
     setFormValues((prevState) => ({
       ...prevState,
-      [new_key]: messages,
+      [field_id]: messages,
     }));
   };
   return (
     <form onSubmit={handleSubmit}>
       <Row>
         {FieldMeta.map((field) => (
-          <Col sm={field.col || 12}>
+          <Col sm={field.col || 12} key={field.id}>
             <RenderField
               field={field}
               QuickMessages={QuickMessages}
