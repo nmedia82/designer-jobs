@@ -17,6 +17,7 @@ function App() {
   const [User, setUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [PopupSeen, setPopupSeen] = useLocalStorage("popup_seen", false);
+  const [PopupText, setPopupText] = useLocalStorage("popup_text", "");
 
   useEffect(() => {
     let user = auth.getCurrentUser;
@@ -54,13 +55,15 @@ function App() {
 
   const showPopupOnLogin = () => {
     const popup_enabled = get_setting("enable_login_popup") || false;
-    // console.log(popup_enabled);
     const popup_appearance =
       get_setting("login_popup_appearance") || "everytime";
+    const login_popup_text = get_setting("login_popup_text") || "";
+    // console.log(PopupText);
     if (popup_enabled) {
       if (
         popup_appearance === "everytime" ||
-        (popup_appearance === "firsttime" && !PopupSeen)
+        (popup_appearance === "firsttime" && !PopupSeen) ||
+        (login_popup_text !== "" && login_popup_text !== PopupText)
       ) {
         return true;
       }
@@ -70,6 +73,8 @@ function App() {
 
   const handlePopupSeen = () => {
     setPopupSeen(true);
+    const popup_text = get_setting("login_popup_text") || "";
+    setPopupText(popup_text);
     setShowModal(false);
     window.location.reload();
   };

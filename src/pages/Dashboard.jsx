@@ -240,7 +240,7 @@ function Dashboard({ onLogout, User }) {
       case "faq":
         return <FAQ UserRole={UserRole} />;
       case "ourdesigners":
-        return <OurDesigners />;
+        return <OurDesigners DesignerUsers={DesignerUsers} />;
       case "orderconvo":
         return (
           <OrderConvoHome
