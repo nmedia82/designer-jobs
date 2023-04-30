@@ -39,6 +39,7 @@ import FAQ from "./FAQ";
 import { NavbarLogo } from "../common/NavbarLogo";
 import UserSettings from "../admin/UserSettings";
 import OurDesigners from "./OurDesigners";
+import AnalyticsSales from "./AnalyticSales";
 // import AllOrders from "./AllOrders";
 
 const { siteurl, navbars: Navbars_data } = plugin_data;

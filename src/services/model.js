@@ -15,10 +15,21 @@ export function getOrderById(order_id) {
 }
 
 // add message in order
-export function addMessage(order_id, message, attachments = []) {
+export function addMessage(
+  order_id,
+  message,
+  attachments = [],
+  notify_to = ""
+) {
   const user_id = getUserID();
   const user_role = getUserRole();
-  const context = user_role === "designer" ? "wp_admin" : "myaccount";
+  const context =
+    user_role === "admin"
+      ? notify_to
+      : user_role === "designer"
+      ? "wp_admin"
+      : "myaccount";
+
   const url = `${endpoint_orderconvo}/add-message`;
   const data = { message, user_id, order_id, attachments, context };
   return httpService.post(url, data);

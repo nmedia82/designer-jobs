@@ -41,7 +41,7 @@ export default function WooConvoThread({
     markOrderAsRead();
   }, [Order]);
 
-  const handleReplySend = async (reply_text, files = []) => {
+  const handleReplySend = async (reply_text, files = [], NotifyTo = "") => {
     setIsWorking(true);
     var attachments = [];
     attachments = await handleFileUpload(files);
@@ -50,7 +50,8 @@ export default function WooConvoThread({
       const { data: response } = await addMessage(
         order_id,
         reply_text,
-        attachments
+        attachments,
+        NotifyTo
       );
       const { success, data: order } = response;
       const { thread } = order;

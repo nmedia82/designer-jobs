@@ -4,6 +4,7 @@ import { Button, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
 import { get_job_thumb, get_setting } from "../services/helper";
 import { getJobByDate } from "../services/model";
+import FileDownloads from "../common/FileDownloads";
 
 const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
   const [CancelledJobs, setCancelledJobs] = useState([]);
@@ -156,9 +157,7 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
                   <ReadMoreText text={job.clientComment} maxLength={20} />
                 </td>
                 <td className="text-center">
-                  <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                    {get_job_thumb(job)}
-                  </a>
+                  <FileDownloads jobData={job} />
                 </td>
                 <td>{job.dateCancelled}</td>
                 {UserRole === "admin" && <td>{getDisplayName(job)}</td>}

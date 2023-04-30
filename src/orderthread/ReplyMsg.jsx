@@ -8,6 +8,10 @@ import {
   FormControlLabel,
   TextField,
   Typography,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { useState } from "react";
 import { common } from "@mui/material/colors";
@@ -28,6 +32,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
   const [ReplyText, setReplyText] = useState("");
   const [Files, setFiles] = useState([]);
   const [isRead, setIsRead] = useState(false);
+  const [NotifyTo, setNotifyTo] = useState("comment_designer");
 
   const quick_messages =
     UserRole === "designer"
@@ -127,7 +132,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
 
   const onReplyClick = (message, files) => {
     setReplyText("");
-    onReplySend(message, files);
+    onReplySend(message, files, NotifyTo);
   };
 
   const onEnterKeyPressed = (e) => {
@@ -139,6 +144,11 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
   const handleCheckboxChange = (event) => {
     setIsRead(event.target.checked);
   };
+
+  // Implement onNotifyToChanged function
+  const onNotifyToChanged = (event) => {
+    setNotifyTo(event.target.value);
+  };
   return (
     <Box>
       <Paper
@@ -147,6 +157,20 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
         sx={{ p: "2px 4px", display: "flex", bgcolor: common }}
       >
         <Attachments onFileSelected={handleFileSelected} />
+
+        {UserRole === "admin" && (
+          <FormControl sx={{ minWidth: 120, m: "5px" }}>
+            <Select
+              labelId="notify-label"
+              id="notify-select"
+              value={NotifyTo}
+              onChange={(e) => onNotifyToChanged(e)}
+            >
+              <MenuItem value={"comment_designer"}>Designer</MenuItem>
+              <MenuItem value={"comment_customer"}>Customer</MenuItem>
+            </Select>
+          </FormControl>
+        )}
 
         <TextField
           value={ReplyText}

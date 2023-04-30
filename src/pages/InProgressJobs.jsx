@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { changeDesigner, getJobByDate } from "../services/model";
 import { get_job_thumb, get_setting } from "../services/helper";
 import { Settings } from "@mui/icons-material";
+import FileDownloads from "../common/FileDownloads";
 
 const InProgressJobsView = ({
   jobs,
@@ -253,9 +254,7 @@ const InProgressJobsView = ({
                 </td>
                 {UserRole === "customer" && <td>{job.caseNo}</td>}
                 <td className="text-center">
-                  <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                    {get_job_thumb(job)}
-                  </a>
+                  <FileDownloads jobData={job} />
                 </td>
                 <td style={{ textAlign: "center" }}>
                   <Button

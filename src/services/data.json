@@ -1,6 +1,6 @@
 {
-  "siteurlz": "https://wooconvo.najeebmedia.com",
-  "siteurl": "https://cad-labs.com",
+  "siteurl": "https://wooconvo.najeebmedia.com",
+  "siteurlz": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -49,7 +49,7 @@
     },
     {
       "title": "Analytics",
-      "link": "wp-admin",
+      "link": "wp-admin/admin.php?page=wc-admin&path=%2Fanalytics%2Foverview",
       "access": ["admin"]
     }
   ],

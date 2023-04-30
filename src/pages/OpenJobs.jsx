@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import ReadMoreText from "../common/ReadMore";
 import { get_job_thumb, get_setting } from "../services/helper";
 import { getJobByDate, requestJob } from "../services/model";
+import FileDownloads from "../common/FileDownloads";
 
 const OpenJobsView = ({
   jobs,
@@ -148,9 +149,7 @@ const OpenJobsView = ({
                 </td>
                 {UserRole === "customer" && <td>{job.caseNo}</td>}
                 <td className="text-center">
-                  <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                    {get_job_thumb(job)}
-                  </a>
+                  <FileDownloads jobData={job} />
                 </td>
                 {UserRole !== "customer" && (
                   <td style={{ textAlign: "center" }}>

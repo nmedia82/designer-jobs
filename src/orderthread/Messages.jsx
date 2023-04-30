@@ -6,6 +6,7 @@ import { getUserRole } from "../services/auth";
 
 const UserRole = getUserRole();
 function MessagesBody({ Thread, showMore, onDownload }) {
+  console.log(Thread);
   const order_reverse = get_setting("reverse_message_display_order");
   var thread = [...Thread];
   if (order_reverse) {
@@ -13,7 +14,10 @@ function MessagesBody({ Thread, showMore, onDownload }) {
   }
 
   const showAdminComment = (msg) => {
-    return UserRole !== "customer" && msg.type === "comment";
+    return (
+      (UserRole === "customer" && msg.type === "comment_customer") ||
+      (UserRole === "designer" && msg.type === "comment_designer")
+    );
   };
   return (
     <div>

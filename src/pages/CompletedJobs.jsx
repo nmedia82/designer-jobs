@@ -5,6 +5,7 @@ import ReadMoreText from "../common/ReadMore";
 import { get_job_thumb, get_setting } from "../services/helper";
 import { getJobByDate } from "../services/model";
 import Calculator from "./Calculator";
+import FileDownloads from "../common/FileDownloads";
 
 const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const [CompletedJobs, setCompletedJobs] = useState([]);
@@ -199,9 +200,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
                 </td>
                 {UserRole === "customer" && <td>{job.caseNo}</td>}
                 <td className="text-center">
-                  <a href={job.fileDownlload} target="_blank" rel="noreferrer">
-                    {get_job_thumb(job)}
-                  </a>
+                  <FileDownloads jobData={job} />
                 </td>
                 <td>{job.dateCompleted}</td>
                 <td style={{ textAlign: "center" }}>
