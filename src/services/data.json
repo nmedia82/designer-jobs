@@ -439,6 +439,30 @@
       "col": 4
     },
     {
+      "id": "requested_job_bg_color",
+      "label": "Requested Job BG Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "admin_to_designer_msg_bg_color",
+      "label": "Admin to Designer BG Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
+      "id": "admin_to_customer_msg_bg_color",
+      "label": "Admin to Customer BG Color",
+      "type": "color_picker",
+      "visibility": "admin",
+      "tab": "design",
+      "col": 4
+    },
+    {
       "id": "heading_status",
       "label": "Status Font Color",
       "type": "heading",

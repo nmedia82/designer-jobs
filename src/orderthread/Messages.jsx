@@ -35,7 +35,7 @@ function MessagesBody({ Thread, showMore, onDownload }) {
           {/* Customer Message */}
           {showAdminComment(msg) && (
             <>
-              <AdminComments message={msg} />
+              <AdminComments message={msg} UserRole={UserRole} />
             </>
           )}
 

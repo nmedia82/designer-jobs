@@ -20,11 +20,17 @@ const OpenJobsView = ({
   const [DateAfter, setDateAfter] = useState("");
   const [DateBefore, setDateBefore] = useState("");
   const [IsFilter, setIsFilter] = useState(false);
+  const [showRequested, setShowRequested] = useState(false);
 
   useEffect(() => {
     // remove jobs which are picked by me
-    setOpenJobs(jobs);
-  }, [jobs]);
+    let open_jobs = jobs;
+    if (!showRequested) {
+      open_jobs = jobs.filter((job) => job.isRequested === showRequested);
+    }
+
+    setOpenJobs(open_jobs);
+  }, [jobs, showRequested]);
 
   const handleRequestPick = async (job_id) => {
     // Do something with the order ID
@@ -73,6 +79,12 @@ const OpenJobsView = ({
     return "Open Jobs";
   };
 
+  const getRowBGColor = (job) => {
+    return job.isRequested
+      ? get_setting("requested_job_bg_color", "magenta")
+      : "white";
+  };
+
   return (
     <div>
       <h2>{getTitle()}</h2>
@@ -106,6 +118,16 @@ const OpenJobsView = ({
             {IsFilter ? "Reset Filter" : "Filter"}
           </Button>
         </div>
+        <div className="me-3">
+          <label htmlFor="requestedJobsFilter" className="me-2">
+            <input
+              type="checkbox"
+              id="requestedJobsFilter"
+              onChange={(e) => setShowRequested(e.target.checked)}
+            />{" "}
+            Requested Jobs
+          </label>
+        </div>
       </div>
       <p>
         Total Jobs: {openJobs.length}
@@ -137,7 +159,10 @@ const OpenJobsView = ({
           </thead>
           <tbody>
             {openJobs.map((job) => (
-              <tr key={job.jobID}>
+              <tr
+                key={job.jobID}
+                style={{ backgroundColor: getRowBGColor(job) }}
+              >
                 <td>{job.jobID}</td>
                 <td>{job.orderDate}</td>
                 <td>{job.itemName}</td>
