@@ -16,7 +16,8 @@ function MessagesBody({ Thread, showMore, onDownload }) {
   const showAdminComment = (msg) => {
     return (
       (UserRole === "customer" && msg.type === "comment_customer") ||
-      (UserRole === "designer" && msg.type === "comment_designer")
+      (UserRole === "designer" && msg.type === "comment_designer") ||
+      (UserRole === "admin" && msg.type !== "message")
     );
   };
   return (
