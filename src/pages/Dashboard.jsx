@@ -40,6 +40,7 @@ import { NavbarLogo } from "../common/NavbarLogo";
 import UserSettings from "../admin/UserSettings";
 import OurDesigners from "./OurDesigners";
 import AnalyticsSales from "./AnalyticSales";
+import InfoPage from "./Info";
 // import AllOrders from "./AllOrders";
 
 const { siteurl, navbars: Navbars_data } = plugin_data;
@@ -240,6 +241,8 @@ function Dashboard({ onLogout, User }) {
         );
       case "faq":
         return <FAQ UserRole={UserRole} />;
+      case "info":
+        return <InfoPage />;
       case "ourdesigners":
         return <OurDesigners DesignerUsers={DesignerUsers} />;
       case "orderconvo":

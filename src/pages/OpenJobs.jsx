@@ -25,16 +25,18 @@ const OpenJobsView = ({
   useEffect(() => {
     // remove jobs which are picked by me
     let open_jobs = jobs;
-    if (!showRequested) {
+    if (!showRequested && UserRole !== "customer") {
       open_jobs = jobs.filter((job) => job.isRequested === showRequested);
     }
 
     setOpenJobs(open_jobs);
   }, [jobs, showRequested]);
 
-  const handleRequestPick = async (job_id) => {
-    // Do something with the order ID
-    const { data } = await requestJob(job_id, UserID);
+  const handleRequestPick = async (job) => {
+    let request_type = get_setting("automatic_mode") ? "direct" : "wait";
+    // job is requested then it must be request_type = "wait"
+    if (job.isRequested) request_type = "wait";
+    const { data } = await requestJob(job.jobID, UserID, request_type);
     const { data: response } = data;
     toast.success(response.message);
     if (response.reload) return window.location.reload();
@@ -80,7 +82,7 @@ const OpenJobsView = ({
   };
 
   const getRowBGColor = (job) => {
-    return job.isRequested
+    return job.isRequested && UserRole !== "customer"
       ? get_setting("requested_job_bg_color", "magenta")
       : "white";
   };
@@ -118,16 +120,18 @@ const OpenJobsView = ({
             {IsFilter ? "Reset Filter" : "Filter"}
           </Button>
         </div>
-        <div className="me-3">
-          <label htmlFor="requestedJobsFilter" className="me-2">
-            <input
-              type="checkbox"
-              id="requestedJobsFilter"
-              onChange={(e) => setShowRequested(e.target.checked)}
-            />{" "}
-            Requested Jobs
-          </label>
-        </div>
+        {UserRole !== "customer" && (
+          <div className="me-3">
+            <label htmlFor="requestedJobsFilter" className="me-2">
+              <input
+                type="checkbox"
+                id="requestedJobsFilter"
+                onChange={(e) => setShowRequested(e.target.checked)}
+              />{" "}
+              Requested Jobs
+            </label>
+          </div>
+        )}
       </div>
       <p>
         Total Jobs: {openJobs.length}
@@ -192,7 +196,7 @@ const OpenJobsView = ({
                         </Button>
                       ) : (
                         <Button
-                          onClick={() => handleRequestPick(job.orderID)}
+                          onClick={() => handleRequestPick(job)}
                           disabled={disableRequest(job.orderID)}
                         >
                           Request a Pick

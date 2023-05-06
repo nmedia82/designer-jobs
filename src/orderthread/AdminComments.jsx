@@ -14,7 +14,7 @@ import { get_setting } from "../services/helper";
 
 export default function AdminComments({ message, UserRole }) {
   const bgcolor =
-    UserRole === "customer"
+    message.type === "comment_customer"
       ? get_setting("admin_to_customer_msg_bg_color", "lightblue")
       : get_setting("admin_to_designer_msg_bg_color", "#d9aaa0");
   return (

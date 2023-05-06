@@ -1,6 +1,6 @@
 {
-  "siteurlz": "https://wooconvo.najeebmedia.com",
-  "siteurl": "https://cad-labs.com",
+  "siteurl": "https://wooconvo.najeebmedia.com",
+  "siteurlz": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -50,6 +50,11 @@
     {
       "title": "Analytics",
       "link": "wp-admin/admin.php?page=wc-admin&path=%2Fanalytics%2Foverview",
+      "access": ["admin"]
+    },
+    {
+      "title": "Info",
+      "slug": "info",
       "access": ["admin"]
     }
   ],
@@ -107,6 +112,13 @@
     {
       "id": "agreement_text_for_customer",
       "label": "Agreement Content",
+      "type": "tiny",
+      "visibility": "admin",
+      "tab": "content"
+    },
+    {
+      "id": "info_text",
+      "label": "Info Content",
       "type": "tiny",
       "visibility": "admin",
       "tab": "content"
