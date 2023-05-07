@@ -185,6 +185,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
               <th>Date Completed</th>
               <th>Comment & Notify</th>
               {UserRole === "admin" && <th>Designer Name</th>}
+              {UserRole === "customer" && <th>Rating</th>}
             </tr>
           </thead>
           <tbody>
@@ -220,6 +221,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
                     {job?.jobDesigner?.data?.display_name}
                   </td>
                 )}
+                <td>Rating here</td>
               </tr>
             ))}
           </tbody>
