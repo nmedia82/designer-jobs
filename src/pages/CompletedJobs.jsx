@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Table,
+  Modal,
+  Container,
+  Form,
+  Row,
+  Col,
+} from "react-bootstrap";
 
 import ReadMoreText from "../common/ReadMore";
 import { get_job_thumb, get_setting } from "../services/helper";
@@ -17,6 +26,9 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const [DateBefore, setDateBefore] = useState("");
   const [IsFilter, setIsFilter] = useState(false);
   const [ShowCalculator, setShowCalculator] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [inputValue, setInputValue] = useState("");
 
   jobs = sortByOrderDateDesc(jobs);
 
@@ -90,6 +102,27 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
     if (UserRole === "admin") return "Comment";
     return "Update File";
   };
+
+  const handleSeeModal = () => {
+    // setSelectedJob(job);
+    setShowModal(true);
+  };
+  function handleClick(value) {
+    setRating(value);
+  }
+
+  function handleInputChange(event) {
+    setInputValue(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const newRating = parseInt(inputValue);
+    if (!isNaN(newRating) && newRating >= 1 && newRating <= 5) {
+      setRating(newRating);
+      setInputValue("");
+    }
+  }
 
   return (
     <div>
@@ -185,7 +218,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
               <th>Date Completed</th>
               <th>Comment & Notify</th>
               {UserRole === "admin" && <th>Designer Name</th>}
-              {UserRole === "customer" && <th>Rating</th>}
+              {UserRole === "admin" && <th>Ratings</th>}
             </tr>
           </thead>
           <tbody>
@@ -221,12 +254,68 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
                     {job?.jobDesigner?.data?.display_name}
                   </td>
                 )}
-                <td>Rating here</td>
+                <Button
+                  style={{
+                    textAlign: "center",
+                    background: "black",
+                    color: "white",
+                    border: "none",
+                    marginLeft: 5,
+                    marginTop: 10
+                  }}
+                  onClick={handleSeeModal}
+                >
+                  Rating here
+                </Button>
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Rating</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="ratingInput">
+                <Form.Control
+                  type="text"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  placeholder="Type here..."
+                />
+              </Form.Group>
+              <Row>
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <Col key={value} xs="auto" onClick={() => handleClick(value)}>
+                    <span
+                      style={{
+                        cursor: "pointer",
+                        fontSize: "30px",
+                        color: value <= rating ? "yellow" : "gray",
+                      }}
+                    >
+                      {value <= rating ? "★" : "☆"}
+                    </span>
+                  </Col>
+                ))}
+              </Row>
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </Form>
+          </Container>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
