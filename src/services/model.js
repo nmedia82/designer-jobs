@@ -125,3 +125,8 @@ export function deleteInvoice(id) {
   const url = `${endpoint}/delete-invoice?post_id=${id}&user_id=${user_id}`;
   return httpService.get(url);
 }
+
+export function setJobRating(data) {
+  const url = `${endpoint}/set-job-rating`;
+  return httpService.post(url, data);
+}

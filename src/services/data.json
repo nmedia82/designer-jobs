@@ -1,6 +1,6 @@
 {
-  "siteurl": "https://wooconvo.najeebmedia.com",
-  "siteurlz": "https://cad-labs.com",
+  "siteurlz": "https://wooconvo.najeebmedia.com",
+  "siteurl": "https://cad-labs.com",
   "navbars": [
     {
       "title": "Open Jobs",
@@ -64,7 +64,16 @@
       "label": "Enable Automatic Mode",
       "type": "checkbox",
       "visibility": "admin",
-      "tab": "general"
+      "tab": "general",
+      "col": 6
+    },
+    {
+      "id": "enable_ratings",
+      "label": "Enable Ratings for Designers by Customers",
+      "type": "checkbox",
+      "visibility": "admin",
+      "tab": "general",
+      "col": 6
     },
     {
       "id": "disable_emails_designers",
