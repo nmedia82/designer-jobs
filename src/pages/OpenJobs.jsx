@@ -36,7 +36,7 @@ const OpenJobsView = ({
     let request_type = get_setting("automatic_mode") ? "direct" : "wait";
     // job is requested then it must be request_type = "wait"
     if (job.isRequested) request_type = "wait";
-    const { data } = await requestJob(job.jobID, UserID, request_type);
+    const { data } = await requestJob(job.orderID, UserID, request_type);
     const { data: response } = data;
     toast.success(response.message);
     if (response.reload) return window.location.reload();
@@ -44,9 +44,10 @@ const OpenJobsView = ({
 
   const handleUserPickedByAdmin = async (job_id, designer_id) => {
     // Do something with the order ID
-    const { data } = await requestJob(job_id, designer_id);
+    const request_type = "direct";
+    const { data } = await requestJob(job_id, designer_id, request_type);
     const { data: response } = data;
-    toast.success(response.message);
+    toast.success("Job assigned to designer");
     if (response.reload) return window.location.reload();
   };
 

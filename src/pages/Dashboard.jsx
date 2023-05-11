@@ -163,8 +163,9 @@ function Dashboard({ onLogout, User }) {
     const found = my_jobs.find((job) => job.orderID === Number(order_id));
     // console.log(InProgressJobs, order_id, found);
     const index = my_jobs.indexOf(found);
-    found["jobStatus"] = "wc-send";
-    my_jobs[index] = { ...found };
+    const temp_status = UserRole === "customer" ? "wc-revise" : "wc-send";
+    found["jobStatus"] = temp_status;
+    my_jobs[index] = found;
     setInProgressJobs(my_jobs);
   };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Row, Col, Modal, Container, Form } from "react-bootstrap";
 import { setJobRating } from "../services/model";
 import { toast } from "react-toastify";
+import { Typography } from "@mui/material";
 export default function RatingModal({ UserRole, job }) {
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState(job.ratingStar);
@@ -35,7 +36,9 @@ export default function RatingModal({ UserRole, job }) {
   }
   return (
     <div>
-      <p>{ratingComment}</p>
+      <Typography style={{ maxWidth: "150px", wordWrap: "break-word" }}>
+        {ratingComment}
+      </Typography>
       <p>
         {[1, 2, 3, 4, 5].map((value) => (
           <span
@@ -43,7 +46,7 @@ export default function RatingModal({ UserRole, job }) {
             style={{
               cursor: "pointer",
               fontSize: "20px",
-              color: value <= rating ? "yellow" : "gray",
+              color: value <= rating ? "#ffc107" : "gray",
             }}
           >
             {value <= rating ? "★" : "☆"}

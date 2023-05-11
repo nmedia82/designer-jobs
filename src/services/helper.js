@@ -43,3 +43,31 @@ export function get_job_thumb(job) {
 export function get_preview_thumb() {
   return process.env.PUBLIC_URL + "/download-icon.png";
 }
+
+export function jobdone_date(dateString) {
+  const date = new Date(dateString);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthName = months[date.getMonth()];
+  const day = date.getDate();
+  const year = date.getFullYear().toString().substr(-2);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  return `${monthName} ${day}, ${year} ${formattedHours}:${formattedMinutes}${ampm}`;
+}
