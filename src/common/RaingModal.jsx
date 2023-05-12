@@ -90,7 +90,7 @@ export default function RatingModal({ UserRole, job }) {
                       style={{
                         cursor: "pointer",
                         fontSize: "30px",
-                        color: value <= rating ? "yellow" : "gray",
+                        color: value <= rating ? "#ffc107" : "gray",
                       }}
                     >
                       {value <= rating ? "★" : "☆"}

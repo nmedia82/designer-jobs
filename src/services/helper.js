@@ -46,28 +46,12 @@ export function get_preview_thumb() {
 
 export function jobdone_date(dateString) {
   const date = new Date(dateString);
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const monthName = months[date.getMonth()];
-  const day = date.getDate();
-  const year = date.getFullYear().toString().substr(-2);
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear().toString();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
 
-  return `${monthName} ${day}, ${year} ${formattedHours}:${formattedMinutes}${ampm}`;
+  return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
 }
