@@ -1,5 +1,5 @@
 {
-  "siteurlz": "https://wooconvo.najeebmedia.com",
+  "siteurlz": "https://plugins.nmdevteam.com",
   "siteurl": "https://cad-labs.com",
   "navbars": [
     {
@@ -301,7 +301,15 @@
     },
     {
       "id": "label_invoice_delect",
-      "label": "Change Invoice Delect label",
+      "label": "Change Invoice Delete label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "label_more_info",
+      "label": "More Info Label",
       "type": "text",
       "visibility": "admin",
       "tab": "content",

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useSyncExternalStore } from "react";
 import { Table, Button, Modal, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReadMoreText from "../common/ReadMore";
 import { get_job_thumb, get_setting } from "../services/helper";
 import { getJobByDate, requestJob } from "../services/model";
 import FileDownloads from "../common/FileDownloads";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const OpenJobsView = ({
   jobs,
@@ -16,6 +17,7 @@ const OpenJobsView = ({
 }) => {
   const [openJobs, setOpenJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showModalMoreInfo, setShowModalMoreInfo] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [DateAfter, setDateAfter] = useState("");
   const [DateBefore, setDateBefore] = useState("");
@@ -30,7 +32,7 @@ const OpenJobsView = ({
     }
 
     setOpenJobs(open_jobs);
-  }, [jobs, showRequested]);
+  }, [jobs, showRequested, UserRole]);
 
   const handleRequestPick = async (job) => {
     let request_type = get_setting("automatic_mode") ? "direct" : "wait";
@@ -153,6 +155,7 @@ const OpenJobsView = ({
                 <th>{get_setting("label_job_price")}</th>
               )}
               <th>{get_setting("label_client_comments")}</th>
+              <th>{get_setting("label_more_info")}</th>
               {UserRole === "customer" && <th>Case No</th>}
               <th>{get_setting("label_download_file")}</th>
               {UserRole !== "customer" && (
@@ -177,6 +180,20 @@ const OpenJobsView = ({
                 <td>
                   <ReadMoreText text={job.clientComment} maxLength={20} />
                 </td>
+                <td
+                  style={{
+                    textAlign: "center",
+                    verticalAlign: "middle", // Center vertically
+                    cursor: "pointer", // Change cursor to pointer
+                  }}
+                  onClick={() => setShowModalMoreInfo(true)}
+                >
+                  <FontAwesomeIcon
+                    icon="plus-circle"
+                    style={{ color: "#0B5ED7", fontSize: "2em" }}
+                  />
+                </td>
+
                 {UserRole === "customer" && <td>{job.caseNo}</td>}
                 <td className="text-center">
                   <FileDownloads jobData={job} />
@@ -212,7 +229,7 @@ const OpenJobsView = ({
         </Table>
       </div>
 
-      {/* Render modal */}
+      {/* Popup for Admin to see job requests */}
 
       {selectedJob && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
@@ -302,6 +319,34 @@ const OpenJobsView = ({
           </Modal.Footer>
         </Modal>
       )}
+
+      {/* Show more info */}
+
+      <Modal
+        show={showModalMoreInfo}
+        onHide={() => setShowModalMoreInfo(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>More Information</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <div className="table-responsive"></div>
+          </Container>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowModalMoreInfo(false)}
+          >
+            Close
+          </Button>
+          {/* <Button variant="primary" onClick={() => setShowModal(false)}>
+              Notify Designer
+            </Button> */}
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

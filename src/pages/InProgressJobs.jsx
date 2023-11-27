@@ -6,6 +6,7 @@ import { changeDesigner, getJobByDate } from "../services/model";
 import { get_job_thumb, get_setting } from "../services/helper";
 import { Settings } from "@mui/icons-material";
 import FileDownloads from "../common/FileDownloads";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const InProgressJobsView = ({
   jobs,
@@ -24,6 +25,7 @@ const InProgressJobsView = ({
   const [selectedDesigner, setSelectedDesigner] = useState("");
   // it's for Modal
   const [showModal, setShowModal] = useState(false);
+  const [showModalMoreInfo, setShowModalMoreInfo] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
@@ -223,6 +225,7 @@ const InProgressJobsView = ({
                 <th>{get_setting("label_job_price")}</th>
               )}
               <th>{get_setting("label_client_comments")}</th>
+              <th>{get_setting("label_more_info")}</th>
               {UserRole === "customer" && <th>Case No</th>}
               <th>{get_setting("label_download_file")}</th>
               <th>{get_setting("label_comment_notify")}</th>
@@ -251,6 +254,19 @@ const InProgressJobsView = ({
                 )}
                 <td>
                   <ReadMoreText text={job.clientComment} maxLength={20} />
+                </td>
+                <td
+                  style={{
+                    textAlign: "center",
+                    verticalAlign: "middle", // Center vertically
+                    cursor: "pointer", // Change cursor to pointer
+                  }}
+                  onClick={() => setShowModalMoreInfo(true)}
+                >
+                  <FontAwesomeIcon
+                    icon="plus-circle"
+                    style={{ color: "#0B5ED7", fontSize: "2em" }}
+                  />
                 </td>
                 {UserRole === "customer" && <td>{job.caseNo}</td>}
                 <td className="text-center">
@@ -350,6 +366,34 @@ const InProgressJobsView = ({
           </Modal.Footer>
         </Modal>
       )}
+
+      {/* Show more info */}
+
+      <Modal
+        show={showModalMoreInfo}
+        onHide={() => setShowModalMoreInfo(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>More Information</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <div className="table-responsive"></div>
+          </Container>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowModalMoreInfo(false)}
+          >
+            Close
+          </Button>
+          {/* <Button variant="primary" onClick={() => setShowModal(false)}>
+              Notify Designer
+            </Button> */}
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

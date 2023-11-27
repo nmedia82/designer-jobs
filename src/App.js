@@ -5,6 +5,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import auth, { login_user_locally } from "./services/auth";
 import jwtDecode from "jwt-decode";
+// Import necessary Font Awesome components and icons
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 // import useLocalStorage from "./services/useLocalStorage";
 import Login from "./pages/Login";
@@ -12,6 +15,9 @@ import Dashboard from "./pages/Dashboard";
 import { useState, useEffect } from "react";
 import { get_setting } from "./services/helper";
 import useLocalStorage from "./services/useLocalStorage";
+
+// Add the imported icons to the library
+library.add(faPlusCircle);
 
 function App() {
   const [User, setUser] = useState(null);
