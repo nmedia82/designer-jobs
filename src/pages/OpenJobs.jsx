@@ -166,11 +166,8 @@ const OpenJobsView = ({
             </tr>
           </thead>
           <tbody>
-            {openJobs.map((job) => (
-              <tr
-                key={job.jobID}
-                style={{ backgroundColor: getRowBGColor(job) }}
-              >
+            {openJobs.map((job, index) => (
+              <tr key={index} style={{ backgroundColor: getRowBGColor(job) }}>
                 <td>{job.jobID}</td>
                 <td>{job.orderDate}</td>
                 <td>{job.itemName}</td>
