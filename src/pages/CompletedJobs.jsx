@@ -88,7 +88,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   };
 
   const getButtonTitle = () => {
-    if (UserRole === "admin") return "Comment";
+    if (UserRole === "admin") return get_setting("label_comment_notify_button");
     return "Update File";
   };
 
@@ -177,15 +177,20 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Job ID</th>
-              <th>Order Date</th>
-              {UserRole !== "customer" && <th>Job Price</th>}
-              <th>Client Comments</th>
+              <th>{get_setting("label_job_id")}</th>
+              <th>{get_setting("label_job_order_date")}</th>
+              <th>{get_setting("label_product_name")}</th>
+              {UserRole !== "customer" && (
+                <th>{get_setting("label_job_price")}</th>
+              )}
+              <th>{get_setting("label_client_comments")}</th>
               {UserRole === "customer" && <th>Case No</th>}
-              <th>Download File</th>
+              <th>{get_setting("label_download_file")}</th>
               <th>Date Completed</th>
-              <th>Comment & Notify</th>
-              {UserRole === "admin" && <th>Designer Name</th>}
+              <th>{get_setting("label_comment_notify")}</th>
+              {UserRole === "admin" && (
+                <th>{get_setting("label_designer_name")}</th>
+              )}
               {get_setting("enable_ratings") && <th>Ratings</th>}
             </tr>
           </thead>
@@ -194,6 +199,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
               <tr key={job.jobID}>
                 <td>{job.jobID}</td>
                 <td>{job.orderDate}</td>
+                <td>{job.itemName}</td>
                 {UserRole !== "customer" && (
                   <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
                 )}

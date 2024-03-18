@@ -260,6 +260,14 @@
       "col": 4
     },
     {
+      "id": "label_comment_notify_button",
+      "label": "Comment & Notify Button Label",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
       "id": "label_designer_name",
       "label": "Change Designer Name label",
       "type": "text",
@@ -315,6 +323,23 @@
       "tab": "content",
       "col": 4
     },
+    {
+      "id": "disable_emails_customers_label",
+      "label": "Disable Email Notification for Customers",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+    {
+      "id": "disable_emails_designers_label",
+      "label": "Disable Email Notification for Designer",
+      "type": "text",
+      "visibility": "admin",
+      "tab": "content",
+      "col": 4
+    },
+
     {
       "id": "navbar_bg_color",
       "label": "Navbar Bg Color",
