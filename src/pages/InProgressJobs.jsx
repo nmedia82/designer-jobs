@@ -70,6 +70,7 @@ const InProgressJobsView = ({
   };
 
   function getStatusLabel(key) {
+    // console.log(Statuses);
     const statusObject = Statuses.find((status) => status.value === key);
     return statusObject ? statusObject.label : "";
   }

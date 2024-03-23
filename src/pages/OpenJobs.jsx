@@ -328,7 +328,18 @@ const OpenJobsView = ({
         </Modal.Header>
         <Modal.Body>
           <Container>
-            <div className="table-responsive"></div>
+            {selectedJob && selectedJob.moreInfo.length > 0 ? (
+              selectedJob.moreInfo.map((item, index) => (
+                <div key={index}>
+                  <strong>{item.label}:</strong>{" "}
+                  {Array.isArray(item.value)
+                    ? item.value.join(", ")
+                    : item.value}
+                </div>
+              ))
+            ) : (
+              <p>No extra information found</p>
+            )}
           </Container>
         </Modal.Body>
 
