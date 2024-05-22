@@ -1,10 +1,11 @@
 import { ReadMore } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Container, Modal, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
 import { get_job_thumb, get_setting } from "../services/helper";
 import { getJobByDate } from "../services/model";
 import FileDownloads from "../common/FileDownloads";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
   const [CancelledJobs, setCancelledJobs] = useState([]);
@@ -14,6 +15,8 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
   const [DateAfter, setDateAfter] = useState("");
   const [DateBefore, setDateBefore] = useState("");
   const [IsFilter, setIsFilter] = useState(false);
+  const [showModalMoreInfo, setShowModalMoreInfo] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
     setCancelledJobs(jobs);
@@ -69,6 +72,12 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
   const getDisplayName = (job) => {
     return job?.jobDesigner?.data?.display_name ?? "";
   };
+
+  const handleMoreInfo = (job) => {
+    setSelectedJob(job);
+    setShowModalMoreInfo(true);
+  };
+
   return (
     <div>
       <h3>Canceled Jobs</h3>
@@ -138,11 +147,12 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Job ID</th>
-              <th>Order ID</th>
-              <th>Job Price</th>
-              <th>Client Comments</th>
-              <th>Download File</th>
+              <th>{get_setting("label_job_id")}</th>
+              <th>{get_setting("label_job_order_date")}</th>
+              <th>{get_setting("label_job_price")}</th>
+              <th>{get_setting("label_client_comments")}</th>
+              <th>{get_setting("label_more_info")}</th>
+              <th>{get_setting("label_download_file")}</th>
               <th>Date Cancelled</th>
               {UserRole === "admin" && <th>Designer Name</th>}
             </tr>
@@ -156,6 +166,19 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
                 <td>
                   <ReadMoreText text={job.clientComment} maxLength={20} />
                 </td>
+                <td
+                  style={{
+                    textAlign: "center",
+                    verticalAlign: "middle", // Center vertically
+                    cursor: "pointer", // Change cursor to pointer
+                  }}
+                  onClick={() => handleMoreInfo(job)}
+                >
+                  <FontAwesomeIcon
+                    icon="plus-circle"
+                    style={{ color: "#0B5ED7", fontSize: "2em" }}
+                  />
+                </td>
                 <td className="text-center">
                   <FileDownloads jobData={job} />
                 </td>
@@ -166,6 +189,47 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
           </tbody>
         </Table>
       </div>
+
+      {/* Show more info */}
+
+      {selectedJob && (
+        <Modal
+          show={showModalMoreInfo}
+          onHide={() => setShowModalMoreInfo(false)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>More Information</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container>
+              {selectedJob.moreInfo.length > 0 ? (
+                selectedJob.moreInfo.map((item, index) => (
+                  <div key={index}>
+                    <strong>{item.label}:</strong>{" "}
+                    {Array.isArray(item.value)
+                      ? item.value.join(", ")
+                      : item.value}
+                  </div>
+                ))
+              ) : (
+                <p>No extra information found</p>
+              )}
+            </Container>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => setShowModalMoreInfo(false)}
+            >
+              Close
+            </Button>
+            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
+              Notify Designer
+            </Button> */}
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };

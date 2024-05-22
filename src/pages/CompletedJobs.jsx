@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Container, Modal, Table } from "react-bootstrap";
 
 import ReadMoreText from "../common/ReadMore";
 import { get_setting } from "../services/helper";
@@ -7,6 +7,7 @@ import { getJobByDate } from "../services/model";
 import Calculator from "./Calculator";
 import FileDownloads from "../common/FileDownloads";
 import RatingModal from "../common/RaingModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const [CompletedJobs, setCompletedJobs] = useState([]);
@@ -18,6 +19,8 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const [DateBefore, setDateBefore] = useState("");
   const [IsFilter, setIsFilter] = useState(false);
   const [ShowCalculator, setShowCalculator] = useState(false);
+  const [showModalMoreInfo, setShowModalMoreInfo] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
 
   jobs = sortByOrderDateDesc(jobs);
 
@@ -85,6 +88,11 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
     );
     setDateFilteredJobs(filtered);
     setFilteredJobs(filtered);
+  };
+
+  const handleMoreInfo = (job) => {
+    setSelectedJob(job);
+    setShowModalMoreInfo(true);
   };
 
   const getButtonTitle = () => {
@@ -177,14 +185,17 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Job ID</th>
-              <th>Order Date</th>
-              {UserRole !== "customer" && <th>Job Price</th>}
-              <th>Client Comments</th>
+              <th>{get_setting("label_job_id")}</th>
+              <th>{get_setting("label_job_order_date")}</th>
+              {UserRole !== "customer" && (
+                <th>{get_setting("label_job_price")}</th>
+              )}
+              <th>{get_setting("label_client_comments")}</th>
+              <th>{get_setting("label_more_info")}</th>
               {UserRole === "customer" && <th>Case No</th>}
-              <th>Download File</th>
+              <th>{get_setting("label_download_file")}</th>
               <th>Date Completed</th>
-              <th>Comment & Notify</th>
+              <th>{get_setting("label_comment_notify")}</th>
               {UserRole === "admin" && <th>Designer Name</th>}
               {get_setting("enable_ratings") && <th>Ratings</th>}
             </tr>
@@ -199,6 +210,19 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
                 )}
                 <td>
                   <ReadMoreText text={job.clientComment} maxLength={20} />
+                </td>
+                <td
+                  style={{
+                    textAlign: "center",
+                    verticalAlign: "middle", // Center vertically
+                    cursor: "pointer", // Change cursor to pointer
+                  }}
+                  onClick={() => handleMoreInfo(job)}
+                >
+                  <FontAwesomeIcon
+                    icon="plus-circle"
+                    style={{ color: "#0B5ED7", fontSize: "2em" }}
+                  />
                 </td>
                 {UserRole === "customer" && <td>{job.caseNo}</td>}
                 <td className="text-center">
@@ -232,6 +256,47 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
           </tbody>
         </Table>
       </div>
+
+      {/* Show more info */}
+
+      {selectedJob && (
+        <Modal
+          show={showModalMoreInfo}
+          onHide={() => setShowModalMoreInfo(false)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>More Information</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container>
+              {selectedJob.moreInfo.length > 0 ? (
+                selectedJob.moreInfo.map((item, index) => (
+                  <div key={index}>
+                    <strong>{item.label}:</strong>{" "}
+                    {Array.isArray(item.value)
+                      ? item.value.join(", ")
+                      : item.value}
+                  </div>
+                ))
+              ) : (
+                <p>No extra information found</p>
+              )}
+            </Container>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => setShowModalMoreInfo(false)}
+            >
+              Close
+            </Button>
+            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
+              Notify Designer
+            </Button> */}
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };

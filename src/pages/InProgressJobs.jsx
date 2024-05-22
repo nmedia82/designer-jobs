@@ -3,8 +3,7 @@ import { Button, Table, Modal, Container } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
 import { toast } from "react-toastify";
 import { changeDesigner, getJobByDate } from "../services/model";
-import { get_job_thumb, get_setting } from "../services/helper";
-import { Settings } from "@mui/icons-material";
+import { get_setting } from "../services/helper";
 import FileDownloads from "../common/FileDownloads";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -107,7 +106,6 @@ const InProgressJobsView = ({
   };
 
   const handleMoreInfo = (job) => {
-    console.log(job);
     setSelectedJob(job);
     setShowModalMoreInfo(true);
   };

@@ -63,6 +63,11 @@ const OpenJobsView = ({
     setShowModal(true);
   };
 
+  const handleMoreInfo = (job) => {
+    setSelectedJob(job);
+    setShowModalMoreInfo(true);
+  };
+
   const handleDateFilter = async () => {
     if (IsFilter) {
       setOpenJobs(jobs);
@@ -183,7 +188,7 @@ const OpenJobsView = ({
                     verticalAlign: "middle", // Center vertically
                     cursor: "pointer", // Change cursor to pointer
                   }}
-                  onClick={() => setShowModalMoreInfo(true)}
+                  onClick={() => handleMoreInfo(job)}
                 >
                   <FontAwesomeIcon
                     icon="plus-circle"
@@ -319,31 +324,44 @@ const OpenJobsView = ({
 
       {/* Show more info */}
 
-      <Modal
-        show={showModalMoreInfo}
-        onHide={() => setShowModalMoreInfo(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>More Information</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Container>
-            <div className="table-responsive"></div>
-          </Container>
-        </Modal.Body>
+      {selectedJob && (
+        <Modal
+          show={showModalMoreInfo}
+          onHide={() => setShowModalMoreInfo(false)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>More Information</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container>
+              {selectedJob.moreInfo.length > 0 ? (
+                selectedJob.moreInfo.map((item, index) => (
+                  <div key={index}>
+                    <strong>{item.label}:</strong>{" "}
+                    {Array.isArray(item.value)
+                      ? item.value.join(", ")
+                      : item.value}
+                  </div>
+                ))
+              ) : (
+                <p>No extra information found</p>
+              )}
+            </Container>
+          </Modal.Body>
 
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => setShowModalMoreInfo(false)}
-          >
-            Close
-          </Button>
-          {/* <Button variant="primary" onClick={() => setShowModal(false)}>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => setShowModalMoreInfo(false)}
+            >
+              Close
+            </Button>
+            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
               Notify Designer
             </Button> */}
-        </Modal.Footer>
-      </Modal>
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };
