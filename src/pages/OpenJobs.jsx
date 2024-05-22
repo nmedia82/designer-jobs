@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useSyncExternalStore } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReadMoreText from "../common/ReadMore";
@@ -25,18 +25,15 @@ const OpenJobsView = ({
   const [showRequested, setShowRequested] = useState(false);
 
   useEffect(() => {
-    // remove jobs which are picked by me
     let open_jobs = jobs;
     if (!showRequested && UserRole !== "customer") {
       open_jobs = jobs.filter((job) => job.isRequested === showRequested);
     }
-
     setOpenJobs(open_jobs);
   }, [jobs, showRequested, UserRole]);
 
   const handleRequestPick = async (job) => {
     let request_type = get_setting("automatic_mode") ? "direct" : "wait";
-    // job is requested then it must be request_type = "wait"
     if (job.isRequested) request_type = "wait";
     const { data } = await requestJob(job.orderID, UserID, request_type);
     const { data: response } = data;
@@ -45,7 +42,6 @@ const OpenJobsView = ({
   };
 
   const handleUserPickedByAdmin = async (job_id, designer_id) => {
-    // Do something with the order ID
     const request_type = "direct";
     const { data } = await requestJob(job_id, designer_id, request_type);
     const { data: response } = data;
@@ -54,8 +50,7 @@ const OpenJobsView = ({
   };
 
   const disableRequest = (order_id) => {
-    if (MyRequests.includes(order_id) || !allowDesignersToPick) return true;
-    return false;
+    return MyRequests.includes(order_id) || !allowDesignersToPick;
   };
 
   const handleSeeRequests = (job) => {
@@ -71,7 +66,7 @@ const OpenJobsView = ({
   const handleDateFilter = async () => {
     if (IsFilter) {
       setOpenJobs(jobs);
-      setIsFilter(!IsFilter);
+      setIsFilter(false);
       return;
     }
     setIsFilter(true);
@@ -81,11 +76,9 @@ const OpenJobsView = ({
       DateBefore
     );
     setOpenJobs(filtered);
-    // console.log(jobs);
   };
 
   const getTitle = () => {
-    // return UserRole === "designer" ? "My Orders" : "Open Jobs";
     return "Open Jobs";
   };
 
@@ -185,8 +178,8 @@ const OpenJobsView = ({
                 <td
                   style={{
                     textAlign: "center",
-                    verticalAlign: "middle", // Center vertically
-                    cursor: "pointer", // Change cursor to pointer
+                    verticalAlign: "middle",
+                    cursor: "pointer",
                   }}
                   onClick={() => handleMoreInfo(job)}
                 >
@@ -195,34 +188,31 @@ const OpenJobsView = ({
                     style={{ color: "#0B5ED7", fontSize: "2em" }}
                   />
                 </td>
-
                 {UserRole === "customer" && <td>{job.caseNo}</td>}
                 <td className="text-center">
                   <FileDownloads jobData={job} />
                 </td>
                 {UserRole !== "customer" && (
                   <td style={{ textAlign: "center" }}>
-                    <>
-                      {UserRole === "admin" ? (
-                        <Button
-                          style={{
-                            background: get_setting("request_button_bg_color"),
-                            color: get_setting("request_button_font_color"),
-                            border: "none",
-                          }}
-                          onClick={() => handleSeeRequests(job)}
-                        >
-                          Request/Assign
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={() => handleRequestPick(job)}
-                          disabled={disableRequest(job.orderID)}
-                        >
-                          Request a Pick
-                        </Button>
-                      )}
-                    </>
+                    {UserRole === "admin" ? (
+                      <Button
+                        style={{
+                          background: get_setting("request_button_bg_color"),
+                          color: get_setting("request_button_font_color"),
+                          border: "none",
+                        }}
+                        onClick={() => handleSeeRequests(job)}
+                      >
+                        Request/Assign
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => handleRequestPick(job)}
+                        disabled={disableRequest(job.orderID)}
+                      >
+                        Request a Pick
+                      </Button>
+                    )}
                   </td>
                 )}
               </tr>
@@ -230,9 +220,6 @@ const OpenJobsView = ({
           </tbody>
         </Table>
       </div>
-
-      {/* Popup for Admin to see job requests */}
-
       {selectedJob && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
@@ -242,7 +229,7 @@ const OpenJobsView = ({
             <Container>
               <div className="table-responsive">
                 <h3>Requests ({selectedJob.pickedRequests.length})</h3>
-                <table className="table table-striped">
+                <Table className="table table-striped">
                   <thead>
                     <tr>
                       <th>User Name</th>
@@ -271,11 +258,11 @@ const OpenJobsView = ({
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                </Table>
               </div>
               <div className="table-responsive">
                 <h3>Choose Designer ({DesignerUsers.length})</h3>
-                <table className="table table-striped">
+                <Table className="table table-striped">
                   <thead>
                     <tr>
                       <th>User Name</th>
@@ -306,24 +293,17 @@ const OpenJobsView = ({
                       )
                     )}
                   </tbody>
-                </table>
+                </Table>
               </div>
             </Container>
           </Modal.Body>
-
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowModal(false)}>
               Close
             </Button>
-            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
-              Notify Designer
-            </Button> */}
           </Modal.Footer>
         </Modal>
       )}
-
-      {/* Show more info */}
-
       {selectedJob && (
         <Modal
           show={showModalMoreInfo}
@@ -348,7 +328,6 @@ const OpenJobsView = ({
               )}
             </Container>
           </Modal.Body>
-
           <Modal.Footer>
             <Button
               variant="secondary"
@@ -356,9 +335,6 @@ const OpenJobsView = ({
             >
               Close
             </Button>
-            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
-              Notify Designer
-            </Button> */}
           </Modal.Footer>
         </Modal>
       )}

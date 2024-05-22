@@ -149,12 +149,14 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
             <tr>
               <th>{get_setting("label_job_id")}</th>
               <th>{get_setting("label_job_order_date")}</th>
+              <th>{get_setting("label_product_name")}</th>
               <th>{get_setting("label_job_price")}</th>
               <th>{get_setting("label_client_comments")}</th>
-              <th>{get_setting("label_more_info")}</th>
               <th>{get_setting("label_download_file")}</th>
               <th>Date Cancelled</th>
-              {UserRole === "admin" && <th>Designer Name</th>}
+              {UserRole === "admin" && (
+                <th>{get_setting("label_designer_name")}</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -162,6 +164,7 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
               <tr key={job.jobID}>
                 <td>{job.jobID}</td>
                 <td>{job.orderDate}</td>
+                <td>{job.itemName}</td>
                 <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
                 <td>
                   <ReadMoreText text={job.clientComment} maxLength={20} />

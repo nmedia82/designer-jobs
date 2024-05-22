@@ -44,7 +44,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
     // max_file_size
     // file_types_allowed
     let msg = "";
-    const max_files_allowed = Number(get_setting("max_files_allowed", 1));
+    const max_files_allowed = Number(get_setting("max_files_allowed", 20));
     const max_file_size = Number(get_setting("max_file_size", 100));
     let file_types_allowed = get_setting("file_types_allowed", "jpg,png,pdf");
     file_types_allowed = file_types_allowed.split(",");
@@ -126,7 +126,7 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
   };
 
   const getThumbSize = () => {
-    const thum_size = get_setting("thumb_size", 150);
+    const thum_size = get_setting("thumb_size", 500);
     return thum_size;
   };
 

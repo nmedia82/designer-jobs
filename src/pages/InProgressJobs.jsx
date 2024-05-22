@@ -69,6 +69,7 @@ const InProgressJobsView = ({
   };
 
   function getStatusLabel(key) {
+    // console.log(Statuses);
     const statusObject = Statuses.find((status) => status.value === key);
     return statusObject ? statusObject.label : "";
   }
@@ -96,7 +97,7 @@ const InProgressJobsView = ({
   };
 
   const getButtonTitle = () => {
-    if (UserRole === "admin") return "Comment";
+    if (UserRole === "admin") return get_setting("label_comment_notify_button");
     return "Update File";
   };
 
@@ -224,6 +225,7 @@ const InProgressJobsView = ({
             <tr>
               <th>{get_setting("label_job_id")}</th>
               <th>{get_setting("label_job_order_date")}</th>
+              <th>{get_setting("label_product_name")}</th>
               <th>{get_setting("label_job_status")}</th>
               {UserRole !== "customer" && (
                 <th>{get_setting("label_job_price")}</th>
@@ -243,6 +245,7 @@ const InProgressJobsView = ({
               <tr key={index}>
                 <td>{job.jobID}</td>
                 <td>{job.orderDate}</td>
+                <td>{job.itemName}</td>
                 <td
                   dangerouslySetInnerHTML={{
                     __html: `<span style="background-color: ${getStatusBGColor(

@@ -1,7 +1,7 @@
 {
   "name": "designer-jobs",
   "version": "0.1.0",
-  "homepage": "https://cad-labs.com/design",
+  "homepage": "https://orders.cad-labs.com",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
