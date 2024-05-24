@@ -62,6 +62,8 @@ function Dashboard({ onLogout, User }) {
   const [Invoices, setInvoices] = useState([]);
   const urlParams = queryString.parse(window.location.search);
   const pageParam = urlParams.page;
+  const jobidParam = urlParams.jobid;
+  const statusParam = urlParams.status;
 
   useEffect(() => {
     const loadData = async () => {
@@ -120,6 +122,18 @@ function Dashboard({ onLogout, User }) {
 
     loadData();
     if (pageParam) setView(pageParam);
+
+    if (jobidParam && statusParam) {
+      if (statusParam === "processing") {
+        setView("openjobs");
+      } else if (statusParam === "progress") {
+        setView("inprogrogressjobs");
+      } else if (statusParam === "completed") {
+        setView("completedjobs");
+      } else if (statusParam === "cancelled") {
+        setView("cancelledjobs");
+      }
+    }
   }, [setSettings, setMyJobs, setMyRequests, pageParam]);
 
   const handleViewChange = (view) => {
@@ -210,6 +224,7 @@ function Dashboard({ onLogout, User }) {
             DesignerUsers={DesignerUsers}
             onJobUpdate={handleJobUpdate}
             UserRole={UserRole}
+            jobidParam={jobidParam}
           />
         );
       case "completedjobs":
@@ -219,6 +234,7 @@ function Dashboard({ onLogout, User }) {
             DesignerUsers={DesignerUsers}
             onJobUpdate={handleJobUpdate}
             UserRole={UserRole}
+            jobidParam={jobidParam}
           />
         );
       case "cancelledjobs":
@@ -227,6 +243,7 @@ function Dashboard({ onLogout, User }) {
             jobs={CancelledJobs}
             DesignerUsers={DesignerUsers}
             UserRole={UserRole}
+            jobidParam={jobidParam}
           />
         );
       case "invoices":

@@ -1,16 +1,15 @@
-import { ReadMore } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import { Button, Container, Modal, Table } from "react-bootstrap";
 import ReadMoreText from "../common/ReadMore";
-import { get_job_thumb, get_setting } from "../services/helper";
+import { get_setting } from "../services/helper";
 import { getJobByDate } from "../services/model";
 import FileDownloads from "../common/FileDownloads";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
+const CancelledJobsView = ({ jobs, DesignerUsers, UserRole, jobidParam }) => {
   const [CancelledJobs, setCancelledJobs] = useState([]);
   const [selectedDesigner, setSelectedDesigner] = useState("");
-  const [selectedJobID, setSelectedJobID] = useState("");
+  const [selectedJobID, setSelectedJobID] = useState(jobidParam || "");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
   const [DateAfter, setDateAfter] = useState("");
   const [DateBefore, setDateBefore] = useState("");
@@ -21,27 +20,29 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
   useEffect(() => {
     setCancelledJobs(jobs);
     setFilteredJobs(jobs);
-  }, [jobs]);
+    if (jobidParam) {
+      handleJobIDFilter({ target: { value: jobidParam } });
+    }
+  }, [jobs, jobidParam]);
 
   const handleDesignerChangeFilter = (e) => {
     const designer_id = Number(e.target.value);
-    // console.log(jobs, designer_id);
     setSelectedDesigner(designer_id);
     const cancelled_jobs = [...CancelledJobs];
     if (!designer_id) return setFilteredJobs(cancelled_jobs);
-    const filteredJobs = jobs.filter(
+    const filteredJobs = cancelled_jobs.filter(
       (job) => job.jobDesigner.ID === designer_id
     );
     setFilteredJobs(filteredJobs);
   };
 
-  const handlejobIDFilter = (e) => {
+  const handleJobIDFilter = (e) => {
     const jobid = e.target.value;
     setSelectedJobID(jobid);
     const all_jobs = [...CancelledJobs];
     if (!jobid) return setFilteredJobs(all_jobs);
     const filteredJobs = all_jobs.filter((job) =>
-      matchSearch(job.orderID, jobid)
+      matchSearch(jobid, job.jobID)
     );
     setFilteredJobs(filteredJobs);
   };
@@ -55,7 +56,7 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
     if (IsFilter) {
       const jobs = [...CancelledJobs];
       setFilteredJobs(jobs);
-      setIsFilter(!IsFilter);
+      setIsFilter(false);
       return;
     }
 
@@ -80,10 +81,10 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
 
   return (
     <div>
-      <h3>Canceled Jobs</h3>
+      <h3>Cancelled Jobs</h3>
       <div className="d-flex mb-3 justify-content-between">
         <div className="me-3">
-          <label htmlFor="jobIDFilter" className="me-2">
+          <label htmlFor="DateAfter" className="me-2">
             Dates
           </label>
           <input
@@ -106,7 +107,6 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
               marginLeft: "10px",
               border: "none",
             }}
-            //className="btn btn-info btn-sm m-1"
             onClick={handleDateFilter}
           >
             {IsFilter ? "Reset Filter" : "Filter"}
@@ -120,7 +120,7 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
             id="jobIDFilter"
             type="text"
             value={selectedJobID}
-            onChange={handlejobIDFilter}
+            onChange={handleJobIDFilter}
           />
         </div>
         {UserRole === "admin" && (
@@ -133,6 +133,7 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
               value={selectedDesigner}
               onChange={handleDesignerChangeFilter}
             >
+              <option value="">All</option>
               {DesignerUsers.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.display_name}
@@ -143,7 +144,7 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
         )}
       </div>
       <p>Total Jobs: {filteredJobs.length}</p>
-      <div class="table-responsive">
+      <div className="table-responsive">
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -172,8 +173,8 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
                 <td
                   style={{
                     textAlign: "center",
-                    verticalAlign: "middle", // Center vertically
-                    cursor: "pointer", // Change cursor to pointer
+                    verticalAlign: "middle",
+                    cursor: "pointer",
                   }}
                   onClick={() => handleMoreInfo(job)}
                 >
@@ -192,8 +193,6 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
           </tbody>
         </Table>
       </div>
-
-      {/* Show more info */}
 
       {selectedJob && (
         <Modal
@@ -219,7 +218,6 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
               )}
             </Container>
           </Modal.Body>
-
           <Modal.Footer>
             <Button
               variant="secondary"
@@ -227,9 +225,6 @@ const CancelledJobsView = ({ jobs, DesignerUsers, UserRole }) => {
             >
               Close
             </Button>
-            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
-              Notify Designer
-            </Button> */}
           </Modal.Footer>
         </Modal>
       )}

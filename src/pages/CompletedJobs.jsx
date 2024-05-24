@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Modal, Table } from "react-bootstrap";
-
 import ReadMoreText from "../common/ReadMore";
 import { get_setting } from "../services/helper";
 import { getJobByDate } from "../services/model";
@@ -9,10 +8,16 @@ import FileDownloads from "../common/FileDownloads";
 import RatingModal from "../common/RaingModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
+const CompletedJobsView = ({
+  jobs,
+  DesignerUsers,
+  UserRole,
+  onJobUpdate,
+  jobidParam,
+}) => {
   const [CompletedJobs, setCompletedJobs] = useState([]);
   const [selectedDesigner, setSelectedDesigner] = useState("");
-  const [selectedJobID, setSelectedJobID] = useState("");
+  const [selectedJobID, setSelectedJobID] = useState(jobidParam || "");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
   const [DateFilteredJobs, setDateFilteredJobs] = useState([]);
   const [DateAfter, setDateAfter] = useState("");
@@ -22,12 +27,14 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const [showModalMoreInfo, setShowModalMoreInfo] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
-  jobs = sortByOrderDateDesc(jobs);
-
   useEffect(() => {
-    setCompletedJobs(jobs);
-    setFilteredJobs(jobs);
-  }, [jobs]);
+    const sortedJobs = sortByOrderDateDesc(jobs);
+    setCompletedJobs(sortedJobs);
+    setFilteredJobs(sortedJobs);
+    if (jobidParam) {
+      handleJobIDFilter({ target: { value: jobidParam } });
+    }
+  }, [jobs, jobidParam]);
 
   function sortByOrderDateDesc(array) {
     return array.sort((a, b) => {
@@ -40,14 +47,9 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   const handleDesignerChangeFilter = (e) => {
     const designer_id = Number(e.target.value);
     setSelectedDesigner(designer_id);
-    let jobs = [];
-    if (DateFilteredJobs.length) {
-      jobs = [...DateFilteredJobs];
-    } else {
-      jobs = [...filteredJobs];
-    }
-    // const completed_jobs = [...filteredJobs];
-    console.log(jobs);
+    let jobs = DateFilteredJobs.length
+      ? [...DateFilteredJobs]
+      : [...CompletedJobs];
     if (!designer_id) return setFilteredJobs(jobs);
     const filtered_jobs = jobs.filter(
       (job) => job.jobDesigner.ID === designer_id
@@ -55,13 +57,13 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
     setFilteredJobs(filtered_jobs);
   };
 
-  const handlejobIDFilter = (e) => {
+  const handleJobIDFilter = (e) => {
     const jobid = e.target.value;
     setSelectedJobID(jobid);
     const all_jobs = [...CompletedJobs];
     if (!jobid) return setFilteredJobs(all_jobs);
     const filteredJobs = all_jobs.filter((job) =>
-      matchSearch(job.orderID, jobid)
+      matchSearch(jobid, job.jobID)
     );
     setFilteredJobs(filteredJobs);
   };
@@ -73,9 +75,8 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
 
   const handleDateFilter = async () => {
     if (IsFilter) {
-      const jobs = [...CompletedJobs];
-      setFilteredJobs(jobs);
-      setIsFilter(!IsFilter);
+      setFilteredJobs([...CompletedJobs]);
+      setIsFilter(false);
       return;
     }
 
@@ -96,8 +97,9 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
   };
 
   const getButtonTitle = () => {
-    if (UserRole === "admin") return get_setting("label_comment_notify_button");
-    return "Update File";
+    return UserRole === "admin"
+      ? get_setting("label_comment_notify_button")
+      : "Update File";
   };
 
   return (
@@ -105,7 +107,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
       <h3>Completed Jobs</h3>
       <div className="d-flex mb-3 justify-content-between">
         <div className="me-3">
-          <label htmlFor="jobIDFilter" className="me-2">
+          <label htmlFor="DateAfter" className="me-2">
             Dates
           </label>
           <input
@@ -141,7 +143,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
             id="jobIDFilter"
             type="text"
             value={selectedJobID}
-            onChange={handlejobIDFilter}
+            onChange={handleJobIDFilter}
           />
         </div>
         {UserRole === "admin" && (
@@ -154,6 +156,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
               value={selectedDesigner}
               onChange={handleDesignerChangeFilter}
             >
+              <option value="">All</option>
               {DesignerUsers.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.display_name}
@@ -166,12 +169,12 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
       <div className="d-flex mb-3 justify-content-between">
         <p>Total Jobs: {filteredJobs.length}</p>
         {UserRole !== "customer" && (
-          <button
+          <Button
             className="btn btn-info btn-calculator"
             onClick={() => setShowCalculator(!ShowCalculator)}
           >
             {ShowCalculator ? "Close" : "Calculator"}
-          </button>
+          </Button>
         )}
       </div>
       {ShowCalculator && (
@@ -181,7 +184,7 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
           endDate={DateBefore}
         />
       )}
-      <div class="table-responsive">
+      <div className="table-responsive">
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -217,8 +220,8 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
                 <td
                   style={{
                     textAlign: "center",
-                    verticalAlign: "middle", // Center vertically
-                    cursor: "pointer", // Change cursor to pointer
+                    verticalAlign: "middle",
+                    cursor: "pointer",
                   }}
                   onClick={() => handleMoreInfo(job)}
                 >
@@ -260,8 +263,6 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
         </Table>
       </div>
 
-      {/* Show more info */}
-
       {selectedJob && (
         <Modal
           show={showModalMoreInfo}
@@ -286,7 +287,6 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
               )}
             </Container>
           </Modal.Body>
-
           <Modal.Footer>
             <Button
               variant="secondary"
@@ -294,9 +294,6 @@ const CompletedJobsView = ({ jobs, DesignerUsers, UserRole, onJobUpdate }) => {
             >
               Close
             </Button>
-            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
-              Notify Designer
-            </Button> */}
           </Modal.Footer>
         </Modal>
       )}

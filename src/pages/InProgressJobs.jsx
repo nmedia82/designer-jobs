@@ -13,16 +13,16 @@ const InProgressJobsView = ({
   onJobUpdate,
   UserRole,
   DesignerUsers,
+  jobidParam,
 }) => {
   const [MyJobs, setMyJobs] = useState([]);
   const [selectedJobStatus, setSelectedJobStatus] = useState("");
-  const [selectedJobID, setSelectedJobID] = useState("");
+  const [selectedJobID, setSelectedJobID] = useState(jobidParam || "");
   const [filteredJobs, setFilteredJobs] = useState(jobs);
   const [DateAfter, setDateAfter] = useState("");
   const [DateBefore, setDateBefore] = useState("");
   const [IsFilter, setIsFilter] = useState(false);
   const [selectedDesigner, setSelectedDesigner] = useState("");
-  // it's for Modal
   const [showModal, setShowModal] = useState(false);
   const [showModalMoreInfo, setShowModalMoreInfo] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
@@ -30,7 +30,11 @@ const InProgressJobsView = ({
   useEffect(() => {
     setMyJobs(jobs);
     setFilteredJobs(jobs);
-  }, [jobs]);
+    setSelectedJobID(jobidParam);
+    if (jobidParam) {
+      handleJobIDFilter({ target: { value: jobidParam } });
+    }
+  }, [jobs, jobidParam]);
 
   const handleJobStatusChange = (e) => {
     const status = e.target.value;
@@ -40,13 +44,13 @@ const InProgressJobsView = ({
     setFilteredJobs(filteredJobs);
   };
 
-  const handlejobIDFilter = (e) => {
+  const handleJobIDFilter = (e) => {
     const jobid = e.target.value;
     setSelectedJobID(jobid);
     const all_jobs = [...MyJobs];
     if (!jobid) return setFilteredJobs(all_jobs);
     const filteredJobs = all_jobs.filter((job) =>
-      matchSearch(job.orderID, jobid)
+      matchSearch(jobid, job.jobID)
     );
     setFilteredJobs(filteredJobs);
   };
@@ -59,7 +63,6 @@ const InProgressJobsView = ({
     const filteredJobs = jobs.filter(
       (job) => job.jobDesigner.ID === designer_id
     );
-    console.log(MyJobs, designer_id);
     setFilteredJobs(filteredJobs);
   };
 
@@ -69,7 +72,6 @@ const InProgressJobsView = ({
   };
 
   function getStatusLabel(key) {
-    // console.log(Statuses);
     const statusObject = Statuses.find((status) => status.value === key);
     return statusObject ? statusObject.label : "";
   }
@@ -88,7 +90,6 @@ const InProgressJobsView = ({
       DateAfter,
       DateBefore
     );
-    // setMyJobs(jobs);
     setFilteredJobs(jobs);
   };
 
@@ -112,13 +113,12 @@ const InProgressJobsView = ({
   };
 
   const handleDesignerChange = async (job_id, designer_id) => {
-    // Do something with the order ID
     const { data } = await changeDesigner(job_id, designer_id);
     const { data: response } = data;
-    // console.log(response);
-    toast.success("Designer changed successully");
+    toast.success("Designer changed successfully");
     return window.location.reload();
   };
+
   function getStatusBGColor(status) {
     if (status === "wc-send") {
       return get_setting("status_send_bg_color");
@@ -196,7 +196,7 @@ const InProgressJobsView = ({
             id="jobIDFilter"
             type="text"
             value={selectedJobID}
-            onChange={handlejobIDFilter}
+            onChange={handleJobIDFilter}
           />
         </div>
         {UserRole === "admin" && (
@@ -219,7 +219,7 @@ const InProgressJobsView = ({
         )}
       </div>
       <p>Total Jobs: {filteredJobs.length}</p>
-      <div class="table-responsive">
+      <div className="table-responsive">
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -255,7 +255,6 @@ const InProgressJobsView = ({
                     )};padding:5px">${getStatusLabel(job.jobStatus)}</span>`,
                   }}
                 />
-
                 {UserRole !== "customer" && (
                   <td dangerouslySetInnerHTML={{ __html: job.jobPrice }} />
                 )}
@@ -265,8 +264,8 @@ const InProgressJobsView = ({
                 <td
                   style={{
                     textAlign: "center",
-                    verticalAlign: "middle", // Center vertically
-                    cursor: "pointer", // Change cursor to pointer
+                    verticalAlign: "middle",
+                    cursor: "pointer",
                   }}
                   onClick={() => handleMoreInfo(job)}
                 >
@@ -316,8 +315,6 @@ const InProgressJobsView = ({
         </Table>
       </div>
 
-      {/* Change Designer */}
-
       {selectedJob && (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
@@ -325,14 +322,6 @@ const InProgressJobsView = ({
           </Modal.Header>
           <Modal.Body>
             <Container>
-              {/* <p className="d-flex">
-                <input
-                  type="text"
-                  className="form-control m-1"
-                  placeholder="Pick your self: email"
-                />
-                <Button className="btn-sm">Select</Button>
-              </p> */}
               <table className="table table-striped">
                 <thead>
                   <tr>
@@ -362,19 +351,13 @@ const InProgressJobsView = ({
               </table>
             </Container>
           </Modal.Body>
-
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowModal(false)}>
               Close
             </Button>
-            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
-              Notify Designer
-            </Button> */}
           </Modal.Footer>
         </Modal>
       )}
-
-      {/* Show more info */}
 
       {selectedJob && (
         <Modal
@@ -400,7 +383,6 @@ const InProgressJobsView = ({
               )}
             </Container>
           </Modal.Body>
-
           <Modal.Footer>
             <Button
               variant="secondary"
@@ -408,9 +390,6 @@ const InProgressJobsView = ({
             >
               Close
             </Button>
-            {/* <Button variant="primary" onClick={() => setShowModal(false)}>
-              Notify Designer
-            </Button> */}
           </Modal.Footer>
         </Modal>
       )}
