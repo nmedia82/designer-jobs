@@ -123,7 +123,7 @@ function Dashboard({ onLogout, User }) {
     loadData();
     if (pageParam) setView(pageParam);
 
-    if (jobidParam && statusParam) {
+    if (statusParam) {
       if (statusParam === "processing") {
         setView("openjobs");
       } else if (statusParam === "progress") {
