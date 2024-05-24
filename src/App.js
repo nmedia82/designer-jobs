@@ -26,15 +26,21 @@ function App() {
   const [PopupText, setPopupText] = useLocalStorage("popup_text", "");
 
   useEffect(() => {
-    let user = auth.getCurrentUser;
+    let user = auth.getCurrentUser();
     // Get the token from the URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
+
     if (token) {
-      const { data: user_data } = jwtDecode(token);
+      const user_data = jwtDecode(token);
       login_user_locally(user_data);
       urlParams.delete("token");
-      const newUrl = `${window.location.pathname}`;
+
+      const newParams = urlParams.toString();
+      const newUrl = `${window.location.pathname}${
+        newParams ? "?" + newParams : ""
+      }`;
+
       window.history.replaceState({}, "", newUrl);
       window.location.reload();
     }
