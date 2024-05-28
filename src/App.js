@@ -33,7 +33,7 @@ function App() {
 
     if (token) {
       const user_data = jwtDecode(token);
-      login_user_locally(user_data);
+      login_user_locally(user_data.data);
       urlParams.delete("token");
 
       const newParams = urlParams.toString();
