@@ -127,7 +127,7 @@ function Dashboard({ onLogout, User }) {
       if (statusParam === "processing") {
         setView("openjobs");
       } else if (statusParam === "progress") {
-        setView("inprogrogressjobs");
+        setView("inprogressjobs");
       } else if (statusParam === "completed") {
         setView("completedjobs");
       } else if (statusParam === "cancelled") {
@@ -168,7 +168,7 @@ function Dashboard({ onLogout, User }) {
 
   const handleJobBack = () => {
     setJobSelected(null);
-    handleViewChange("inprogrogressjobs");
+    handleViewChange("inprogressjobs");
   };
 
   const handleOrderStatusUpdate = (order_id) => {
@@ -216,7 +216,7 @@ function Dashboard({ onLogout, User }) {
           />
         );
 
-      case "inprogrogressjobs":
+      case "inprogressjobs":
         return (
           <InProgressJobsView
             jobs={InProgressJobs}

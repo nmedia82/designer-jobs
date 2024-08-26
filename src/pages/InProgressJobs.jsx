@@ -120,9 +120,10 @@ const InProgressJobsView = ({
   };
 
   function getStatusBGColor(status) {
+    console.log(status);
     if (status === "wc-send") {
       return get_setting("status_send_bg_color");
-    } else if (status === "wc-in-progress") {
+    } else if (status === "in-progress") {
       return get_setting("status_progress_bg_color");
     } else {
       return get_setting("status_revise_bg_color");
@@ -132,7 +133,7 @@ const InProgressJobsView = ({
   function getStatusFontColor(status) {
     if (status === "wc-send") {
       return get_setting("status_send_font_color");
-    } else if (status === "wc-in-progress") {
+    } else if (status === "in-progress") {
       return get_setting("status_progress_font_color");
     } else {
       return get_setting("status_revise_font_color");

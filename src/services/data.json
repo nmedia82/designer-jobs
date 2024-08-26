@@ -9,7 +9,7 @@
     },
     {
       "title": "In Progress",
-      "slug": "inprogrogressjobs",
+      "slug": "inprogressjobs",
       "access": ["designer", "admin", "customer"]
     },
     {
