@@ -126,12 +126,13 @@ export default function ReplyMsg({ onReplySend, onJobClose }) {
   };
 
   const getThumbSize = () => {
-    const thum_size = get_setting("thumb_size", 500);
+    const thum_size = get_setting("thumb_size", 125);
     return thum_size;
   };
 
   const onReplyClick = (message, files) => {
     setReplyText("");
+    setFiles([]);
     onReplySend(message, files, NotifyTo);
   };
 
