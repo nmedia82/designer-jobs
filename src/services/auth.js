@@ -19,7 +19,7 @@ export async function login(user_info) {
 }
 
 export function login_user_locally(user_data) {
-  const allowed = ["wc-in-progress", "wc-revise", "wc-send"];
+  const allowed = ["in-progress", "wc-revise", "wc-send"];
   let statuses = Object.fromEntries(
     Object.entries(user_data.statuses).filter(([key, value]) =>
       allowed.includes(key)
